@@ -2691,16 +2691,10 @@ export default function App() {
                       onClick={() => setProductFilter(isActive ? 'all' : cat.key)}
                       className="flex flex-col items-center group cursor-pointer transition-all duration-200"
                     >
-                      <div className={`w-18 h-18 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                        isActive 
-                          ? 'bg-[#e8f5e9] border-[#3B6D11] shadow-md scale-105' 
-                          : 'bg-[#f4f7f5] border-gray-150 group-hover:border-[#3B6D11]/50 group-hover:bg-[#edf4f0] shadow-sm'
-                      }`}>
+                      <div className={`w-18 h-18 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${isActive ? 'bg-[#e8f5e9] border-[#3B6D11] shadow-md scale-105' : 'bg-[#f4f7f5] border-gray-150 group-hover:border-[#3B6D11] group-hover:bg-[#edf4f0] shadow-sm'}`}>
                         {cat.svg}
                       </div>
-                      <span className={`text-[10px] font-bold text-center mt-2.5 leading-tight transition-colors ${
-                        isActive ? 'text-[#3B6D11]' : 'text-slate-650 group-hover:text-slate-800'
-                      }`}>
+                      <span className={`text-[10px] font-bold text-center mt-2.5 leading-tight transition-colors ${isActive ? 'text-[#3B6D11]' : 'text-slate-650 group-hover:text-slate-800'}`}>
                         {cat.label}
                       </span>
                     </button>
@@ -2712,11 +2706,7 @@ export default function App() {
                   onClick={() => setProductFilter('all')}
                   className="flex flex-col items-center justify-center group cursor-pointer h-full"
                 >
-                  <div className={`w-18 h-18 rounded-xl flex flex-col items-center justify-center border-2 transition-all duration-300 text-center ${
-                    productFilter === 'all'
-                      ? 'bg-[#e8f5e9] border-[#3B6D11] shadow-md'
-                      : 'bg-[#f4f7f5] border-gray-150 group-hover:border-[#3B6D11]/50 group-hover:bg-[#edf4f0]'
-                  }`}>
+                  <div className={`w-18 h-18 rounded-xl flex flex-col items-center justify-center border-2 transition-all duration-300 text-center ${productFilter === 'all' ? 'bg-[#e8f5e9] border-[#3B6D11] shadow-md' : 'bg-[#f4f7f5] border-gray-150 group-hover:border-[#3B6D11] group-hover:bg-[#edf4f0]'}`}>
                     <span className="text-[#3B6D11] text-[10px] font-black leading-none uppercase">All</span>
                     <span className="text-[#3B6D11] text-[8px] font-bold uppercase mt-1 leading-none">Categories</span>
                     <ChevronRight className="w-3.5 h-3.5 text-[#3B6D11] mt-1.5 transition-transform group-hover:translate-x-0.5" />
@@ -2743,29 +2733,29 @@ export default function App() {
                     return (
                       <div 
                         key={p.id} 
-                        className="relative bg-white rounded-[32px] border border-stone-200/85 p-5 hover:shadow-xl hover:-translate-y-1.5 group transition-all duration-300 flex flex-col justify-between h-[360px] overflow-hidden"
+                        className="relative bg-white rounded-[32px] border border-stone-200 p-5 hover:shadow-xl hover:-translate-y-1.5 group transition-all duration-300 flex flex-col justify-between h-[360px] overflow-hidden"
                       >
-                        {/* Faint Ranking Number in Background */}
-                        <div className="absolute -left-4 top-1/2 -translate-y-1/2 text-[150px] font-black text-[#f7f6f0] select-none pointer-events-none z-0">
+                        {/* Faint Ranking Number */}
+                        <div className="absolute -left-4 top-0 bottom-0 flex items-center text-[150px] font-black text-[#f7f6f0] select-none pointer-events-none z-0">
                           {idx + 1}
                         </div>
 
-                        {/* Card Content Wrapper */}
+                        {/* Card Content */}
                         <div className="relative z-10 flex flex-col h-full justify-between">
                           
-                          {/* Image Container */}
+                          {/* Image */}
                           <div className="relative rounded-2xl overflow-hidden bg-slate-50 border border-gray-100 flex items-center justify-center p-4 h-40">
                             
-                            {/* Discount Badge */}
+                            {/* Badge */}
                             {p.badge && (
                               <span className="absolute top-2 left-2 bg-[#2b4d36] text-white text-[9px] font-black px-2 py-0.5 rounded-r-md uppercase tracking-wider shadow-sm z-20">
                                 {p.badge}
                               </span>
                             )}
                             
-                            {/* Rating Badge */}
+                            {/* Rating */}
                             {p.rating && (
-                              <span className="absolute bottom-2 right-2 bg-slate-900/75 text-[#ffc107] text-[9.5px] font-black px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm backdrop-blur-xs z-20">
+                              <span className="absolute bottom-2 right-2 bg-[rgba(15,23,42,0.75)] text-[#ffc107] text-[9.5px] font-black px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm z-20">
                                 <span>{p.rating}</span>
                                 <Star className="w-2.5 h-2.5 fill-[#ffc107] text-[#ffc107] inline" />
                               </span>
@@ -2780,17 +2770,17 @@ export default function App() {
                             </a>
                           </div>
 
-                          {/* Product Info */}
+                          {/* Info */}
                           <div className="mt-3">
                             <a href={`#product?id=${p.id}`} className="block">
                               <h4 className="font-extrabold text-slate-800 text-sm leading-tight group-hover:text-[#3B6D11] transition-colors line-clamp-1">
                                 {p.name}
                               </h4>
                             </a>
-                            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mt-1">{p.category.replace('-', ' & ')}</p>
+                            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mt-1">{p.category.split('-').join(' & ')}</p>
                           </div>
 
-                          {/* Sizes, Prices & Actions */}
+                          {/* Actions */}
                           <div className="mt-4 flex flex-col justify-end">
                             <div className="flex items-end justify-between">
                               <div className="flex flex-col">
@@ -2801,24 +2791,24 @@ export default function App() {
                                   )}
                                 </div>
 
-                                {/* Size Dropdown Selector */}
+                                {/* Size */}
                                 {p.sizes && p.sizes.length > 0 && (
                                   <div className="relative mt-1 inline-block text-left">
                                     <select 
                                       value={selectedSize}
                                       onChange={(e) => setSelectedSizes({ ...selectedSizes, [p.id]: e.target.value })}
-                                      className="appearance-none bg-white border border-[#3B6D11]/30 hover:border-[#3B6D11] text-[#3B6D11] font-bold text-[10px] pl-2.5 pr-6 py-1 rounded-lg cursor-pointer focus:outline-none transition-colors"
+                                      className="appearance-none bg-white border border-[#3B6D11] border-opacity-30 hover:border-[#3B6D11] text-[#3B6D11] font-bold text-[10px] pl-2.5 pr-6 py-1 rounded-lg cursor-pointer focus:outline-none transition-colors"
                                     >
                                       {p.sizes.map(size => (
                                         <option key={size} value={size}>{size}</option>
                                       ))}
                                     </select>
-                                    <ChevronDown className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-[#3B6D11] pointer-events-none" />
+                                    <ChevronDown className="absolute right-1.5 top-2 w-3 h-3 text-[#3B6D11] pointer-events-none" />
                                   </div>
                                 )}
                               </div>
 
-                              {/* Floating Cart Button */}
+                              {/* Cart */}
                               <button 
                                 onClick={() => {
                                   addToCart(p, 1);
@@ -2833,7 +2823,14 @@ export default function App() {
                         </div>
                       </div>
                     );
-                        {/* VIEW 5: PRODUCT DETAIL */}
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* VIEW 5: PRODUCT DETAIL */}
         {routePath === '#product' && (
           <div className="py-12 px-4 md:px-12 bg-white max-w-6xl mx-auto">
             {(() => {
