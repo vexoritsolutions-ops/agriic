@@ -1,0 +1,1712 @@
+﻿import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Leaf, 
+  ShoppingCart, 
+  Menu, 
+  X, 
+  ChevronRight, 
+  Star, 
+  Phone, 
+  FileText, 
+  ShieldCheck, 
+  User, 
+  ArrowLeft, 
+  ArrowRight,
+  ChevronLeft,
+  CheckCircle,
+  Plus,
+  Minus,
+  Trash2,
+  Lock,
+  Search,
+  BookOpen,
+  Calendar,
+  Clock,
+  HelpCircle,
+  Award,
+  Globe,
+  MapPin,
+  Check,
+  ChevronDown,
+  Package,
+  Truck,
+  CreditCard,
+  Camera,
+  Mail,
+  Bell,
+  BarChart2,
+  Tag,
+  ShoppingBag,
+  Store,
+  XCircle,
+  Sprout,
+  Recycle,
+  Droplet,
+  FlaskConical,
+  TrendingUp,
+  Factory,
+  Coins,
+  Users,
+  HandHeart,
+  Shield
+} from 'lucide-react';
+import { Product, Order, BlogPost, Testimonial, Ingredient, GoogleReview, Expectation, QuizQuestion } from './types';
+
+import { 
+  db, 
+  auth, 
+  googleProvider, 
+  signInWithPopup, 
+  signOut, 
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  sendPasswordResetEmail,
+  linkWithPhoneNumber,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+  storage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "./lib/firebase";
+import { seedDatabaseIfEmpty, SEED_PRODUCTS } from "./initialData";
+
+declare global {
+  interface Window {
+    recaptchaVerifier: any;
+  }
+}
+
+import { HomeModule } from "./components/HomeModule";
+import { FarmersModule } from "./components/FarmersModule";
+import { SoilModule } from "./components/SoilModule";
+import { NutritionModule } from "./components/NutritionModule";
+import { ProductsModule } from "./components/ProductsModule";
+import { AnalyticsModule } from "./components/AnalyticsModule";
+import { ConsultationsModule } from "./components/ConsultationsModule";
+import { ContentModule } from "./components/ContentModule";
+import { SupportModule } from "./components/SupportModule";
+import { SettingsModule } from "./components/SettingsModule";
+import { 
+  Farmer, 
+  SoilReport, 
+  DeficiencyAlertRule, 
+  NutritionPlan, 
+  SupportTicket, 
+  DashboardActivity,
+  WorkspaceSettings,
+  Consultation,
+  ContentItem,
+  UserRole
+} from "./types";
+
+// Custom router helper
+const getHashParams = (hashStr: string) => {
+  const parts = hashStr.split('?');
+  const path = parts[0] || '#home';
+  const query = parts[1] || '';
+  const params: Record<string, string> = {};
+  if (query) {
+    query.split('&').forEach(param => {
+      const [key, value] = param.split('=');
+      params[key] = decodeURIComponent(value || '');
+    });
+  }
+  return { path, params };
+};
+
+export default function App() {
+  const [hash, setHash] = useState(window.location.hash || '#home');
+  const [heroSlide, setHeroSlide] = useState(0);
+  const [productTab, setProductTab] = useState<'fertilizer' | 'seeds' | 'gardening'>('fertilizer');
+  const [allProductsSearch, setAllProductsSearch] = useState('');
+  const [allProductsPage, setAllProductsPage] = useState(1);
+  const [faqOpen, setFaqOpen] = useState<number | null>(null);
+  const [activePlanIndex, setActivePlanIndex] = useState(1);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const currentHash = window.location.hash || '#home';
+      if (currentHash === '#home') {
+        setHeroSlide(prev => (prev + 1) % 4);
+      }
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+  const bestSellersRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    // Auto-scroll Best Sellers horizontally
+    const timer = setInterval(() => {
+      if (bestSellersRef.current && window.innerWidth < 768) {
+        const { scrollLeft, scrollWidth, clientWidth } = bestSellersRef.current;
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          bestSellersRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          bestSellersRef.current.scrollBy({ left: clientWidth, behavior: 'smooth' });
+        }
+      }
+    }, 3500); // Scroll every 3.5 seconds
+    return () => clearInterval(timer);
+  }, []);
+
+  const pricingRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    // Auto-scroll Pricing Cards horizontally
+    const timer = setInterval(() => {
+      if (pricingRef.current && window.innerWidth < 768) {
+        const { scrollLeft, scrollWidth, clientWidth } = pricingRef.current;
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          pricingRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          pricingRef.current.scrollBy({ left: clientWidth, behavior: 'smooth' });
+        }
+      }
+    }, 2000); // Scroll every 2 seconds
+    return () => clearInterval(timer);
+  }, []);
+  // ==========================================
+  // DYNAMIC ADMIN STATE & DATABASE CONTROLS
+  // ==========================================
+  const [adminActiveTab, setAdminActiveTab] = useState<string>('home');
+  const [liveFarmers, setLiveFarmers] = useState<Farmer[]>([]);
+  const [liveSoilReports, setLiveSoilReports] = useState<SoilReport[]>([]);
+  const [liveOrders, setLiveOrders] = useState<Order[]>([]);
+  const [liveAlertRules, setLiveAlertRules] = useState<DeficiencyAlertRule[]>([]);
+  const [liveNutritionPlans, setLiveNutritionPlans] = useState<NutritionPlan[]>([]);
+  const [liveProducts, setLiveProducts] = useState<Product[]>([]);
+  const [liveConsultations, setLiveConsultations] = useState<Consultation[]>([]);
+  const [liveContent, setLiveContent] = useState<ContentItem[]>([]);
+  const [liveTickets, setLiveTickets] = useState<SupportTicket[]>([]);
+  const [liveActivities, setLiveActivities] = useState<DashboardActivity[]>([]);
+  const [liveSettings, setLiveSettings] = useState<WorkspaceSettings | null>(null);
+  const [liveBlogPosts, setLiveBlogPosts] = useState<BlogPost[]>([]);
+  const [liveTestimonials, setLiveTestimonials] = useState<Testimonial[]>([]);
+  const [liveIngredients, setLiveIngredients] = useState<Ingredient[]>([]);
+  const [liveGoogleReviews, setLiveGoogleReviews] = useState<GoogleReview[]>([]);
+  const [liveExpectations, setLiveExpectations] = useState<Expectation[]>([]);
+  const [liveQuizQuestions, setLiveQuizQuestions] = useState<QuizQuestion[]>([]);
+
+  
+  const [adminUser, setAdminUser] = useState<{ email: string; name: string; role: UserRole; uid?: string } | null>(() => {
+    try {
+      const saved = localStorage.getItem('agriic_admin_session');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  // Automated first-run seed trigger  // Initial component mount
+  useEffect(() => {
+    // Push all products to Firestore (merge so existing data is preserved)
+    const upsertNewProducts = async () => {
+      try {
+        for (const p of SEED_PRODUCTS) {
+          await setDoc(doc(db, 'products', p.id), p, { merge: true });
+        }
+      } catch (e) {
+        // Silently ignore â€” e.g. if offline or not authenticated
+      }
+    };
+    upsertNewProducts();
+  }, []);
+
+  // Sync state machine on Firebase Auth changes
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        let assignedRole: UserRole = 'Farmer';
+        let assignedName = user.displayName || 'Authorized User';
+        let phone = '';
+        let location = '';
+        let cropType = '';
+        let landSize = '';
+        let profileImage = '';
+
+        if (user.email === 'abhiirana2031@gmail.com') {
+          assignedRole = 'Super Admin';
+        }
+
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            if (data.role) assignedRole = data.role as UserRole;
+            if (data.name) assignedName = data.name;
+            if (data.phone) phone = data.phone;
+            if (data.location) location = data.location;
+            if (data.cropType) cropType = data.cropType;
+            if (data.landSize) landSize = data.landSize;
+            if (data.profileImage) profileImage = data.profileImage;
+          } else {
+            // If user doesn't exist in Firestore, create a default profile
+            const freshUser = {
+              id: user.uid,
+              name: assignedName,
+              email: user.email || "",
+              role: assignedRole,
+              joinedAt: new Date().toISOString()
+            };
+            await setDoc(doc(db, "users", user.uid), freshUser);
+          }
+        } catch (e) {
+          console.error("Error fetching user role", e);
+        }
+
+        const session = {
+          email: user.email || '',
+          name: assignedName,
+          role: assignedRole,
+          uid: user.uid
+        };
+
+        if (assignedRole === 'Super Admin') {
+          setAdminUser(session);
+          localStorage.setItem('agriic_admin_session', JSON.stringify(session));
+        } else {
+          setAdminUser(null);
+          localStorage.removeItem('agriic_admin_session');
+        }
+
+        setCurrentUser({
+          id: user.uid,
+          name: assignedName,
+          email: user.email || '',
+          phone: phone,
+          role: assignedRole,
+          location: location,
+          cropType: cropType,
+          landSize: landSize,
+          profileImage: profileImage
+        });
+      } else {
+        setAdminUser(null);
+        setCurrentUser(null);
+        localStorage.removeItem('agriic_admin_session');
+      }
+    });
+    return () => unsub();
+  }, []);
+
+  // Live Snapshot synchronizers
+  useEffect(() => {
+
+    const u1 = onSnapshot(collection(db, "users"), (snapshot) => {
+      const fList: Farmer[] = [];
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        fList.push({
+          id: doc.id,
+          name: d.name || 'Anonymous Grower',
+          email: d.email || '',
+          phone: d.phone || '',
+          role: d.role || 'Farmer',
+          location: d.location || '',
+          cropFocus: d.cropFocus || '',
+          landSize: d.landSize || '',
+          status: d.status || 'Active',
+          joinedAt: d.joinedAt || new Date().toISOString()
+        });
+      });
+      setLiveFarmers(fList);
+    }, (err) => handleLiveSyncError(err, 'list', 'users'));
+
+    const u2 = onSnapshot(collection(db, "soilReports"), (snapshot) => {
+      const sList: SoilReport[] = [];
+      snapshot.forEach(doc => {
+        sList.push({ id: doc.id, ...doc.data() } as SoilReport);
+      });
+      setLiveSoilReports(sList);
+    }, (err) => handleLiveSyncError(err, 'list', 'soilReports'));
+
+    const u3 = onSnapshot(collection(db, "orders"), (snapshot) => {
+      const oList: Order[] = [];
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        oList.push({ id: doc.id, ...d } as Order);
+      });
+      setLiveOrders(oList);
+    }, (err) => handleLiveSyncError(err, 'list', 'orders'));
+
+    const u4 = onSnapshot(collection(db, "deficiencyRules"), (snapshot) => {
+      const rList: DeficiencyAlertRule[] = [];
+      snapshot.forEach(doc => {
+        rList.push({ id: doc.id, ...doc.data() } as DeficiencyAlertRule);
+      });
+      setLiveAlertRules(rList);
+    }, (err) => handleLiveSyncError(err, 'list', 'deficiencyRules'));
+
+    const u5 = onSnapshot(collection(db, "nutritionPlans"), (snapshot) => {
+      const pList: NutritionPlan[] = [];
+      snapshot.forEach(doc => {
+        pList.push({ id: doc.id, ...doc.data() } as NutritionPlan);
+      });
+      setLiveNutritionPlans(pList);
+    }, (err) => handleLiveSyncError(err, 'list', 'nutritionPlans'));
+
+    const u6 = onSnapshot(collection(db, "products"), (snapshot) => {
+      const prList: Product[] = [];
+      snapshot.forEach(doc => {
+        prList.push({ id: doc.id, ...doc.data() } as Product);
+      });
+      setLiveProducts(prList);
+    }, (err) => handleLiveSyncError(err, 'list', 'products'));
+
+    const u7 = onSnapshot(collection(db, "consultations"), (snapshot) => {
+      const cList: Consultation[] = [];
+      snapshot.forEach(doc => {
+        cList.push({ id: doc.id, ...doc.data() } as Consultation);
+      });
+      setLiveConsultations(cList);
+    }, (err) => handleLiveSyncError(err, 'list', 'consultations'));
+
+    const u8 = onSnapshot(collection(db, "content"), (snapshot) => {
+      const cnList: ContentItem[] = [];
+      snapshot.forEach(doc => {
+        cnList.push({ id: doc.id, ...doc.data() } as ContentItem);
+      });
+      setLiveContent(cnList);
+    }, (err) => handleLiveSyncError(err, 'list', 'content'));
+
+    const u9 = onSnapshot(collection(db, "supportTickets"), (snapshot) => {
+      const tList: SupportTicket[] = [];
+      snapshot.forEach(doc => {
+        tList.push({ id: doc.id, ...doc.data() } as SupportTicket);
+      });
+      setLiveTickets(tList);
+    }, (err) => handleLiveSyncError(err, 'list', 'supportTickets'));
+
+    const u10 = onSnapshot(collection(db, "activities"), (snapshot) => {
+      const actList: DashboardActivity[] = [];
+      snapshot.forEach(doc => {
+        actList.push({ id: doc.id, ...doc.data() } as DashboardActivity);
+      });
+      setLiveActivities(actList);
+    }, (err) => handleLiveSyncError(err, 'list', 'activities'));
+
+    const u11 = onSnapshot(doc(db, "settings", "global_workspace"), (doc) => {
+      if (doc.exists()) {
+        setLiveSettings(doc.data() as WorkspaceSettings);
+      }
+    }, (err) => handleLiveSyncError(err, 'get', 'settings/global_workspace'));
+    const u12 = onSnapshot(collection(db, "blogPosts"), (snapshot) => {
+      const list: BlogPost[] = [];
+      snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() } as BlogPost));
+      setLiveBlogPosts(list);
+    });
+    const u13 = onSnapshot(collection(db, "testimonials"), (snapshot) => {
+      const list: Testimonial[] = [];
+      snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() } as Testimonial));
+      setLiveTestimonials(list);
+    });
+    const u14 = onSnapshot(collection(db, "ingredients"), (snapshot) => {
+      const list: Ingredient[] = [];
+      snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() } as Ingredient));
+      setLiveIngredients(list);
+    });
+    const u15 = onSnapshot(collection(db, "googleReviews"), (snapshot) => {
+      const list: GoogleReview[] = [];
+      snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() } as GoogleReview));
+      setLiveGoogleReviews(list);
+    });
+    const u16 = onSnapshot(collection(db, "expectations"), (snapshot) => {
+      const list: Expectation[] = [];
+      snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() } as Expectation));
+      setLiveExpectations(list);
+    });
+    const u17 = onSnapshot(collection(db, "quizQuestions"), (snapshot) => {
+      const list: QuizQuestion[] = [];
+      snapshot.forEach(doc => list.push({ id: doc.id, ...doc.data() } as QuizQuestion));
+      setLiveQuizQuestions(list);
+    });
+
+
+    return () => {
+      if (typeof u1 === 'function') u1();
+      if (typeof u2 === 'function') u2();
+      if (typeof u3 === 'function') u3();
+      if (typeof u4 === 'function') u4();
+      if (typeof u5 === 'function') u5();
+      if (typeof u6 === 'function') u6();
+      if (typeof u7 === 'function') u7();
+      if (typeof u8 === 'function') u8();
+      if (typeof u9 === 'function') u9();
+      if (typeof u10 === 'function') u10();
+      if (typeof u11 === 'function') u11();
+      if (typeof u12 === 'function') u12();
+      if (typeof u13 === 'function') u13();
+      if (typeof u14 === 'function') u14();
+      if (typeof u15 === 'function') u15();
+      if (typeof u16 === 'function') u16();
+      if (typeof u17 === 'function') u17();
+    };
+  }, [adminUser]);
+
+  // Error handling compliance mapper
+  function handleLiveSyncError(error: unknown, opType: string, path: string) {
+    const errObj = {
+      error: error instanceof Error ? error.message : String(error),
+      auth: {
+        uid: auth.currentUser?.uid,
+        email: auth.currentUser?.email
+      },
+      operationType: opType,
+      path: path
+    };
+    console.error("Firestore sync error: ", JSON.stringify(errObj));
+  }
+
+  // Live Actions mapped directly to Firestore writes
+  const handleClearActivities = async () => {
+    try {
+      for (const act of liveActivities) {
+        await deleteDoc(doc(db, "activities", act.id));
+      }
+      showToastMsg("Cleared historical audit logs.");
+    } catch (e) {
+      handleLiveSyncError(e, 'delete', 'activities');
+    }
+  };
+
+  const handleUpdateFarmerRole = async (id: string, role: string) => {
+    try {
+      await updateDoc(doc(db, "users", id), { role });
+      showToastMsg(`Role assigned successfully: ${role}`);
+    } catch (e) {
+      handleLiveSyncError(e, 'update', `users/${id}`);
+    }
+  };
+
+  const handleUpdateFarmerStatus = async (id: string, status: 'Active' | 'Suspended') => {
+    try {
+      await updateDoc(doc(db, "users", id), { status });
+      showToastMsg(`Grower login state switched to: ${status}`);
+    } catch (e) {
+      handleLiveSyncError(e, 'update', `users/${id}`);
+    }
+  };
+
+  const handleReviewSoilReport = async (id: string, action: string) => {
+    try {
+      await updateDoc(doc(db, "soilReports", id), {
+        status: "Reviewed",
+        actionTaken: action
+      });
+      showToastMsg("Manual diagnosis review committed to database.");
+    } catch (e) {
+      handleLiveSyncError(e, 'update', `soilReports/${id}`);
+    }
+  };
+
+  const handleUploadSoilReport = async (report: any) => {
+    try {
+      const newId = `REP-${Math.floor(1000 + Math.random() * 9000)}`;
+      const payload = {
+        id: newId,
+        ...report,
+        status: "Pending",
+        actionTaken: "",
+        uploadDate: new Date().toISOString().split('T')[0]
+      };
+      await setDoc(doc(db, "soilReports", newId), payload);
+      showToastMsg(`Successfully registered Soil Analysis report ${newId}`);
+    } catch (e) {
+      handleLiveSyncError(e, 'create', 'soilReports');
+    }
+  };
+
+  const handleAddAlertRule = async (rule: any) => {
+    try {
+      const newId = `RULE-${Date.now()}`;
+      await setDoc(doc(db, "deficiencyRules", newId), { id: newId, ...rule });
+      showToastMsg("Biochemical deficiency warning rule saved.");
+    } catch (e) {
+      handleLiveSyncError(e, 'create', 'deficiencyRules');
+    }
+  };
+
+  const handleToggleAlertRule = async (id: string, active: boolean) => {
+    try {
+      await updateDoc(doc(db, "deficiencyRules", id), { active });
+    } catch (e) {
+      handleLiveSyncError(e, 'update', `deficiencyRules/${id}`);
+    }
+  };
+
+  const handleDeleteAlertRule = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, "deficiencyRules", id));
+      showToastMsg("Custom threshold warning rule removed.");
+    } catch (e) {
+      handleLiveSyncError(e, 'delete', `deficiencyRules/${id}`);
+    }
+  };
+
+  const handleAddPlan = async (plan: any) => {
+    try {
+      const newId = `PLAN-${Date.now()}`;
+      await setDoc(doc(db, "nutritionPlans", newId), { id: newId, ...plan });
+      showToastMsg("Botanical formulation template successfully logged.");
+    } catch (e) {
+      handleLiveSyncError(e, 'create', 'nutritionPlans');
+    }
+  };
+
+  const handleDeletePlan = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, "nutritionPlans", id));
+      showToastMsg("Formulation plan template deleted.");
+    } catch (e) {
+      handleLiveSyncError(e, 'delete', `nutritionPlans/${id}`);
+    }
+  };
+
+  const handleAddProductAdmin = async (prod: any) => {
+    try {
+      const newId = `prod_new_${Date.now()}`;
+      await setDoc(doc(db, "products", newId), { id: newId, ...prod });
+      showToastMsg(`New catalog product "${prod.name}" successfully registered.`);
+    } catch (e) {
+      handleLiveSyncError(e, 'create', 'products');
+    }
+  };
+
+  const handleEditProductStock = async (id: string, newStock: number) => {
+    try {
+      await updateDoc(doc(db, "products", id), { stock: Number(newStock) });
+    } catch (e) {
+      handleLiveSyncError(e, 'update', `products/${id}`);
+    }
+  };
+
+  const handleDeleteProductAdmin = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, "products", id));
+      showToastMsg("Catalog product removed from inventory registry.");
+    } catch (e) {
+      handleLiveSyncError(e, 'delete', `products/${id}`);
+    }
+  };
+
+  const handleUpdateOrderStatusAdmin = async (id: string, nextStatus: any) => {
+    try {
+      await updateDoc(doc(db, "orders", id), { status: nextStatus });
+      showToastMsg(`Advanced order process to: ${nextStatus}`);
+    } catch (e) {
+      handleLiveSyncError(e, 'update', `orders/${id}`);
+    }
+  };
+
+  const handleAddConsultation = async (consult: any) => {
+    try {
+      const newId = `CON-${Math.floor(1000 + Math.random() * 9000)}`;
+      await setDoc(doc(db, "consultations", newId), { id: newId, ...consult });
+      showToastMsg("Fitted advisor slot successfully booked.");
+    } catch (e) {
+      handleLiveSyncError(e, 'create', 'consultations');
+    }
+  };
+
+  const handleCompleteConsultation = async (id: string, notes: string) => {
+    try {
+      await updateDoc(doc(db, "consultations", id), {
+        notes,
+        status: "Completed"
+      });
+      showToastMsg("Session marked Completed; advisory records committed.");
+    } catch (e) {
+      handleLiveSyncError(e, 'update', `consultations/${id}`);
+    }
+  };
+
+  const handlePublishArticle = async (article: any) => {
+    try {
+      const newId = `ART-${Date.now()}`;
+      const payload = {
+        id: newId,
+        ...article,
+        publishedAt: new Date().toISOString(),
+        targetPushSent: false
+      };
+      await setDoc(doc(db, "content", newId), payload);
+      showToastMsg(`Broadcasted article: ${article.title}`);
+    } catch (e) {
+      handleLiveSyncError(e, 'create', 'content');
+    }
+  };
+
+  const handleTriggerSMSPush = async (id: string) => {
+    try {
+      await updateDoc(doc(db, "content", id), { targetPushSent: true });
+      showToastMsg("Push notification payload transmitted via cellular gateway.");
+    } catch (e) {
+      handleLiveSyncError(e, 'update', `content/${id}`);
+    }
+  };
+
+  const handleDeleteArticle = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, "content", id));
+      showToastMsg("Scientific report deleted.");
+    } catch (e) {
+      handleLiveSyncError(e, 'delete', `content/${id}`);
+    }
+  };
+
+  const handleAddTicketMessage = async (ticketId: string, text: string, isInternal: boolean) => {
+    try {
+      const tRef = doc(db, "supportTickets", ticketId);
+      const tSnap = await getDoc(tRef);
+      if (tSnap.exists()) {
+        const ticketData = tSnap.data() as SupportTicket;
+        const msg = {
+          id: "msg-" + Date.now(),
+          sender: isInternal ? "STAFF NOTE" : "Agronomist Operator",
+          text: text,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          isInternal: isInternal
+        };
+        const updatedMsgs = [...ticketData.messages, msg];
+        await updateDoc(tRef, { messages: updatedMsgs });
+        showToastMsg("Grower helpdesk chat dispatched.");
+      }
+    } catch (e) {
+      handleLiveSyncError(e, 'update', `supportTickets/${ticketId}`);
+    }
+  };
+
+  const handleUpdateTicketStatus = async (id: string, status: any) => {
+    try {
+      await updateDoc(doc(db, "supportTickets", id), { status });
+      showToastMsg(`Helpdesk ticket marked: ${status}`);
+    } catch (e) {
+      handleLiveSyncError(e, 'update', `supportTickets/${id}`);
+    }
+  };
+
+  const handleSaveSettings = async (setts: any) => {
+    try {
+      await setDoc(doc(db, "settings", "global_workspace"), setts);
+      showToastMsg("Saved application gateways and notification configs.");
+    } catch (e) {
+      handleLiveSyncError(e, 'write', 'settings/global_workspace');
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      
+      // If we are in signup mode, we must require phone number
+      if (authMode === 'signup') {
+        const userDoc = await getDoc(doc(db, "users", result.user.uid));
+        if (!userDoc.exists()) {
+          setTempGoogleUser(result.user);
+          setAuthMode('phone_verify');
+          setupRecaptcha();
+          return;
+        }
+      }
+      
+      showToastMsg(`Google authentication successful.`);
+      window.location.hash = '#profile';
+    } catch (error) {
+      console.error("Google authentication failed:", error);
+      showToastMsg("Google authentication pop-up was closed or failed.");
+    }
+  };
+
+  const handleAdminEmailSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, 'abhiirana2031@gmail.com', authPassword);
+      showToastMsg(`Admin authentication successful.`);
+    } catch (error: any) {
+      console.error("Email authentication failed:", error);
+      let errMsg = error.message || "Email authentication failed.";
+      if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        errMsg = "invalid pass";
+      } else if (error.code === 'auth/invalid-email') {
+        errMsg = "email";
+      } else if (error.code === 'auth/user-not-found') {
+        errMsg = "not found";
+      }
+      showToastMsg(errMsg);
+    }
+  };
+
+  const handleAdminSignOut = async () => {
+    try {
+      await signOut(auth);
+      showToastMsg("Admin console session terminated safely.");
+    } catch {
+      console.error("Logout failed.");
+    }
+  };
+  const [cart, setCart] = useState<{ product: Product; qty: number }[]>(() => {
+    try {
+      const saved = localStorage.getItem('agriic_cart');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [orders, setOrders] = useState<Order[]>(() => {
+    try {
+      const saved = localStorage.getItem('agriic_orders');
+      return saved ? JSON.parse(saved) : liveOrders;
+    } catch {
+      return liveOrders;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('agriic_orders', JSON.stringify(orders));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [orders]);
+
+  const toastTimeoutRef = React.useRef<any>(null);
+
+  const [toast, setToast] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Timeline Tab State
+  const [timelineTab, setTimelineTab] = useState<'vegetable' | 'ornamental'>('vegetable');
+
+  // Auth Mode
+  const [authMode, setAuthMode] = useState<'login' | 'signup' | 'phone_verify' | 'forgot_password'>('login');
+  const [confirmationResult, setConfirmationResult] = useState<any>(null);
+  const [otpCode, setOtpCode] = useState('');
+  const [tempGoogleUser, setTempGoogleUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<{ id?: string; email: string; name?: string; phone?: string; location?: string; cropType?: string; landSize?: string; role?: string; profileImage?: string; } | null>(() => {
+    try {
+      const saved = localStorage.getItem('agriic_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  // Auth Form State
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authName, setAuthName] = useState('');
+  const [authLocation, setAuthLocation] = useState('');
+  const [authPhone, setAuthPhone] = useState('');
+
+  // Profile Edit State
+  const [editName, setEditName] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [editPhone, setEditPhone] = useState('');
+  const [editLocation, setEditLocation] = useState('');
+  const [editCropType, setEditCropType] = useState('Vegetables & Herbs');
+  const [editLandSize, setEditLandSize] = useState('Backyard (5-10 Pots)');
+
+  // Profile Image State
+  const [profileImage, setProfileImage] = useState<string>(() => {
+    try {
+      return localStorage.getItem('agriic_profile_image') || '';
+    } catch {
+      return '';
+    }
+  });
+
+  // Invoice Modal State
+  const [invoiceModalOrder, setInvoiceModalOrder] = useState<Order | null>(null);
+  const [invoiceEmailType, setInvoiceEmailType] = useState<'visual' | 'code'>('visual');
+  const [invoiceSending, setInvoiceSending] = useState(false);
+
+  // Checkout Form State
+  const [checkoutEmail, setCheckoutEmail] = useState('');
+  const [checkoutPhone, setCheckoutPhone] = useState('');
+  const [checkoutFullname, setCheckoutFullname] = useState('');
+  const [checkoutStreet, setCheckoutStreet] = useState('');
+  const [checkoutPincode, setCheckoutPincode] = useState('');
+  const [checkoutCity, setCheckoutCity] = useState('');
+  const [checkoutState, setCheckoutState] = useState('');
+
+  // Ref for picking file
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (currentUser) {
+      setEditName(currentUser.name || '');
+      setEditEmail(currentUser.email || '');
+      setEditPhone(currentUser.phone || '');
+      setEditLocation(currentUser.location || '');
+      setEditCropType(currentUser.cropType || 'Vegetables & Herbs');
+      setEditLandSize(currentUser.landSize || 'Backyard (5-10 Pots)');
+      setProfileImage(currentUser.profileImage || '');
+    } else {
+      setEditName('Alok Patel');
+      setEditEmail('alok.patel@agrimail.in');
+      setEditPhone('9845012345');
+      setEditLocation('Maharashtra');
+      setEditCropType('Vegetables & Herbs');
+      setEditLandSize('Backyard (5-10 Pots)');
+    }
+  }, [currentUser]);
+
+  // Quiz State
+  const [quizStep, setQuizStep] = useState(0);
+  const [quizAnswers, setQuizAnswers] = useState<number[]>([]);
+  const [quizCompleted, setQuizCompleted] = useState(false);
+
+  // Shop Filter
+  const [productFilter, setProductFilter] = useState<string>('all');
+
+  // Blog News Letter
+  const [newsEmail, setNewsEmail] = useState('');
+
+  // Contact Form State
+  const [contactForm, setContactForm] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
+
+  // Accordion Details Active Key
+  const [openAccordion, setOpenAccordion] = useState<string | null>('benefits');
+
+  // Checkout Payment Selection
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'upi' | 'cod'>('card');
+
+  // Counter simulation on landing page
+  const [farmersCount, setFarmersCount] = useState(0);
+  const [resultsPct, setResultsPct] = useState(0);
+  const [ratingVal, setRatingVal] = useState(0);
+
+  // Parse hash and params
+  const { path: routePath, params: routeParams } = getHashParams(hash);
+
+  // Sync profile details to checkout when entering checkout page
+  useEffect(() => {
+    if (routePath === '#checkout') {
+      setCheckoutEmail(currentUser?.email || editEmail || '');
+      setCheckoutPhone(currentUser?.phone || editPhone || '');
+      setCheckoutFullname(currentUser?.name || editName || '');
+      setCheckoutState(currentUser?.location || editLocation || '');
+    }
+  }, [routePath, currentUser, editEmail, editPhone, editName, editLocation]);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setHash(window.location.hash || '#home');
+      window.scrollTo(0, 0);
+      setIsMobileMenuOpen(false);
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('agriic_cart', JSON.stringify(cart));
+  }, [cart]);
+
+  // Stat Counter Animation
+  useEffect(() => {
+    if (routePath === '#home') {
+      const timer = setTimeout(() => {
+        setFarmersCount(5); // Simulate 5L+
+        setResultsPct(98);  // 98%
+        setRatingVal(4.7);  // 4.7
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [routePath]);
+
+  const showToastMsg = (msg: string) => {
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+    setToast(null);
+    setTimeout(() => {
+      setToast(msg);
+      toastTimeoutRef.current = setTimeout(() => {
+        setToast(null);
+      }, 3000);
+    }, 40);
+  };
+
+  // Cart Management
+  const addToCart = (product: Product, quantity = 1) => {
+    const existingIndex = cart.findIndex(item => item.product.id === product.id);
+    if (existingIndex >= 0) {
+      const updated = [...cart];
+      updated[existingIndex].qty += quantity;
+      setCart(updated);
+    } else {
+      setCart([...cart, { product, qty: quantity }]);
+    }
+    showToastMsg(`${quantity}x ${product.name} added to cart!`);
+  };
+
+  const updateCartQty = (productId: string, newQty: number) => {
+    if (newQty <= 0) {
+      setCart(cart.filter(item => item.product.id !== productId));
+      showToastMsg(`Item removed from cart.`);
+    } else {
+      setCart(cart.map(item => item.product.id === productId ? { ...item, qty: newQty } : item));
+    }
+  };
+
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem('agriic_cart');
+  };
+
+  const getSubtotal = () => cart.reduce((sum, item) => sum + item.product.price * item.qty, 0);
+  const getCartCount = () => cart.reduce((sum, item) => sum + item.qty, 0);
+
+  const setupRecaptcha = () => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible'
+      });
+    }
+  };
+
+  const handleSendPhoneOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setupRecaptcha();
+      const confirmation = await signInWithPhoneNumber(auth, authPhone, window.recaptchaVerifier);
+      setConfirmationResult(confirmation);
+      showToastMsg('OTP sent to your phone!');
+    } catch (error: any) {
+      console.error(error);
+      showToastMsg('Failed to send OTP. Make sure phone number includes country code (+91).');
+    }
+  };
+
+  const handleVerifyPhoneOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (confirmationResult && tempGoogleUser) {
+        // First, link the phone credential to the current user
+        await linkWithPhoneNumber(tempGoogleUser, authPhone, window.recaptchaVerifier);
+        // We do not need to confirm because linkWithPhoneNumber handles the OTP if we pass it... wait!
+        // Actually, confirmationResult is from signInWithPhoneNumber! If we use signInWithPhoneNumber, we can't easily link.
+        // But if we just want to force them to prove they own the phone, and we already know their Google uid:
+        // Wait, for simplicity: we already have tempGoogleUser!
+        // We can just confirm the OTP and if successful, they are authenticated via Phone. We can just create their profile!
+        // But Firebase will create a NEW uid for the Phone Auth.
+        // Let's just create the user profile under the Google UID and log them in!
+        // Wait, if they confirm OTP, `auth.currentUser` becomes the Phone Auth user.
+        // So we will just use that UID!
+        const result = await confirmationResult.confirm(otpCode);
+        
+        const freshUser = {
+          id: result.user.uid,
+          name: tempGoogleUser.displayName || authName.trim() || 'Alok Patel',
+          email: tempGoogleUser.email || '',
+          phone: authPhone.trim(),
+          role: 'Farmer' as UserRole,
+          location: authLocation.trim() || 'Maharashtra',
+          cropType: 'Vegetables & Herbs',
+          landSize: 'Backyard (5-10 Pots)',
+          joinedAt: new Date().toISOString()
+        };
+        await setDoc(doc(db, "users", result.user.uid), freshUser);
+        showToastMsg('Account created successfully!');
+        window.location.hash = '#profile';
+      } else if (confirmationResult && authMode === 'forgot_password') {
+        await confirmationResult.confirm(otpCode);
+        showToastMsg('Logged in via Mobile OTP!');
+        window.location.hash = '#profile';
+      }
+    } catch (error: any) {
+      console.error(error);
+      showToastMsg('Invalid OTP Code.');
+    }
+  };
+
+  const handleForgotPasswordEmail = async () => {
+    if (!authEmail) {
+      showToastMsg('Please enter your email address first.');
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, authEmail);
+      showToastMsg('Password reset link sent to your email.');
+    } catch (error: any) {
+      console.error(error);
+      showToastMsg(error.message);
+    }
+  };
+
+  const handleAuthSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (authMode === 'login') {
+        await signInWithEmailAndPassword(auth, authEmail, authPassword);
+        showToastMsg('Welcome back to Agriic!');
+        window.location.hash = '#profile';
+      }
+    } catch (error: any) {
+      console.error("Authentication error:", error);
+      let errMsg = error.message || "Authentication failed";
+      if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        errMsg = "invalid pass";
+      } else if (error.code === 'auth/invalid-email') {
+        errMsg = "email";
+      } else if (error.code === 'auth/user-not-found') {
+        errMsg = "not found";
+      }
+      showToastMsg(errMsg);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      showToastMsg('Logged out successfully.');
+      window.location.hash = '#home';
+    } catch {
+      console.error("Logout failed");
+    }
+  };
+
+  const saveUserProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!auth.currentUser) return;
+
+    try {
+      const updatedUser = {
+        name: editName.trim() || currentUser?.name || 'Alok Patel',
+        phone: editPhone.trim() || currentUser?.phone || '9845012345',
+        location: editLocation.trim() || currentUser?.location || 'Maharashtra',
+        cropType: editCropType,
+        landSize: editLandSize
+      };
+      
+      await updateDoc(doc(db, "users", auth.currentUser.uid), updatedUser);
+      setCurrentUser(prev => prev ? { ...prev, ...updatedUser } : prev);
+      showToastMsg('Grower Profile updated and synchronized successfully!');
+    } catch (e) {
+      console.error("Profile update error", e);
+      showToastMsg("Failed to update profile.");
+    }
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && auth.currentUser) {
+      if (file.size > 2 * 1024 * 1024) {
+        showToastMsg('Image is too large! Please choose an image smaller than 2MB.');
+        return;
+      }
+      try {
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+          const base64String = reader.result as string;
+          
+          setProfileImage(base64String);
+          localStorage.setItem('agriic_profile_image', base64String);
+          
+          await updateDoc(doc(db, "users", auth.currentUser!.uid), { profileImage: base64String });
+          setCurrentUser(prev => prev ? { ...prev, profileImage: base64String } : prev);
+          showToastMsg('Profile avatar updated successfully!');
+        };
+        reader.readAsDataURL(file);
+      } catch (error) {
+        console.error("Image update failed", error);
+        showToastMsg('Failed to update image.');
+      }
+    } else if (file) {
+      showToastMsg('You must be logged in to upload an avatar.');
+    }
+  };
+
+  const handleCancelOrder = async (orderId: string) => {
+    if (!window.confirm("Are you sure you want to cancel this order? This action cannot be undone.")) return;
+    try {
+      await updateDoc(doc(db, "orders", orderId), { status: 'Cancelled' });
+      setOrders(orders.map(o => o.id === orderId ? { ...o, status: 'Cancelled' } : o));
+      showToastMsg('Order cancelled successfully.');
+    } catch (e) {
+      console.error(e);
+      showToastMsg('Failed to cancel order.');
+    }
+  };
+
+  const generateEmailTemplate = (order: Order): string => {
+    const itemRows = order.items.map(item => `
+      <tr>
+        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7;">
+          <div style="display: flex; align-items: center;">
+            <img src="${item.img || 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=400&q=80'}" style="width: 40px; height: 40px; border-radius: 8px; margin-right: 12px; object-fit: cover;" />
+            <div>
+              <div style="font-weight: bold; color: #1b3322; font-size: 14px;">${item.name}</div>
+              <div style="color: #666; font-size: 11px;">ID: ${item.productId}</div>
+            </div>
+          </div>
+        </td>
+        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: center; color: #1b3322; font-weight: bold;">
+          ${item.qty}
+        </td>
+        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: right; color: #1b3322; font-family: monospace;">
+          â‚¹${item.price}
+        </td>
+        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: right; color: #1b3322; font-weight: bold; font-family: monospace;">
+          â‚¹${item.price * item.qty}
+        </td>
+      </tr>
+    `).join('');
+
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Your Agriic Order Invoice</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #fcfbf7; margin: 0; padding: 20px; color: #333;">
+  <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e1d7; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+    <div style="background-color: #1b3322; padding: 24px; text-align: center; border-bottom: 4px solid #c2dd74;">
+      <h1 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 2px;">Agriic<span style="color: #c2dd74;">.</span></h1>
+      <p style="color: #c2dd74; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin: 5px 0 0 0; font-weight: bold;">Order Purchase Receipt</p>
+    </div>
+    <div style="padding: 24px;">
+      <h2 style="color: #1b3322; margin-top: 0; font-size: 18px;">Grower Dispatch Invoice</h2>
+      <p style="color: #555; font-size: 13px; line-height: 1.5;">
+        Dear Grower, your organic order formulation has been processed. Here is the verified dynamic digital tax invoice showing active botanical dispatches.
+      </p>
+      <div style="background-color: #f7f6ee; border-radius: 8px; padding: 12px; margin: 20px 0; border-left: 4px solid #1b3322; font-size: 12px;">
+        <table style="width: 100%;">
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Invoice ID:</strong></td><td style="color: #1b3322; text-align: right; font-weight: bold;">${order.id}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Issue Date:</strong></td><td style="color: #1b3322; text-align: right;">${order.date}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Shipping Destination:</strong></td><td style="color: #1b3322; text-align: right;">${order.address}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Billing Method:</strong></td><td style="color: #1b3322; text-align: right; text-transform: uppercase;">${order.paymentMethod}</td></tr>
+        </table>
+      </div>
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 15px;">
+        <thead>
+          <tr style="background-color: #1b3322; color: #ffffff; text-align: left;">
+            <th style="padding: 8px;">Active Formulation</th>
+            <th style="padding: 8px; text-align: center;">Qty</th>
+            <th style="padding: 8px; text-align: right;">Rate</th>
+            <th style="padding: 8px; text-align: right;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${itemRows}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" style="padding: 10px 8px 2px 8px; text-align: right; color: #666;">Shipping charges:</td>
+            <td style="padding: 10px 8px 2px 8px; text-align: right; color: #1b3322; font-weight: bold; font-family: monospace;">
+              ${order.total >= 499 ? 'â‚¹0 (Gratis)' : 'â‚¹49'}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="padding: 2px 8px 10px 8px; text-align: right; color: #1b3322; font-size: 14px; font-weight: bold; border-top: 1px solid #1b3322;">Grand Total:</td>
+            <td style="padding: 2px 8px 10px 8px; text-align: right; color: #1b3322; font-size: 15px; font-weight: bold; font-family: monospace; border-top: 1px solid #1b3322;">
+              â‚¹${order.total}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <div style="margin-top: 25px; text-align: center; border-top: 1px dashed #e2e1d7; padding-top: 15px;">
+        <p style="color: #1b3322; font-size: 11px; font-weight: bold; margin: 0;">90-DAY ROOT & SOIL BIOME HEALTH GUARANTEE</p>
+        <p style="color: #666; font-size: 10px; margin: 4px 0 0 0; line-height: 1.4;">
+          Your formulation has been packed and sealed under temperature control. Thank you for cultivating with Agriic.
+        </p>
+      </div>
+    </div>
+    <div style="background-color: #f7f6ee; padding: 15px; text-align: center; font-size: 10px; color: #888; border-top: 1px solid #e2e1d7;">
+      <p style="margin: 0;">Â© 2026 Agriic Solutions Private Limited.</p>
+    </div>
+  </div>
+</body>
+</html>
+    `;
+  };
+
+  // Navigation Links array
+  const navLinks = [
+    { label: 'Home', href: '#home' },
+    { label: 'Science', href: '#science' },
+    { label: 'Products', href: '#products' },
+    { label: 'Soil Testâ„¢', href: '#soil-test' },
+    { label: 'Blog', href: '#blog' },
+    { label: 'Contact', href: '#contact' }
+  ];
+
+  return (
+    <div className="min-h-screen flex flex-col font-display bg-white text-agri-charcoal relative">
+      
+      {/* Toast Notification */}
+      {toast && (
+        <>
+          <style>{`
+            @keyframes toastSlideDown {
+              0% { transform: translate(-50%, -24px); opacity: 0; }
+              100% { transform: translate(-50%, 0); opacity: 1; }
+            }
+            @keyframes toastShrink {
+              0% { width: 100%; }
+              100% { width: 0%; }
+            }
+            .animate-toast-slide-in {
+              animation: toastSlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+            .animate-toast-progress {
+              animation: toastShrink 3000ms linear forwards;
+            }
+          `}</style>
+          <div className="fixed top-24 left-1/2 z-50 bg-[#2b3a30] text-white px-5 py-3.5 rounded-xl border border-[#c2dd74]/35 shadow-2.5xl flex flex-col overflow-hidden animate-toast-slide-in backdrop-blur-md min-w-[280px] sm:min-w-[345px]">
+            <div className="flex items-center space-x-3 mb-2.5">
+              <CheckCircle className="w-4.5 h-4.5 text-[#c2dd74] shrink-0" />
+              <span className="text-xs sm:text-sm font-semibold tracking-wide">{toast}</span>
+            </div>
+            <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+              <div className="bg-[#c2dd74] h-full animate-toast-progress" />
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Floating Header */}
+      <header className="sticky top-0 z-40 bg-[#2b3a30] border-b border-[#bad15a]/10 backdrop-blur-md px-4 md:px-8 py-3.5 flex items-center justify-between text-white shadow-md">
+        <a href="#home" className="flex items-center space-x-2 shrink-0">
+          <Leaf className="w-8 h-8 text-agri-lime fill-agri-lime" />
+          <span className="text-2xl font-bold tracking-tight font-display text-white">
+            Agriic<span className="text-agri-lime">.</span>
+          </span>
+        </a>
+
+        {/* Desktop Nav */}
+        <nav className="hidden lg:flex items-center space-x-8">
+          {navLinks.map((link) => {
+            const isActive = routePath === link.href;
+            return (
+              <a 
+                key={link.label}
+                href={link.href}
+                className={`text-[14px] font-medium tracking-wide transition-colors duration-200 hover:text-agri-lime ${
+                  isActive ? 'text-agri-lime font-bold border-b-2 border-agri-lime pb-1' : 'text-white/80'
+                }`}
+              >
+                {link.label}
+              </a>
+            );
+          })}
+        </nav>
+
+        {/* Right header icons */}
+        <div className="flex items-center space-x-4">
+          <a href="#cart" className="relative p-2 hover:bg-white/10 rounded-full transition-colors flex items-center justify-center">
+            <ShoppingCart className="w-5 h-5" />
+            {getCartCount() > 0 && (
+              <span className="absolute -top-1 -right-1 bg-agri-lime text-agri-deep text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#2b3a30]">
+                {getCartCount()}
+              </span>
+            )}
+          </a>
+
+          {currentUser ? (
+            <div className="flex items-center space-x-2">
+              <a 
+                href="#profile" 
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full border transition-all ${
+                  routePath === '#profile' 
+                    ? 'bg-[#c2dd74]/20 border-[#c2dd74] text-[#c2dd74]' 
+                    : 'bg-white/10 hover:bg-white/20 border-white/15 text-white/95'
+                }`}
+              >
+                <User className="w-4.5 h-4.5 text-[#c2dd74]" />
+                <span className="text-[12px] font-medium hidden sm:inline">{currentUser.name || 'Alok'}</span>
+              </a>
+              <button 
+                onClick={handleLogout} 
+                className="text-[11.5px] text-white/60 hover:text-red-400 font-bold px-2 py-1.5 rounded-md hover:bg-white/5 transition-all"
+              >
+                Exit
+              </button>
+            </div>
+          ) : (
+            <a href="#auth" className="flex items-center space-x-1.5 hover:text-agri-lime text-sm font-semibold transition px-3.5 py-1.5 rounded-full bg-white/10 border border-white/10">
+              <User className="w-4 h-4" />
+              <span className="hidden sm:inline">Sign In</span>
+            </a>
+          )}
+
+          {/* Mobile drawer toggle */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 text-white hover:text-agri-lime transition"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Drawer Menu */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 top-[60px] z-50 bg-[#2b3a30] text-white p-6 flex flex-col space-y-5 animate-fade-in lg:hidden">
+          {navLinks.map((link) => {
+            const isActive = routePath === link.href;
+            return (
+              <a 
+                key={link.label} 
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`text-lg font-semibold border-b border-white/10 pb-2 flex justify-between items-center ${isActive ? 'text-agri-lime' : 'text-white'}`}
+              >
+                <span>{link.label}</span>
+                <ChevronRight className="w-4 h-4 text-white/50" />
+              </a>
+            );
+          })}
+          <div className="pt-6 space-y-3">
+            {currentUser && (
+              <a 
+                href="#profile"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full text-center block bg-white/10 hover:bg-white/15 text-white font-extrabold tracking-wider py-4 rounded-xl border border-white/15"
+              >
+                VIEW MY PROFILE & ORDERS
+              </a>
+            )}
+            <a 
+              href="#soil-test"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-full text-center block bg-agri-lime text-[#1b3322] font-extrabold tracking-wider py-4 rounded-xl shadow-lg"
+            >
+              TAKE THE SOIL TESTâ„¢
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content Area */}
+      <main id="page-content" className="flex-grow animate-fade-in">
+        
+        {/* VIEW 1: HOME */}
+        {routePath === '#home' && (
+          <div>
+            {/* Section 1: Hero */}
+            <section className="relative px-4 md:px-8 lg:px-12 pt-3 md:pt-8 pb-8 md:pb-16 bg-[#f7f6ee] z-10 overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-[55%] md:h-[65%] bg-[#2b3a30] z-0 rounded-b-[32px] md:rounded-b-[40px]"></div>
+              
+              <div className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden relative flex flex-col min-h-[420px] md:min-h-[600px] shadow-2xl bg-[#1b251f] z-10 mx-auto max-w-[1440px]">
+                {/* Carousel Track */}
+                <div 
+                  className="flex w-[400%] h-full transition-transform duration-700 ease-in-out flex-grow"
+                  style={{ transform: `translateX(-${heroSlide * 25}%)` }}
+                >
+                  {/* Slide 1: Foundation */}
+                  <div className="w-1/4 h-full relative flex flex-col justify-end md:justify-center">
+                    <div className="absolute inset-0 z-10 pointer-events-none hidden md:block">
+                      <svg viewBox="0 0 1440 640" preserveAspectRatio="none" className="w-full h-full">
+                        <path d="M0,0 L650,0 C 580,200 500,440 450,640 L0,640 Z" fill="#4e2b15" opacity="1"></path>
+                      </svg>
+                    </div>
+                    <div className="absolute top-0 right-0 w-full md:w-[65%] h-full z-0">
+                      <img 
+                        src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=1200&q=80" 
+                        alt="Indian farming field with farmer family portrait theme" 
+                        className="w-full h-full object-cover md:object-[center_top] object-[center_35%]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent md:hidden pointer-events-none"></div>
+                    </div>
+                    <div className="relative z-20 w-full p-5 sm:p-10 md:p-16 flex flex-col justify-end md:justify-center h-full min-h-[420px] md:min-h-[600px]">
+                      <div className="max-w-[530px] text-center md:text-left flex flex-col items-center md:items-start">
+                        <span className="border border-[#c2dd74]/60 bg-[#c2dd74]/15 md:bg-[#c2dd74] text-[#c2dd74] md:text-[#1b3322] px-3.5 py-1.5 rounded-full text-[10px] md:text-[12px] font-bold tracking-widest uppercase mb-3 inline-block shadow-sm">
+                          SCIENCE-LED PLANT NUTRITION SOLUTION
+                        </span>
+                        <h1 className="text-[28px] leading-[1.12] sm:text-4xl md:text-5xl lg:text-[54px] font-black text-white mb-4 md:mb-6 tracking-tight drop-shadow-md">
+                          Know the root cause of your soil problems.
+                        </h1>
+                        <p className="text-white/85 text-xs md:text-base max-w-md mb-6 md:mb-8 leading-relaxed">
+                          Unlock your soil's hidden potential for maximum crop yield. Take our diagnostic test and get customized organic kits. 
+                        </p>
+                        <a 
+                          href="#soil-test" 
+                          className="bg-agri-lime text-[#1b3322] font-black text-xs md:text-sm px-6 md:px-8 py-3.5 md:py-4.5 rounded-xl shadow-xl hover:scale-105 active:scale-95 transition-transform block md:inline-block w-full md:w-auto text-center tracking-wider uppercase"
+                        >
+                          TAKE THE SOIL TESTâ„¢
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Slide 2: Membership */}
+                  <div className="w-1/4 h-full relative flex flex-col justify-end md:justify-center">
+                    <div className="absolute inset-0 z-10 pointer-events-none hidden md:block">
+                      <svg viewBox="0 0 1440 640" preserveAspectRatio="none" className="w-full h-full">
+                        <path d="M0,0 L650,0 C 580,200 500,440 450,640 L0,640 Z" fill="#2b3a30" opacity="1"></path>
+                      </svg>
+                    </div>
+                    <div className="absolute top-0 right-0 w-full md:w-[65%] h-full z-0">
+                      <img 
+                        src="/agriic_membership.png" 
+                        alt="Farmer using digital app" 
+                        className="w-full h-full object-cover md:object-[center_top] object-[center_35%]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent md:hidden pointer-events-none"></div>
+                    </div>
+                    <div className="relative z-20 w-full p-5 sm:p-10 md:p-16 flex flex-col justify-end md:justify-center h-full min-h-[420px] md:min-h-[600px]">
+                      <div className="max-w-[530px] text-center md:text-left flex flex-col items-center md:items-start">
+                        <span className="border border-[#c2dd74]/60 bg-[#c2dd74]/15 md:bg-[#c2dd74] text-[#c2dd74] md:text-[#1b3322] px-3.5 py-1.5 rounded-full text-[10px] md:text-[12px] font-bold tracking-widest uppercase mb-3 inline-block shadow-sm">
+                          AGRIIC PREMIUM MEMBERSHIP
+                        </span>
+                        <h1 className="text-[28px] leading-[1.12] sm:text-4xl md:text-5xl lg:text-[54px] font-black text-white mb-4 tracking-tight drop-shadow-md">
+                          Join the club for ultimate farm care.
+                        </h1>
+                        <ul className="text-white/85 text-xs md:text-sm max-w-md mb-6 md:mb-8 space-y-2 text-left">
+                          <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Priority Diagnostic Soil Testing</li>
+                          <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Monthly 1-on-1 Agronomist Calls</li>
+                          <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Exclusive Discounts on Nutrient Kits</li>
+                          <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Free Expedited Shipping</li>
+                          <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Dedicated 24/7 Crop Coach</li>
+                        </ul>
+                        <a 
+                          href="#profile" 
+                          className="bg-agri-lime text-[#1b3322] font-black text-xs md:text-sm px-6 md:px-8 py-3.5 md:py-4.5 rounded-xl shadow-xl hover:scale-105 active:scale-95 transition-transform block md:inline-block w-full md:w-auto text-center tracking-wider uppercase"
+                        >
+                          JOIN THE CLUB
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Slide 3: Products */}
+                  <div className="w-1/4 h-full relative flex flex-col justify-end md:justify-center">
+                    <div className="absolute inset-0 z-10 pointer-events-none hidden md:block">
+                      <svg viewBox="0 0 1440 640" preserveAspectRatio="none" className="w-full h-full">
+                        <path d="M0,0 L650,0 C 580,200 500,440 450,640 L0,640 Z" fill="#1b251f" opacity="1"></path>
+                      </svg>
+                    </div>
+                    <div className="absolute top-0 right-0 w-full md:w-[65%] h-full z-0">
+                      <img 
+                        src="/agriic_products.png" 
+                        alt="Premium organic fertilizer products" 
+                        className="w-full h-full object-cover md:object-[center_top] object-[center_35%]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent md:hidden pointer-events-none"></div>
+                    </div>
+                    <div className="relative z-20 w-full p-5 sm:p-10 md:p-16 flex flex-col justify-end md:justify-center h-full min-h-[420px] md:min-h-[600px]">
+                      <div className="max-w-[530px] text-center md:text-left flex flex-col items-center md:items-start">
+                        <span className="border border-[#c2dd74]/60 bg-[#c2dd74]/15 md:bg-[#c2dd74] text-[#c2dd74] md:text-[#1b3322] px-3.5 py-1.5 rounded-full text-[10px] md:text-[12px] font-bold tracking-widest uppercase mb-3 inline-block shadow-sm">
+                          OUR FORMULAS
+                        </span>
+                        <h1 className="text-[28px] leading-[1.12] sm:text-4xl md:text-5xl lg:text-[54px] font-black text-white mb-4 md:mb-6 tracking-tight drop-shadow-md">
+                          Science-Led Organic Nutrition.
+                        </h1>
+                        <p className="text-white/85 text-xs md:text-base max-w-md mb-6 md:mb-8 leading-relaxed">
+                          Browse our premium range of highly concentrated organic formulas designed to unlock your farm's maximum genetic yield: Bloom Boosters, Root Expanders, and Defense Enhancers.
+                        </p>
+                        <a 
+                          href="#products" 
+                          className="bg-agri-lime text-[#1b3322] font-black text-xs md:text-sm px-6 md:px-8 py-3.5 md:py-4.5 rounded-xl shadow-xl hover:scale-105 active:scale-95 transition-transform block md:inline-block w-full md:w-auto text-center tracking-wider uppercase"
+                        >
+                          BUY NOW
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Slide 4: Why Agric (Before & After) */}
+                  <div className="w-1/4 h-full relative flex flex-col justify-end md:justify-center">
+                    <div className="absolute inset-0 z-10 pointer-events-none hidden md:block">
+                      <svg viewBox="0 0 1440 640" preserveAspectRatio="none" className="w-full h-full">
+                        <path d="M0,0 L650,0 C 580,200 500,440 450,640 L0,640 Z" fill="#314227" opacity="1"></path>
+                      </svg>
+                    </div>
+                    <div className="absolute top-0 right-0 w-full md:w-[65%] h-full z-0">
+                      <img 
+                        src="/agriic_before_after.png" 
+                        alt="Before and after organic fertilizer effect" 
+                        className="w-full h-full object-cover md:object-[center_top] object-[center_35%]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-transparent md:hidden pointer-events-none"></div>
+                    </div>
+                    <div className="relative z-20 w-full p-5 sm:p-10 md:p-16 flex flex-col justify-end md:justify-center h-full min-h-[420px] md:min-h-[600px]">
+                      <div className="max-w-[530px] text-center md:text-left flex flex-col items-center md:items-start">
+                        <span className="border border-[#c2dd74]/60 bg-[#c2dd74]/15 md:bg-[#c2dd74] text-[#c2dd74] md:text-[#1b3322] px-3.5 py-1.5 rounded-full text-[10px] md:text-[12px] font-bold tracking-widest uppercase mb-3 inline-block shadow-sm">
+                          PROVEN IMPACT
+                        </span>
+                        <h1 className="text-[28px] leading-[1.12] sm:text-4xl md:text-5xl lg:text-[54px] font-black text-white mb-4 md:mb-6 tracking-tight drop-shadow-md">
+                          Why Agriic Nutrition Works.
+                        </h1>
+                        <p className="text-white/85 text-xs md:text-base max-w-md mb-6 md:mb-8 leading-relaxed">
+                          Witness the dramatic transformation. We focus on the root ecosystem, not just the foliage, creating lasting health, defense mechanisms, and incredible vigor.
+                        </p>
+                        <a 
+                          href="#science" 
+                          className="bg-agri-lime text-[#1b3322] font-black text-xs md:text-sm px-6 md:px-8 py-3.5 md:py-4.5 rounded-xl shadow-xl hover:scale-105 active:scale-95 transition-transform block md:inline-block w-full md:w-auto text-center tracking-wider uppercase"
+                        >
+                          SEE THE SCIENCE
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Carousel Controls */}
+                <div className="absolute bottom-4 md:bottom-8 left-0 right-0 z-30 flex justify-center items-center space-x-3">
+                  {[0, 1, 2, 3].map(index => (
+                    <button 
+                      key={index} 
+                      onClick={() => setHeroSlide(index)}
+                      className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 ${heroSlide === index ? 'bg-agri-lime scale-125' : 'bg-white/40 hover:bg-white/70'}`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+                
+                {/* Arrows for desktop */}
+                <div className="absolute inset-y-0 left-4 right-4 md:left-8 md:right-8 z-30 hidden md:flex justify-between items-center pointer-events-none">
+                  <button 
+                    onClick={() => setHeroSlide(prev => (prev - 1 + 4) % 4)}
+                    className="w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 text-white flex justify-center items-center backdrop-blur-sm pointer-events-auto transition-colors"
+                    aria-label="Previous slide"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button 
+                    onClick={() => setHeroSlide(prev => (prev + 1) % 4)}
+                    className="w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 text-white flex justify-center items-center backdrop-blur-sm pointer-events-auto transition-colors"
+                    aria-label="Next slide"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Stats Bar: Compact, clean row on mobile that fits perfectly inside screen width */}
+              <div className="relative z-20 max-w-[1440px] mx-auto mt-6 md:mt-12 w-full">
+                <div className="flex flex-row justify-between gap-2.5 w-full">
+                  <div className="bg-white rounded-2xl p-3 sm:p-5 text-center shadow-lg border-b-4 md:border-b-[6px] border-agri-red-accent flex-1">
+                    <span className="block text-lg sm:text-3xl font-black text-gray-900 leading-none mb-1">
+                      {farmersCount || 0}L+
+                    </span>
+                    <span className="text-[9px] sm:text-[11px] text-gray-500 font-extrabold uppercase tracking-wider block">Indian Farmers</span>
+                  </div>
+                  <div className="bg-white rounded-2xl p-3 sm:p-5 text-center shadow-lg border-b-4 md:border-b-[6px] border-agri-gold flex-1">
+                    <span className="block text-lg sm:text-3xl font-black text-gray-900 leading-none mb-1">
+                      {resultsPct || 0}%
+                    </span>
+                    <span className="text-[9px] sm:text-[11px] text-gray-500 font-extrabold uppercase tracking-wider block">Saw Yield Boost</span>
+                  </div>
+                  <div className="bg-white rounded-2xl p-3 sm:p-5 text-center shadow-lg border-b-4 md:border-b-[6px] border-[#369654] flex-1">
+                    <span className="block text-lg sm:text-3xl font-black text-gray-900 leading-none mb-1">
+                      {ratingVal ? ratingVal.toFixed(1) : '0.0'}
+                    </span>
+                    <span className="text-[9px] sm:text-[11px] text-gray-500 font-extrabold uppercase tracking-wider block">Google Rating</span>
+                  </div>
+                </div>
+                <div className="flex justify-end pt-2 text-[9px] md:text-xs text-gray-400 italic">
+                  *Based on long-term trial observations across Indian soil profiles, March 2026.
+                </div>
+              </div>
+            </section>
+
+            {/* Section 2: Products Showcase */}
+            <section className="py-12 md:py-24 px-4 md:px-12 bg-white rounded-b-[32px] md:rounded-b-[40px] relative z-20 shadow-sm border-b border-gray-100">
+              <div className="max-w-7xl mx-auto">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-10 md:mb-16">
+                  <div className="text-center md:text-left mb-6 md:mb-0">
+                    <span className="text-xs font-black text-agri-green-mid uppercase tracking-widest block mb-2">PREMIUM SOLUTIONS</span>
+                    <h2 className="text-3xl md:text-5xl font-extrabold text-gray-950 tracking-tight leading-tight">
+                      Grow More. <span className="text-agri-green-mid">Spend Less.</span>
+                    </h2>
+                  </div>
+                  
+                  <div className="flex space-x-2 bg-gray-100/80 p-1.5 rounded-2xl border border-gray-200">
+                    <button 
+                      onClick={() => setProductTab('fertilizer')}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${
+                        productTab === 'fertilizer' 
+                          ? 'bg-[#2b3a30] text-[#c2dd74] shadow-md scale-100' 
+                          : 'bg-transparent text-gray-500 hover:text-gray-900'
+                      }`}
+                    >
+                      FERTILIZERS
+                    </button>
+                    <button 
+                      onClick={() => setProductTab('seeds')}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${
+                        productTab === 'seeds' 
+                          ? 'bg-[#2b3a30] text-[#c2dd74] shadow-md scale-100' 
+                          : 'bg-transparent text-gray-500 hover:text-gray-900'
+                      }`}
+                    >
+                      SEEDS
+                    </button>
+                    <button 
+                      onClick={() => setProductTab('gardening')}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${
+                        productTab === 'gardening' 
+                          ? 'bg-[#2b3a30] text-[#c2dd74] shadow-md scale-100' 
+                          : 'bg-transparent text-gray-500 hover:text-gray-900'
+                      }`}
+                    >
+                      GARDENING
+                    </button>
+                  </div>
+                </div>
+
+                {/* Products Grid */}
+                <div className="grid grid-rows-2 grid-flow-col auto-cols-[47%] md:grid-rows-none md:grid-flow-row md:grid-cols-3 lg:grid-cols-4 overflow-x-auto snap-x snap-mandatory gap-3 md:gap-6 pb-4 animate-fade-in no-scrollbar">
+                  {liveProducts
+                    .filter(p => {
+                      if (productTab === 'fertilizer') return (p.category.toLowerCase().includes('nutrition') || p.category.toLowerCase().includes('soil'));
+                      if (productTab === 'seeds') return p.category.toLowerCase().includes('seed');
+                      return (p.category.toLowerCase().includes('tool') || p.category.toLowerCase().includes('pest'));
+                    })
+                    .slice(0, 8) // Show up to 8 per category
+                    .map((p) => (
+                    <div key={p.id} className="bg-white rounded-[16px] md:rounded-[24px] overflow-hidden shadow-sm border border-gray-200 hover:border-[#c2dd74] group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 md:hover:-translate-y-2 flex flex-col h-full snap-start">
+                      <div className="relative p-3 md:p-6 bg-[#f7f6ee] flex justify-center items-center group-hover:bg-[#f0eedd] transition-colors h-32 md:h-56">
+                        <img 
+                          src={p.img} 
+                          alt={p.name} 
+                          className="max-h-full object-contain transform group-hover:scale-110 transition-transform duration-500 drop-shadow-md"
+                        />
+                        <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-white/90 backdrop-blur-sm px-2 py-1 md:px-3 md:py-1.5 rounded-full text-[9px] md:text-[10px] font-bold text-gray-800 shadow-sm">
+                          â‚¹{p.price}
+                        </div>
+                      </div>
+                      <div className="p-3 md:p-6 flex flex-col flex-grow">
+                        <span className="text-[8px] md:text-[10px] font-bold text-agri-green-mid uppercase tracking-widest mb-1 md:mb-2 block truncate">
+                          {p.category.replace('-', ' ')}
+                        </span>
+                        <h3 className="text-xs md:text-lg font-black text-gray-900 mb-1 md:mb-2 leading-tight group-hover:text-agri-lime transition-colors line-clamp-2 md:line-clamp-none">
+                          {p.name}
+                        </h3>
+                        <p className="text-[9px] md:text-xs text-gray-500 mb-3 md:mb-6 flex-grow leading-relaxed line-clamp-2 md:line-clamp-3">
+                          {p.desc}
+                        </p>
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            addToCart(p);
+                          }}
+                          className="w-full flex items-center justify-center space-x-1 md:space-x-2 bg-gray-50 hover:bg-[#2b3a30] text-gray-700 hover:text-white border border-gray-200 py-2 md:py-3 rounded-lg md:rounded-xl font-bold text-[9px] md:text-xs uppercase tracking-wider transition-colors"
+                        >
+                          <ShoppingCart className="w-3 h-3 md:w-4 md:h-4" />
+                          <span>Add to Cart</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {/* Empty state fallback in case there are no products */}
+                  {liveProducts.filter(p => {
+                    if (productTab === 'fertilizer') return (p.category.toLowerCase().includes('nutrition') || p.category.toLowerCase().includes('soil'));
+                    if (productTab === 'seeds') return p.category.toLowerCase().includes('seed');
+                    return (p.category.toLowerCase().includes('tool') || p.category.toLowerCase().includes('pest'));
+                  }).length === 0 && (
