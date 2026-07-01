@@ -60,16 +60,17 @@ export interface NutritionPlan {
 export interface Product {
   id: string;
   name: string;
-  category: 'nutrition' | 'soil-health' | 'pest-control' | 'tools' | 'seeds' | 'grains-millet' | 'rice-poha' | 'dals-pulses' | 'salt-spices' | 'flours-sooji' | 'sweeteners' | 'ghee-oils' | string;
+  category: 'nutrition' | 'soil-health' | 'pest-control' | 'tools' | 'seeds';
   price: number;
   stock: number;
   lowStockLimit: number;
   desc: string;
   img: string;
-  originalPrice?: number;
-  rating?: number;
-  sizes?: string[];
   badge?: string;
+  rating?: number;
+  originalPrice?: number;
+  sizes?: string[];
+  reviews?: number;
 }
 
 export interface OrderItem {
