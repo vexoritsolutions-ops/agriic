@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Leaf, 
-  ShoppingCart, 
-  Menu, 
-  X, 
-  ChevronRight, 
-  Star, 
-  Phone, 
-  FileText, 
-  ShieldCheck, 
-  User, 
-  ArrowLeft, 
+import {
+  Leaf,
+  ShoppingCart,
+  Menu,
+  X,
+  ChevronRight,
+  Star,
+  Phone,
+  FileText,
+  ShieldCheck,
+  User,
+  ArrowLeft,
   ArrowRight,
   ChevronLeft,
   CheckCircle,
@@ -52,12 +52,12 @@ import {
 } from 'lucide-react';
 import { Product, Order, BlogPost, Testimonial, Ingredient, GoogleReview, Expectation, QuizQuestion } from './types';
 
-import { 
-  db, 
-  auth, 
-  googleProvider, 
-  signInWithPopup, 
-  signOut, 
+import {
+  db,
+  auth,
+  googleProvider,
+  signInWithPopup,
+  signOut,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -96,12 +96,13 @@ import { ConsultationsModule } from "./components/ConsultationsModule";
 import { ContentModule } from "./components/ContentModule";
 import { SupportModule } from "./components/SupportModule";
 import { SettingsModule } from "./components/SettingsModule";
-import { 
-  Farmer, 
-  SoilReport, 
-  DeficiencyAlertRule, 
-  NutritionPlan, 
-  SupportTicket, 
+import { ShopModule } from "./components/ShopModule";
+import {
+  Farmer,
+  SoilReport,
+  DeficiencyAlertRule,
+  NutritionPlan,
+  SupportTicket,
   DashboardActivity,
   WorkspaceSettings,
   Consultation,
@@ -137,13 +138,13 @@ export default function App() {
     const timer = setInterval(() => {
       const currentHash = window.location.hash || '#home';
       if (currentHash === '#home') {
-        setHeroSlide(prev => (prev + 1) % 4);
+        setHeroSlide(prev => (prev + 1) % 3);
       }
     }, 6000);
     return () => clearInterval(timer);
   }, []);
   const bestSellersRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     // Auto-scroll Best Sellers horizontally
     const timer = setInterval(() => {
@@ -196,7 +197,7 @@ export default function App() {
   const [liveExpectations, setLiveExpectations] = useState<Expectation[]>([]);
   const [liveQuizQuestions, setLiveQuizQuestions] = useState<QuizQuestion[]>([]);
 
-  
+
   const [adminUser, setAdminUser] = useState<{ email: string; name: string; role: UserRole; uid?: string } | null>(() => {
     try {
       const saved = localStorage.getItem('agriic_admin_session');
@@ -706,7 +707,7 @@ export default function App() {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      
+
       // If we are in signup mode, we must require phone number
       if (authMode === 'signup') {
         const userDoc = await getDoc(doc(db, "users", result.user.uid));
@@ -717,7 +718,7 @@ export default function App() {
           return;
         }
       }
-      
+
       showToastMsg(`Google authentication successful.`);
       window.location.hash = '#profile';
     } catch (error) {
@@ -783,7 +784,7 @@ export default function App() {
 
   const [toast, setToast] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   // Timeline Tab State
   const [timelineTab, setTimelineTab] = useState<'vegetable' | 'ornamental'>('vegetable');
 
@@ -838,6 +839,7 @@ export default function App() {
   const [checkoutPincode, setCheckoutPincode] = useState('');
   const [checkoutCity, setCheckoutCity] = useState('');
   const [checkoutState, setCheckoutState] = useState('');
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
   // Ref for picking file
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -950,6 +952,7 @@ export default function App() {
       setCart([...cart, { product, qty: quantity }]);
     }
     showToastMsg(`${quantity}x ${product.name} added to cart!`);
+    setIsCartDrawerOpen(true);
   };
 
   const updateCartQty = (productId: string, newQty: number) => {
@@ -1006,7 +1009,7 @@ export default function App() {
         // Wait, if they confirm OTP, `auth.currentUser` becomes the Phone Auth user.
         // So we will just use that UID!
         const result = await confirmationResult.confirm(otpCode);
-        
+
         const freshUser = {
           id: result.user.uid,
           name: tempGoogleUser.displayName || authName.trim() || 'Alok Patel',
@@ -1090,7 +1093,7 @@ export default function App() {
         cropType: editCropType,
         landSize: editLandSize
       };
-      
+
       await updateDoc(doc(db, "users", auth.currentUser.uid), updatedUser);
       setCurrentUser(prev => prev ? { ...prev, ...updatedUser } : prev);
       showToastMsg('Grower Profile updated and synchronized successfully!');
@@ -1111,10 +1114,10 @@ export default function App() {
         const reader = new FileReader();
         reader.onloadend = async () => {
           const base64String = reader.result as string;
-          
+
           setProfileImage(base64String);
           localStorage.setItem('agriic_profile_image', base64String);
-          
+
           await updateDoc(doc(db, "users", auth.currentUser!.uid), { profileImage: base64String });
           setCurrentUser(prev => prev ? { ...prev, profileImage: base64String } : prev);
           showToastMsg('Profile avatar updated successfully!');
@@ -1148,18 +1151,18 @@ export default function App() {
           <div style="display: flex; align-items: center;">
             <img src="${item.img || 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=400&q=80'}" style="width: 40px; height: 40px; border-radius: 8px; margin-right: 12px; object-fit: cover;" />
             <div>
-              <div style="font-weight: bold; color: #1b3322; font-size: 14px;">${item.name}</div>
+              <div style="font-weight: bold; color: #377355; font-size: 14px;">${item.name}</div>
               <div style="color: #666; font-size: 11px;">ID: ${item.productId}</div>
             </div>
           </div>
         </td>
-        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: center; color: #1b3322; font-weight: bold;">
+        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: center; color: #377355; font-weight: bold;">
           ${item.qty}
         </td>
-        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: right; color: #1b3322; font-family: monospace;">
+        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: right; color: #377355; font-family: monospace;">
           ₹${item.price}
         </td>
-        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: right; color: #1b3322; font-weight: bold; font-family: monospace;">
+        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: right; color: #377355; font-weight: bold; font-family: monospace;">
           ₹${item.price * item.qty}
         </td>
       </tr>
@@ -1174,26 +1177,26 @@ export default function App() {
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #fcfbf7; margin: 0; padding: 20px; color: #333;">
   <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e1d7; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-    <div style="background-color: #1b3322; padding: 24px; text-align: center; border-bottom: 4px solid #c2dd74;">
-      <h1 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 2px;">Agriic<span style="color: #c2dd74;">.</span></h1>
-      <p style="color: #c2dd74; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin: 5px 0 0 0; font-weight: bold;">Order Purchase Receipt</p>
+    <div style="background-color: #377355; padding: 24px; text-align: center; border-bottom: 4px solid #D2AF6E;">
+      <h1 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 2px;">Agriic<span style="color: #D2AF6E;">.</span></h1>
+      <p style="color: #D2AF6E; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin: 5px 0 0 0; font-weight: bold;">Order Purchase Receipt</p>
     </div>
     <div style="padding: 24px;">
-      <h2 style="color: #1b3322; margin-top: 0; font-size: 18px;">Grower Dispatch Invoice</h2>
+      <h2 style="color: #377355; margin-top: 0; font-size: 18px;">Grower Dispatch Invoice</h2>
       <p style="color: #555; font-size: 13px; line-height: 1.5;">
         Dear Grower, your organic order formulation has been processed. Here is the verified dynamic digital tax invoice showing active botanical dispatches.
       </p>
-      <div style="background-color: #f7f6ee; border-radius: 8px; padding: 12px; margin: 20px 0; border-left: 4px solid #1b3322; font-size: 12px;">
+      <div style="background-color: #f7f6ee; border-radius: 8px; padding: 12px; margin: 20px 0; border-left: 4px solid #377355; font-size: 12px;">
         <table style="width: 100%;">
-          <tr><td style="color: #666; padding: 2px 0;"><strong>Invoice ID:</strong></td><td style="color: #1b3322; text-align: right; font-weight: bold;">${order.id}</td></tr>
-          <tr><td style="color: #666; padding: 2px 0;"><strong>Issue Date:</strong></td><td style="color: #1b3322; text-align: right;">${order.date}</td></tr>
-          <tr><td style="color: #666; padding: 2px 0;"><strong>Shipping Destination:</strong></td><td style="color: #1b3322; text-align: right;">${order.address}</td></tr>
-          <tr><td style="color: #666; padding: 2px 0;"><strong>Billing Method:</strong></td><td style="color: #1b3322; text-align: right; text-transform: uppercase;">${order.paymentMethod}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Invoice ID:</strong></td><td style="color: #377355; text-align: right; font-weight: bold;">${order.id}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Issue Date:</strong></td><td style="color: #377355; text-align: right;">${order.date}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Shipping Destination:</strong></td><td style="color: #377355; text-align: right;">${order.address}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Billing Method:</strong></td><td style="color: #377355; text-align: right; text-transform: uppercase;">${order.paymentMethod}</td></tr>
         </table>
       </div>
       <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 15px;">
         <thead>
-          <tr style="background-color: #1b3322; color: #ffffff; text-align: left;">
+          <tr style="background-color: #377355; color: #ffffff; text-align: left;">
             <th style="padding: 8px;">Active Formulation</th>
             <th style="padding: 8px; text-align: center;">Qty</th>
             <th style="padding: 8px; text-align: right;">Rate</th>
@@ -1206,20 +1209,20 @@ export default function App() {
         <tfoot>
           <tr>
             <td colspan="3" style="padding: 10px 8px 2px 8px; text-align: right; color: #666;">Shipping charges:</td>
-            <td style="padding: 10px 8px 2px 8px; text-align: right; color: #1b3322; font-weight: bold; font-family: monospace;">
+            <td style="padding: 10px 8px 2px 8px; text-align: right; color: #377355; font-weight: bold; font-family: monospace;">
               ${order.total >= 499 ? '₹0 (Gratis)' : '₹49'}
             </td>
           </tr>
           <tr>
-            <td colspan="3" style="padding: 2px 8px 10px 8px; text-align: right; color: #1b3322; font-size: 14px; font-weight: bold; border-top: 1px solid #1b3322;">Grand Total:</td>
-            <td style="padding: 2px 8px 10px 8px; text-align: right; color: #1b3322; font-size: 15px; font-weight: bold; font-family: monospace; border-top: 1px solid #1b3322;">
+            <td colspan="3" style="padding: 2px 8px 10px 8px; text-align: right; color: #377355; font-size: 14px; font-weight: bold; border-top: 1px solid #377355;">Grand Total:</td>
+            <td style="padding: 2px 8px 10px 8px; text-align: right; color: #377355; font-size: 15px; font-weight: bold; font-family: monospace; border-top: 1px solid #377355;">
               ₹${order.total}
             </td>
           </tr>
         </tfoot>
       </table>
       <div style="margin-top: 25px; text-align: center; border-top: 1px dashed #e2e1d7; padding-top: 15px;">
-        <p style="color: #1b3322; font-size: 11px; font-weight: bold; margin: 0;">90-DAY ROOT & SOIL BIOME HEALTH GUARANTEE</p>
+        <p style="color: #377355; font-size: 11px; font-weight: bold; margin: 0;">90-DAY ROOT & SOIL BIOME HEALTH GUARANTEE</p>
         <p style="color: #666; font-size: 10px; margin: 4px 0 0 0; line-height: 1.4;">
           Your formulation has been packed and sealed under temperature control. Thank you for cultivating with Agriic.
         </p>
@@ -1235,10 +1238,10 @@ export default function App() {
   };
 
   // Navigation Links array
-  const navLinks = [
+  const navLinks: { label: string; href: string; icon?: React.ReactNode }[] = [
     { label: 'Home', href: '#home' },
     { label: 'Science', href: '#science' },
-    { label: 'Products', href: '#products' },
+    { label: 'Shop', href: '#products', icon: <Store className="w-4 h-4 mr-1.5 inline-block" /> },
     { label: 'Soil Test™', href: '#soil-test' },
     { label: 'Blog', href: '#blog' },
     { label: 'Contact', href: '#contact' }
@@ -1246,7 +1249,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col font-display bg-white text-agri-charcoal relative">
-      
+
       {/* Toast Notification */}
       {toast && (
         <>
@@ -1266,197 +1269,218 @@ export default function App() {
               animation: toastShrink 3000ms linear forwards;
             }
           `}</style>
-          <div className="fixed top-24 left-1/2 z-50 bg-[#2b3a30] text-white px-5 py-3.5 rounded-xl border border-[#c2dd74]/35 shadow-2.5xl flex flex-col overflow-hidden animate-toast-slide-in backdrop-blur-md min-w-[280px] sm:min-w-[345px]">
+          <div className="fixed top-24 left-1/2 z-50 bg-[#2b3a30] text-white px-5 py-3.5 rounded-xl border border-[#D2AF6E]/35 shadow-2.5xl flex flex-col overflow-hidden animate-toast-slide-in backdrop-blur-md min-w-[280px] sm:min-w-[345px]">
             <div className="flex items-center space-x-3 mb-2.5">
-              <CheckCircle className="w-4.5 h-4.5 text-[#c2dd74] shrink-0" />
+              <CheckCircle className="w-4.5 h-4.5 text-[#D2AF6E] shrink-0" />
               <span className="text-xs sm:text-sm font-semibold tracking-wide">{toast}</span>
             </div>
             <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden">
-              <div className="bg-[#c2dd74] h-full animate-toast-progress" />
+              <div className="bg-[#D2AF6E] h-full animate-toast-progress" />
             </div>
           </div>
         </>
       )}
 
       {/* Floating Header */}
-      {routePath === '#products' || routePath === '#product' ? (
-        <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm px-4 md:px-8 py-3 flex flex-col rounded-b-[24px] text-slate-800">
-          <div className="flex items-center justify-between gap-4 w-full">
-            {/* Logo */}
-            <a href="#products" className="flex items-center space-x-2 shrink-0">
-              <div className="w-10 h-10 rounded-full bg-[#e8f5e9] flex items-center justify-center border border-[#3B6D11]/30">
-                <Leaf className="w-6 h-6 text-[#3B6D11]" />
+      {routePath !== '#products' && (
+        routePath === '#product' ? (
+          <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm px-4 md:px-8 py-3 flex flex-col rounded-b-[24px] text-slate-800">
+            <div className="flex items-center justify-between gap-4 w-full">
+              {/* Logo */}
+              <a href="#products" className="flex items-center shrink-0 group">
+                <img src="/logo2.jpeg" alt="Agriic Logo" className="h-10 w-auto object-contain rounded-md shadow-sm group-hover:opacity-90 transition-opacity" />
+              </a>
+
+              {/* Location Selector */}
+              <div className="hidden md:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-gray-200 text-xs shrink-0 text-slate-600">
+                <MapPin className="w-4 h-4 text-[#377355]" />
+                <div className="flex flex-col text-left">
+                  <span className="text-[8px] text-gray-400 font-bold uppercase leading-none">Location</span>
+                  <span className="font-extrabold text-slate-700 leading-tight">Delhi, India</span>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-black tracking-wider text-[#3b6d11] leading-none font-display">COWBERRY</span>
-                <span className="text-[10px] font-bold tracking-widest text-[#4caf50] uppercase mt-0.5 leading-none">O R G A N I C S</span>
+
+              {/* Search Bar with All Categories dropdown */}
+              <div className="flex-1 max-w-xl relative flex items-center">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-4 w-4 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  className="block w-full pl-9 pr-28 py-2 border border-gray-200 rounded-full text-xs bg-slate-50 placeholder-gray-450 font-semibold focus:outline-none focus:bg-white focus:border-[#377355] focus:ring-2 focus:ring-[#377355]/20 transition-all"
+                  placeholder="Search Spices, Flour, Grains..."
+                  value={allProductsSearch}
+                  onChange={(e) => setAllProductsSearch(e.target.value)}
+                />
+                <div className="absolute right-1 top-1 bottom-1 flex items-center">
+                  <select
+                    className="bg-transparent text-[10px] font-bold text-slate-600 border-l border-gray-200 pl-2 pr-6 py-1 mr-1 focus:outline-none cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%25234A5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:8px_8px] bg-[right_8px_center] bg-no-repeat"
+                    value={productFilter}
+                    onChange={(e) => setProductFilter(e.target.value)}
+                  >
+                    <option value="all">All Categories</option>
+                    <option value="grains-millet">Grains & Millets</option>
+                    <option value="rice-poha">Rice & Poha</option>
+                    <option value="dals-pulses">Dals & Pulses</option>
+                    <option value="seeds">Seeds</option>
+                    <option value="salt-spices">Spices & Salt</option>
+                    <option value="flours-sooji">Flours & Sooji</option>
+                    <option value="sweeteners">Sweeteners</option>
+                    <option value="ghee-oils">Ghee & Oils</option>
+                  </select>
+                </div>
               </div>
+
+              {/* Login & Cart */}
+              <div className="flex items-center space-x-3 text-xs shrink-0">
+                <a
+                  href="#cart"
+                  onClick={(e) => { e.preventDefault(); setIsCartDrawerOpen(true); }}
+                  className="relative p-1.5 hover:bg-slate-100 rounded-full transition-colors flex items-center justify-center text-[#377355]"
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                  {getCartCount() > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-[#377355] text-white text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
+                      {getCartCount()}
+                    </span>
+                  )}
+                </a>
+
+                {currentUser ? (
+                  <div className="flex items-center space-x-2">
+                    <a
+                      href="#profile"
+                      className="flex items-center space-x-1 px-2.5 py-1.5 rounded-full bg-slate-50 border border-gray-200 font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
+                    >
+                      <User className="w-3.5 h-3.5 text-[#377355]" />
+                      <span className="hidden sm:inline font-bold text-[10px]">{currentUser.name || 'Alok'}</span>
+                    </a>
+                    <button onClick={handleLogout} className="text-[10px] font-bold text-red-500 hover:underline">
+                      Exit
+                    </button>
+                  </div>
+                ) : (
+                  <a href="#auth" className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full border border-gray-200 text-slate-700 hover:bg-slate-50 font-bold transition-all text-[11px]">
+                    <User className="w-4 h-4 text-[#377355]" />
+                    <span>Login</span>
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Navigation Links */}
+            <div className="flex items-center justify-center space-x-6 mt-3 pt-2.5 border-t border-gray-100 text-[11px] font-bold uppercase tracking-wider text-slate-650">
+              <a
+                href="#products"
+                onClick={() => setProductFilter('all')}
+                className={`hover:text-[#377355] transition-colors ${productFilter === 'all' ? 'text-[#377355]' : ''}`}
+              >
+                All Products &gt;
+              </a>
+              <a href="#products" className="hover:text-[#377355] transition-colors">Offers &gt;</a>
+              <a href="#profile" className="hover:text-[#377355] transition-colors">Membership</a>
+              <a href="#blog" className="hover:text-[#377355] transition-colors">Blogs</a>
+              <a href="#products" className="hover:text-[#377355] transition-colors">Recipes</a>
+              <a href="#home" className="hover:text-[#377355] transition-colors">About Us</a>
+            </div>
+          </header>
+        ) : (
+          <header className="sticky top-0 z-40 bg-[#1c2720]/95 backdrop-blur-xl border-b border-white/5 px-4 md:px-8 py-3 flex items-center justify-between text-white shadow-xl">
+            <a href="#home" className="flex items-center shrink-0 group">
+              <img src="/logo2.jpeg" alt="Agriic Logo" className="h-10 w-auto object-contain rounded-md group-hover:opacity-90 transition-opacity" />
             </a>
 
-            {/* Location Selector */}
-            <div className="hidden md:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-gray-200 text-xs shrink-0 text-slate-600">
-              <MapPin className="w-4 h-4 text-[#3B6D11]" />
-              <div className="flex flex-col text-left">
-                <span className="text-[8px] text-gray-400 font-bold uppercase leading-none">Location</span>
-                <span className="font-extrabold text-slate-700 leading-tight">Delhi, India</span>
-              </div>
-            </div>
+            {/* Desktop Nav */}
+            <nav className="hidden lg:flex items-center space-x-1 bg-white/5 rounded-full px-2 py-1.5 border border-white/5 shadow-inner">
+              {navLinks.map((link) => {
+                const isActive = routePath === link.href;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className={`flex items-center text-[13px] font-semibold tracking-wide px-4 py-1.5 rounded-full transition-all duration-300 ${isActive
+                      ? 'bg-white text-[#1c2720] shadow-sm'
+                      : 'text-white/70 hover:text-white hover:bg-white/10'
+                      }`}
+                  >
+                    {link.icon && link.icon}
+                    {link.label}
+                  </a>
+                );
+              })}
+            </nav>
 
-            {/* Search Bar with All Categories dropdown */}
-            <div className="flex-1 max-w-xl relative flex items-center">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-4 w-4 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                className="block w-full pl-9 pr-28 py-2 border border-gray-200 rounded-full text-xs bg-slate-50 placeholder-gray-450 font-semibold focus:outline-none focus:bg-white focus:border-[#3B6D11] focus:ring-2 focus:ring-[#3B6D11]/20 transition-all"
-                placeholder="Search Spices, Flour, Grains..."
-                value={allProductsSearch}
-                onChange={(e) => setAllProductsSearch(e.target.value)}
-              />
-              <div className="absolute right-1 top-1 bottom-1 flex items-center">
-                <select 
-                  className="bg-transparent text-[10px] font-bold text-slate-600 border-l border-gray-200 pl-2 pr-6 py-1 mr-1 focus:outline-none cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%25234A5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:8px_8px] bg-[right_8px_center] bg-no-repeat"
-                  value={productFilter}
-                  onChange={(e) => setProductFilter(e.target.value)}
-                >
-                  <option value="all">All Categories</option>
-                  <option value="grains-millet">Grains & Millets</option>
-                  <option value="rice-poha">Rice & Poha</option>
-                  <option value="dals-pulses">Dals & Pulses</option>
-                  <option value="seeds">Seeds</option>
-                  <option value="salt-spices">Spices & Salt</option>
-                  <option value="flours-sooji">Flours & Sooji</option>
-                  <option value="sweeteners">Sweeteners</option>
-                  <option value="ghee-oils">Ghee & Oils</option>
-                </select>
-              </div>
-            </div>
+            {/* Right header icons */}
+            <div className="flex items-center space-x-2 md:space-x-4">
 
-            {/* Login & Cart */}
-            <div className="flex items-center space-x-3 text-xs shrink-0">
-              <a href="#cart" className="relative p-1.5 hover:bg-slate-100 rounded-full transition-colors flex items-center justify-center text-[#3B6D11]">
+              {/* Minimal Expanding Search */}
+              <div className="hidden md:flex relative group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-4 w-4 text-white/40 group-focus-within:text-agri-lime transition-colors" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="bg-white/5 border border-white/10 text-white text-xs rounded-full pl-9 pr-4 py-2 focus:outline-none focus:bg-white/10 focus:border-agri-lime/50 transition-all placeholder:text-white/30 w-32 focus:w-56"
+                />
+              </div>
+
+              {/* Mobile Search Icon */}
+              <button className="md:hidden p-2 text-white/70 hover:text-white transition-colors">
+                <Search className="w-5 h-5" />
+              </button>
+
+               <a
+                href="#cart"
+                onClick={(e) => { e.preventDefault(); setIsCartDrawerOpen(true); }}
+                className="relative p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-all flex items-center justify-center"
+              >
                 <ShoppingCart className="w-5 h-5" />
                 {getCartCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#3B6D11] text-white text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
+                  <span className="absolute -top-1 -right-1 bg-agri-lime text-[#1c2720] text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-[#1c2720] shadow-sm">
                     {getCartCount()}
                   </span>
                 )}
               </a>
 
               {currentUser ? (
-                <div className="flex items-center space-x-2">
-                  <a 
-                    href="#profile" 
-                    className="flex items-center space-x-1 px-2.5 py-1.5 rounded-full bg-slate-50 border border-gray-200 font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
+                <div className="flex items-center space-x-2 border-l border-white/10 pl-2 md:pl-4">
+                  <a
+                    href="#profile"
+                    className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full border transition-all ${routePath === '#profile'
+                      ? 'bg-[#D2AF6E]/20 border-[#D2AF6E]/50 text-[#D2AF6E]'
+                      : 'bg-white/5 hover:bg-white/15 border-white/10 text-white/90'
+                      }`}
                   >
-                    <User className="w-3.5 h-3.5 text-[#3B6D11]" />
-                    <span className="hidden sm:inline font-bold text-[10px]">{currentUser.name || 'Alok'}</span>
+                    <User className="w-4 h-4 text-[#D2AF6E]" />
+                    <span className="text-xs font-semibold hidden sm:inline">{currentUser.name || 'Alok'}</span>
                   </a>
-                  <button onClick={handleLogout} className="text-[10px] font-bold text-red-500 hover:underline">
+                  <button
+                    onClick={handleLogout}
+                    className="text-[11px] text-white/40 hover:text-red-400 font-bold px-2 py-1.5 rounded-md hover:bg-white/5 transition-all hidden sm:block"
+                  >
                     Exit
                   </button>
                 </div>
               ) : (
-                <a href="#auth" className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full border border-gray-200 text-slate-700 hover:bg-slate-50 font-bold transition-all text-[11px]">
-                  <User className="w-4 h-4 text-[#3B6D11]" />
-                  <span>Login</span>
-                </a>
+                <div className="border-l border-white/10 pl-2 md:pl-4 flex">
+                  <a href="#auth" className="flex items-center space-x-1.5 hover:bg-white hover:text-[#1c2720] text-white text-xs font-bold transition-all px-4 py-2 rounded-full bg-white/10 border border-white/5 shadow-sm">
+                    <User className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Sign In</span>
+                  </a>
+                </div>
               )}
+
+              {/* Mobile drawer toggle */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2 text-white hover:text-agri-lime transition"
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="flex items-center justify-center space-x-6 mt-3 pt-2.5 border-t border-gray-100 text-[11px] font-bold uppercase tracking-wider text-slate-650">
-            <a 
-              href="#products" 
-              onClick={() => setProductFilter('all')} 
-              className={`hover:text-[#3B6D11] transition-colors ${productFilter === 'all' ? 'text-[#3B6D11]' : ''}`}
-            >
-              All Products &gt;
-            </a>
-            <a href="#products" className="hover:text-[#3B6D11] transition-colors">Offers &gt;</a>
-            <a href="#profile" className="hover:text-[#3B6D11] transition-colors">Membership</a>
-            <a href="#blog" className="hover:text-[#3B6D11] transition-colors">Blogs</a>
-            <a href="#products" className="hover:text-[#3B6D11] transition-colors">Recipes</a>
-            <a href="#home" className="hover:text-[#3B6D11] transition-colors">About Us</a>
-          </div>
-        </header>
-      ) : (
-        <header className="sticky top-0 z-40 bg-[#2b3a30] border-b border-[#bad15a]/10 backdrop-blur-md px-4 md:px-8 py-3.5 flex items-center justify-between text-white shadow-md">
-          <a href="#home" className="flex items-center space-x-2 shrink-0">
-            <Leaf className="w-8 h-8 text-agri-lime fill-agri-lime" />
-            <span className="text-2xl font-bold tracking-tight font-display text-white">
-              Agriic<span className="text-agri-lime">.</span>
-            </span>
-          </a>
-
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center space-x-8">
-            {navLinks.map((link) => {
-              const isActive = routePath === link.href;
-              return (
-                <a 
-                  key={link.label}
-                  href={link.href}
-                  className={`text-[14px] font-medium tracking-wide transition-colors duration-200 hover:text-agri-lime ${
-                    isActive ? 'text-agri-lime font-bold border-b-2 border-agri-lime pb-1' : 'text-white/80'
-                  }`}
-                >
-                  {link.label}
-                </a>
-              );
-            })}
-          </nav>
-
-          {/* Right header icons */}
-          <div className="flex items-center space-x-4">
-            <a href="#cart" className="relative p-2 hover:bg-white/10 rounded-full transition-colors flex items-center justify-center">
-              <ShoppingCart className="w-5 h-5" />
-              {getCartCount() > 0 && (
-                <span className="absolute -top-1 -right-1 bg-agri-lime text-agri-deep text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#2b3a30]">
-                  {getCartCount()}
-                </span>
-              )}
-            </a>
-
-            {currentUser ? (
-              <div className="flex items-center space-x-2">
-                <a 
-                  href="#profile" 
-                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full border transition-all ${
-                    routePath === '#profile' 
-                      ? 'bg-[#c2dd74]/20 border-[#c2dd74] text-[#c2dd74]' 
-                      : 'bg-white/10 hover:bg-white/20 border-white/15 text-white/95'
-                  }`}
-                >
-                  <User className="w-4.5 h-4.5 text-[#c2dd74]" />
-                  <span className="text-[12px] font-medium hidden sm:inline">{currentUser.name || 'Alok'}</span>
-                </a>
-                <button 
-                  onClick={handleLogout} 
-                  className="text-[11.5px] text-white/60 hover:text-red-400 font-bold px-2 py-1.5 rounded-md hover:bg-white/5 transition-all"
-                >
-                  Exit
-                </button>
-              </div>
-            ) : (
-              <a href="#auth" className="flex items-center space-x-1.5 hover:text-agri-lime text-sm font-semibold transition px-3.5 py-1.5 rounded-full bg-white/10 border border-white/10">
-                <User className="w-4 h-4" />
-                <span className="hidden sm:inline">Sign In</span>
-              </a>
-            )}
-
-            {/* Mobile drawer toggle */}
-            <button 
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 text-white hover:text-agri-lime transition"
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </header>
-      )}
+          </header>
+        ))}
 
       {/* Mobile Drawer Menu */}
       {isMobileMenuOpen && (
@@ -1464,8 +1488,8 @@ export default function App() {
           {navLinks.map((link) => {
             const isActive = routePath === link.href;
             return (
-              <a 
-                key={link.label} 
+              <a
+                key={link.label}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`text-lg font-semibold border-b border-white/10 pb-2 flex justify-between items-center ${isActive ? 'text-agri-lime' : 'text-white'}`}
@@ -1477,7 +1501,7 @@ export default function App() {
           })}
           <div className="pt-6 space-y-3">
             {currentUser && (
-              <a 
+              <a
                 href="#profile"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full text-center block bg-white/10 hover:bg-white/15 text-white font-extrabold tracking-wider py-4 rounded-xl border border-white/15"
@@ -1485,10 +1509,10 @@ export default function App() {
                 VIEW MY PROFILE & ORDERS
               </a>
             )}
-            <a 
+            <a
               href="#soil-test"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="w-full text-center block bg-agri-lime text-[#1b3322] font-extrabold tracking-wider py-4 rounded-xl shadow-lg"
+              className="w-full text-center block bg-agri-lime text-[#377355] font-extrabold tracking-wider py-4 rounded-xl shadow-lg"
             >
               TAKE THE SOIL TEST™
             </a>
@@ -1498,80 +1522,40 @@ export default function App() {
 
       {/* Main Content Area */}
       <main id="page-content" className="flex-grow animate-fade-in">
-        
+
         {/* VIEW 1: HOME */}
         {routePath === '#home' && (
           <div>
             {/* Section 1: Hero */}
             <section className="relative px-4 md:px-8 lg:px-12 pt-3 md:pt-8 pb-8 md:pb-16 bg-[#f7f6ee] z-10 overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-[55%] md:h-[65%] bg-[#2b3a30] z-0 rounded-b-[32px] md:rounded-b-[40px]"></div>
-              
+
               <div className="w-full rounded-[24px] md:rounded-[32px] overflow-hidden relative flex flex-col min-h-[420px] md:min-h-[600px] shadow-2xl bg-[#1b251f] z-10 mx-auto max-w-[1440px]">
                 {/* Carousel Track */}
-                <div 
-                  className="flex w-[400%] h-full transition-transform duration-700 ease-in-out flex-grow"
-                  style={{ transform: `translateX(-${heroSlide * 25}%)` }}
+                <div
+                  className="flex w-[300%] h-full transition-transform duration-700 ease-in-out flex-grow"
+                  style={{ transform: `translateX(-${(heroSlide * 100) / 3}%)` }}
                 >
-                  {/* Slide 1: Foundation */}
-                  <div className="w-1/4 h-full relative flex flex-col justify-end md:justify-center">
-                    <div className="absolute inset-0 z-10 pointer-events-none hidden md:block">
-                      <svg viewBox="0 0 1440 640" preserveAspectRatio="none" className="w-full h-full">
-                        <path d="M0,0 L650,0 C 580,200 500,440 450,640 L0,640 Z" fill="#4e2b15" opacity="1"></path>
-                      </svg>
-                    </div>
-                    <div className="absolute top-0 right-0 w-full md:w-[65%] h-full z-0 flex items-end md:items-center justify-center bg-[#1b251f]">
-                      <img 
-                        src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=1200&q=80" 
-                        alt="Indian farming field with farmer family portrait theme" 
-                        className="w-full h-[70%] md:h-full object-contain md:object-cover object-bottom md:object-center"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#1b251f] via-[#1b251f]/40 to-transparent md:hidden pointer-events-none"></div>
-                    </div>
-                    <div className="relative z-20 w-full p-5 sm:p-10 md:p-16 flex flex-col justify-end md:justify-center h-full min-h-[420px] md:min-h-[600px]">
-                      <div className="max-w-[530px] text-center md:text-left flex flex-col items-center md:items-start">
-                        <span className="border border-[#c2dd74]/60 bg-[#c2dd74]/15 md:bg-[#c2dd74] text-[#c2dd74] md:text-[#1b3322] px-3.5 py-1.5 rounded-full text-[10px] md:text-[12px] font-bold tracking-widest uppercase mb-3 inline-block shadow-sm">
-                          SCIENCE-LED PLANT NUTRITION SOLUTION
-                        </span>
-                        <h1 className="text-[28px] leading-[1.12] sm:text-4xl md:text-5xl lg:text-[54px] font-black text-white mb-4 md:mb-6 tracking-tight drop-shadow-md">
-                          Know the root cause of your soil problems.
-                        </h1>
-                        <p className="text-white/85 text-xs md:text-base max-w-md mb-6 md:mb-8 leading-relaxed">
-                          Unlock your soil's hidden potential for maximum crop yield. Take our diagnostic test and get customized organic kits. 
-                        </p>
-                        <a 
-                          href="#soil-test" 
-                          className="bg-agri-lime text-[#1b3322] font-black text-xs md:text-sm px-6 md:px-8 py-3.5 md:py-4.5 rounded-xl shadow-xl hover:scale-105 active:scale-95 transition-transform block md:inline-block w-full md:w-auto text-center tracking-wider uppercase"
+                  {/* Slide 1: Membership */}
+                  <div className="w-1/3 h-full relative">
+                    <img
+                      src="/agriic_membership.png"
+                      alt="Farmer using digital app"
+                      className="absolute inset-0 w-full h-full object-cover object-center z-0"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#2b3a30]/90 via-[#2b3a30]/55 to-transparent z-10" />
+                    <div className="relative z-20 w-full px-6 md:px-12 flex items-center min-h-[420px] md:min-h-[600px] h-full">
+                      <div className="max-w-xl text-left py-12">
+                        <span 
+                          className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-white mb-4 rounded-full"
+                          style={{ backgroundColor: '#6DBE8C' }}
                         >
-                          TAKE THE SOIL TEST™
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Slide 2: Membership */}
-                  <div className="w-1/4 h-full relative flex flex-col justify-end md:justify-center">
-                    <div className="absolute inset-0 z-10 pointer-events-none hidden md:block">
-                      <svg viewBox="0 0 1440 640" preserveAspectRatio="none" className="w-full h-full">
-                        <path d="M0,0 L650,0 C 580,200 500,440 450,640 L0,640 Z" fill="#2b3a30" opacity="1"></path>
-                      </svg>
-                    </div>
-                    <div className="absolute top-0 right-0 w-full md:w-[65%] h-full z-0 flex items-end md:items-center justify-center bg-[#2b3a30]">
-                      <img 
-                        src="/agriic_membership.png" 
-                        alt="Farmer using digital app" 
-                        className="w-full h-[70%] md:h-full object-contain md:object-cover object-bottom md:object-center"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#2b3a30] via-[#2b3a30]/40 to-transparent md:hidden pointer-events-none"></div>
-                    </div>
-                    <div className="relative z-20 w-full p-5 sm:p-10 md:p-16 flex flex-col justify-end md:justify-center h-full min-h-[420px] md:min-h-[600px]">
-                      <div className="max-w-[530px] text-center md:text-left flex flex-col items-center md:items-start">
-                        <span className="border border-[#c2dd74]/60 bg-[#c2dd74]/15 md:bg-[#c2dd74] text-[#c2dd74] md:text-[#1b3322] px-3.5 py-1.5 rounded-full text-[10px] md:text-[12px] font-bold tracking-widest uppercase mb-3 inline-block shadow-sm">
                           AGRIIC PREMIUM MEMBERSHIP
                         </span>
-                        <h1 className="text-[28px] leading-[1.12] sm:text-4xl md:text-5xl lg:text-[54px] font-black text-white mb-4 tracking-tight drop-shadow-md">
+                        <h2 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4 whitespace-pre-line">
                           Join the club for ultimate farm care.
-                        </h1>
-                        <ul className="text-white/85 text-xs md:text-sm max-w-md mb-6 md:mb-8 space-y-2 text-left">
+                        </h2>
+                        <ul className="text-white/90 text-sm md:text-base max-w-md mb-8 space-y-2 text-left">
                           <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Priority Diagnostic Soil Testing</li>
                           <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Monthly 1-on-1 Agronomist Calls</li>
                           <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Exclusive Discounts on Nutrient Kits</li>
@@ -1579,8 +1563,9 @@ export default function App() {
                           <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Dedicated 24/7 Crop Coach</li>
                         </ul>
                         <a 
-                          href="#profile" 
-                          className="bg-agri-lime text-[#1b3322] font-black text-xs md:text-sm px-6 md:px-8 py-3.5 md:py-4.5 rounded-xl shadow-xl hover:scale-105 active:scale-95 transition-transform block md:inline-block w-full md:w-auto text-center tracking-wider uppercase"
+                          href="#profile"
+                          className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-transform hover:scale-105 rounded-full"
+                          style={{ backgroundColor: '#6DBE8C' }}
                         >
                           JOIN THE CLUB
                         </a>
@@ -1588,35 +1573,32 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Slide 3: Products */}
-                  <div className="w-1/4 h-full relative flex flex-col justify-end md:justify-center">
-                    <div className="absolute inset-0 z-10 pointer-events-none hidden md:block">
-                      <svg viewBox="0 0 1440 640" preserveAspectRatio="none" className="w-full h-full">
-                        <path d="M0,0 L650,0 C 580,200 500,440 450,640 L0,640 Z" fill="#1b251f" opacity="1"></path>
-                      </svg>
-                    </div>
-                    <div className="absolute top-0 right-0 w-full md:w-[65%] h-full z-0 flex items-end md:items-center justify-center bg-[#1b251f]">
-                      <img 
-                        src="/agriic_products.png" 
-                        alt="Premium organic fertilizer products" 
-                        className="w-full h-[70%] md:h-full object-contain md:object-cover object-bottom md:object-center"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#1b251f] via-[#1b251f]/40 to-transparent md:hidden pointer-events-none"></div>
-                    </div>
-                    <div className="relative z-20 w-full p-5 sm:p-10 md:p-16 flex flex-col justify-end md:justify-center h-full min-h-[420px] md:min-h-[600px]">
-                      <div className="max-w-[530px] text-center md:text-left flex flex-col items-center md:items-start">
-                        <span className="border border-[#c2dd74]/60 bg-[#c2dd74]/15 md:bg-[#c2dd74] text-[#c2dd74] md:text-[#1b3322] px-3.5 py-1.5 rounded-full text-[10px] md:text-[12px] font-bold tracking-widest uppercase mb-3 inline-block shadow-sm">
+                  {/* Slide 2: Products */}
+                  <div className="w-1/3 h-full relative">
+                    <img
+                      src="/agriic_products.png"
+                      alt="Premium organic fertilizer products"
+                      className="absolute inset-0 w-full h-full object-cover object-center z-0"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#1c3a2a]/90 via-[#1c3a2a]/55 to-transparent z-10" />
+                    <div className="relative z-20 w-full px-6 md:px-12 flex items-center min-h-[420px] md:min-h-[600px] h-full">
+                      <div className="max-w-xl text-left py-12">
+                        <span 
+                          className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-white mb-4 rounded-full"
+                          style={{ backgroundColor: '#D2AF6E' }}
+                        >
                           OUR FORMULAS
                         </span>
-                        <h1 className="text-[28px] leading-[1.12] sm:text-4xl md:text-5xl lg:text-[54px] font-black text-white mb-4 md:mb-6 tracking-tight drop-shadow-md">
+                        <h2 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4 whitespace-pre-line">
                           Science-Led Organic Nutrition.
-                        </h1>
-                        <p className="text-white/85 text-xs md:text-base max-w-md mb-6 md:mb-8 leading-relaxed">
+                        </h2>
+                        <p className="text-lg md:text-xl text-white/90 mb-8 max-w-lg">
                           Browse our premium range of highly concentrated organic formulas designed to unlock your farm's maximum genetic yield: Bloom Boosters, Root Expanders, and Defense Enhancers.
                         </p>
                         <a 
-                          href="#products" 
-                          className="bg-agri-lime text-[#1b3322] font-black text-xs md:text-sm px-6 md:px-8 py-3.5 md:py-4.5 rounded-xl shadow-xl hover:scale-105 active:scale-95 transition-transform block md:inline-block w-full md:w-auto text-center tracking-wider uppercase"
+                          href="#products"
+                          className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-transform hover:scale-105 rounded-full"
+                          style={{ backgroundColor: '#D2AF6E' }}
                         >
                           BUY NOW
                         </a>
@@ -1624,35 +1606,32 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Slide 4: Why Agric (Before & After) */}
-                  <div className="w-1/4 h-full relative flex flex-col justify-end md:justify-center">
-                    <div className="absolute inset-0 z-10 pointer-events-none hidden md:block">
-                      <svg viewBox="0 0 1440 640" preserveAspectRatio="none" className="w-full h-full">
-                        <path d="M0,0 L650,0 C 580,200 500,440 450,640 L0,640 Z" fill="#314227" opacity="1"></path>
-                      </svg>
-                    </div>
-                    <div className="absolute top-0 right-0 w-full md:w-[65%] h-full z-0 flex items-end md:items-center justify-center bg-[#314227]">
-                      <img 
-                        src="/agriic_before_after.png" 
-                        alt="Before and after organic fertilizer effect" 
-                        className="w-full h-[70%] md:h-full object-contain md:object-cover object-bottom md:object-center"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#314227] via-[#314227]/40 to-transparent md:hidden pointer-events-none"></div>
-                    </div>
-                    <div className="relative z-20 w-full p-5 sm:p-10 md:p-16 flex flex-col justify-end md:justify-center h-full min-h-[420px] md:min-h-[600px]">
-                      <div className="max-w-[530px] text-center md:text-left flex flex-col items-center md:items-start">
-                        <span className="border border-[#c2dd74]/60 bg-[#c2dd74]/15 md:bg-[#c2dd74] text-[#c2dd74] md:text-[#1b3322] px-3.5 py-1.5 rounded-full text-[10px] md:text-[12px] font-bold tracking-widest uppercase mb-3 inline-block shadow-sm">
+                  {/* Slide 3: Why Agric (Before & After) */}
+                  <div className="w-1/3 h-full relative">
+                    <img
+                      src="/agriic_before_after.png"
+                      alt="Before and after organic fertilizer effect"
+                      className="absolute inset-0 w-full h-full object-cover object-center z-0"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#314227]/90 via-[#314227]/55 to-transparent z-10" />
+                    <div className="relative z-20 w-full px-6 md:px-12 flex items-center min-h-[420px] md:min-h-[600px] h-full">
+                      <div className="max-w-xl text-left py-12">
+                        <span 
+                          className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-white mb-4 rounded-full"
+                          style={{ backgroundColor: '#6DBE8C' }}
+                        >
                           PROVEN IMPACT
                         </span>
-                        <h1 className="text-[28px] leading-[1.12] sm:text-4xl md:text-5xl lg:text-[54px] font-black text-white mb-4 md:mb-6 tracking-tight drop-shadow-md">
+                        <h2 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4 whitespace-pre-line">
                           Why Agriic Nutrition Works.
-                        </h1>
-                        <p className="text-white/85 text-xs md:text-base max-w-md mb-6 md:mb-8 leading-relaxed">
+                        </h2>
+                        <p className="text-lg md:text-xl text-white/90 mb-8 max-w-lg">
                           Witness the dramatic transformation. We focus on the root ecosystem, not just the foliage, creating lasting health, defense mechanisms, and incredible vigor.
                         </p>
                         <a 
-                          href="#science" 
-                          className="bg-agri-lime text-[#1b3322] font-black text-xs md:text-sm px-6 md:px-8 py-3.5 md:py-4.5 rounded-xl shadow-xl hover:scale-105 active:scale-95 transition-transform block md:inline-block w-full md:w-auto text-center tracking-wider uppercase"
+                          href="#science"
+                          className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-transform hover:scale-105 rounded-full"
+                          style={{ backgroundColor: '#6DBE8C' }}
                         >
                           SEE THE SCIENCE
                         </a>
@@ -1663,27 +1642,27 @@ export default function App() {
 
                 {/* Carousel Controls */}
                 <div className="absolute bottom-4 md:bottom-8 left-0 right-0 z-30 flex justify-center items-center space-x-3">
-                  {[0, 1, 2, 3].map(index => (
-                    <button 
-                      key={index} 
+                  {[0, 1, 2].map(index => (
+                    <button
+                      key={index}
                       onClick={() => setHeroSlide(index)}
                       className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 ${heroSlide === index ? 'bg-agri-lime scale-125' : 'bg-white/40 hover:bg-white/70'}`}
                       aria-label={`Go to slide ${index + 1}`}
                     />
                   ))}
                 </div>
-                
+
                 {/* Arrows for desktop */}
                 <div className="absolute inset-y-0 left-4 right-4 md:left-8 md:right-8 z-30 hidden md:flex justify-between items-center pointer-events-none">
-                  <button 
-                    onClick={() => setHeroSlide(prev => (prev - 1 + 4) % 4)}
+                  <button
+                    onClick={() => setHeroSlide(prev => (prev - 1 + 3) % 3)}
                     className="w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 text-white flex justify-center items-center backdrop-blur-sm pointer-events-auto transition-colors"
                     aria-label="Previous slide"
                   >
                     <ChevronLeft className="w-6 h-6" />
                   </button>
-                  <button 
-                    onClick={() => setHeroSlide(prev => (prev + 1) % 4)}
+                  <button
+                    onClick={() => setHeroSlide(prev => (prev + 1) % 3)}
                     className="w-10 h-10 rounded-full bg-black/30 hover:bg-black/60 text-white flex justify-center items-center backdrop-blur-sm pointer-events-auto transition-colors"
                     aria-label="Next slide"
                   >
@@ -1725,40 +1704,37 @@ export default function App() {
               <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-10 md:mb-16">
                   <div className="text-center md:text-left mb-6 md:mb-0">
-                    <span className="text-xs font-black text-agri-green-mid uppercase tracking-widest block mb-2">PREMIUM SOLUTIONS</span>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-black text-agri-green-mid uppercase tracking-[0.2em] mb-2"><ShoppingCart className="w-3.5 h-3.5" />OUR STORE</span>
                     <h2 className="text-3xl md:text-5xl font-extrabold text-gray-950 tracking-tight leading-tight">
                       Grow More. <span className="text-agri-green-mid">Spend Less.</span>
                     </h2>
                   </div>
-                  
+
                   <div className="flex space-x-2 bg-gray-100/80 p-1.5 rounded-2xl border border-gray-200">
-                    <button 
+                    <button
                       onClick={() => setProductTab('fertilizer')}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${
-                        productTab === 'fertilizer' 
-                          ? 'bg-[#2b3a30] text-[#c2dd74] shadow-md scale-100' 
-                          : 'bg-transparent text-gray-500 hover:text-gray-900'
-                      }`}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${productTab === 'fertilizer'
+                        ? 'bg-[#2b3a30] text-[#D2AF6E] shadow-md scale-100'
+                        : 'bg-transparent text-gray-500 hover:text-gray-900'
+                        }`}
                     >
                       FERTILIZERS
                     </button>
-                    <button 
+                    <button
                       onClick={() => setProductTab('seeds')}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${
-                        productTab === 'seeds' 
-                          ? 'bg-[#2b3a30] text-[#c2dd74] shadow-md scale-100' 
-                          : 'bg-transparent text-gray-500 hover:text-gray-900'
-                      }`}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${productTab === 'seeds'
+                        ? 'bg-[#2b3a30] text-[#D2AF6E] shadow-md scale-100'
+                        : 'bg-transparent text-gray-500 hover:text-gray-900'
+                        }`}
                     >
                       SEEDS
                     </button>
-                    <button 
+                    <button
                       onClick={() => setProductTab('gardening')}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${
-                        productTab === 'gardening' 
-                          ? 'bg-[#2b3a30] text-[#c2dd74] shadow-md scale-100' 
-                          : 'bg-transparent text-gray-500 hover:text-gray-900'
-                      }`}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${productTab === 'gardening'
+                        ? 'bg-[#2b3a30] text-[#D2AF6E] shadow-md scale-100'
+                        : 'bg-transparent text-gray-500 hover:text-gray-900'
+                        }`}
                     >
                       GARDENING
                     </button>
@@ -1766,75 +1742,225 @@ export default function App() {
                 </div>
 
                 {/* Products Grid */}
-                <div className="grid grid-rows-2 grid-flow-col auto-cols-[47%] md:grid-rows-none md:grid-flow-row md:grid-cols-3 lg:grid-cols-4 overflow-x-auto snap-x snap-mandatory gap-3 md:gap-6 pb-4 animate-fade-in no-scrollbar">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 pb-4 animate-fade-in">
                   {liveProducts
                     .filter(p => {
                       if (productTab === 'fertilizer') return (p.category.toLowerCase().includes('nutrition') || p.category.toLowerCase().includes('soil'));
                       if (productTab === 'seeds') return p.category.toLowerCase().includes('seed');
                       return (p.category.toLowerCase().includes('tool') || p.category.toLowerCase().includes('pest'));
                     })
-                    .slice(0, 8) // Show up to 8 per category
+                    .slice(0, 4) // Show up to 4 per category
                     .map((p) => (
-                    <div key={p.id} className="bg-white rounded-[16px] md:rounded-[24px] overflow-hidden shadow-sm border border-gray-200 hover:border-[#c2dd74] group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 md:hover:-translate-y-2 flex flex-col h-full snap-start">
-                      <div className="relative p-3 md:p-6 bg-[#f7f6ee] flex justify-center items-center group-hover:bg-[#f0eedd] transition-colors h-32 md:h-56">
-                        <img 
-                          src={p.img} 
-                          alt={p.name} 
-                          className="max-h-full object-contain transform group-hover:scale-110 transition-transform duration-500 drop-shadow-md"
-                        />
-                        <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-white/90 backdrop-blur-sm px-2 py-1 md:px-3 md:py-1.5 rounded-full text-[9px] md:text-[10px] font-bold text-gray-800 shadow-sm">
-                          ₹{p.price}
+                      <div key={p.id} className="bg-white rounded-[16px] md:rounded-[24px] overflow-hidden border border-[#e6e6e6] hover:border-[#D2AF6E] group transition-all duration-300 hover:shadow-xl md:hover:-translate-y-1 flex flex-col h-full">
+                        <div className="relative bg-[#f7f6ee] flex justify-center items-center h-28 sm:h-36 md:h-64 overflow-hidden">
+                          <img
+                            src={p.img}
+                            alt={p.name}
+                            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                          />
+                          {p.stock <= p.lowStockLimit && (
+                            <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-red-500/90 backdrop-blur-md px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md text-[7px] sm:text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-white z-10 shadow-sm">
+                              Low Stock
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-2.5 sm:p-3.5 md:p-6 flex flex-col flex-grow bg-white">
+                          <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black text-[#5a8b3d] uppercase tracking-[0.15em] mb-1 sm:mb-1.5 md:mb-2 block truncate">
+                            {p.category.replace('-', ' ')}
+                          </span>
+                          <h3 className="text-xs sm:text-sm md:text-xl font-extrabold text-gray-900 mb-1 sm:mb-2 md:mb-3 leading-tight group-hover:text-[#5a8b3d] transition-colors line-clamp-1 sm:line-clamp-2">
+                            {p.name}
+                          </h3>
+                          <p className="hidden sm:block text-xs md:text-sm text-gray-500 mb-2 sm:mb-4 flex-grow leading-relaxed line-clamp-3">
+                            {p.desc}
+                          </p>
+                          <div className="mt-auto mb-2 sm:mb-3 md:mb-4 pt-2 sm:pt-3 md:pt-4 border-t border-gray-100 flex items-center justify-between">
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-[8px] sm:text-[10px] md:text-[11px] font-bold text-gray-400 line-through">₹{Math.round(p.price / 0.9)}</span>
+                              <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
+                                <span className="text-sm sm:text-base md:text-xl font-black text-gray-900 leading-none">₹{p.price}</span>
+                                <span className="bg-[#fee2e2] text-[#dc2626] px-1 py-0.5 sm:px-1.5 md:px-2 md:py-0.5 rounded text-[7px] sm:text-[8px] md:text-[9px] font-black uppercase tracking-widest leading-none">10% OFF</span>
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              addToCart(p);
+                            }}
+                            className="w-full flex items-center justify-center space-x-1.5 sm:space-x-2 border border-gray-200 sm:border-2 sm:border-gray-100 hover:border-[#5a8b3d] hover:bg-[#f9faf5] text-gray-800 font-extrabold py-1.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl text-[9px] sm:text-xs uppercase tracking-widest transition-all duration-300"
+                          >
+                            <ShoppingCart className="w-4 h-4" strokeWidth={2.5} />
+                            <span>Add to Cart</span>
+                          </button>
                         </div>
                       </div>
-                      <div className="p-3 md:p-6 flex flex-col flex-grow">
-                        <span className="text-[8px] md:text-[10px] font-bold text-agri-green-mid uppercase tracking-widest mb-1 md:mb-2 block truncate">
-                          {p.category.replace('-', ' ')}
-                        </span>
-                        <h3 className="text-xs md:text-lg font-black text-gray-900 mb-1 md:mb-2 leading-tight group-hover:text-agri-lime transition-colors line-clamp-2 md:line-clamp-none">
-                          {p.name}
-                        </h3>
-                        <p className="text-[9px] md:text-xs text-gray-500 mb-3 md:mb-6 flex-grow leading-relaxed line-clamp-2 md:line-clamp-3">
-                          {p.desc}
-                        </p>
-                        <button 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            addToCart(p);
-                          }}
-                          className="w-full flex items-center justify-center space-x-1 md:space-x-2 bg-gray-50 hover:bg-[#2b3a30] text-gray-700 hover:text-white border border-gray-200 py-2 md:py-3 rounded-lg md:rounded-xl font-bold text-[9px] md:text-xs uppercase tracking-wider transition-colors"
-                        >
-                          <ShoppingCart className="w-3 h-3 md:w-4 md:h-4" />
-                          <span>Add to Cart</span>
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                  
+                    ))}
+
                   {/* Empty state fallback in case there are no products */}
                   {liveProducts.filter(p => {
                     if (productTab === 'fertilizer') return (p.category.toLowerCase().includes('nutrition') || p.category.toLowerCase().includes('soil'));
                     if (productTab === 'seeds') return p.category.toLowerCase().includes('seed');
                     return (p.category.toLowerCase().includes('tool') || p.category.toLowerCase().includes('pest'));
                   }).length === 0 && (
-                    <div className="col-span-full py-12 flex flex-col items-center justify-center text-center">
-                      <h3 className="text-lg font-bold text-gray-400 mb-1">No products found in this category</h3>
+                      <div className="col-span-full py-12 flex flex-col items-center justify-center text-center">
+                        <h3 className="text-lg font-bold text-gray-400 mb-1">No products found in this category</h3>
+                      </div>
+                    )}
+                </div>
+              </div>
+            </section>
+
+            {/* Partition Button: View Our Shop */}
+            <div className="relative w-full flex justify-center z-30" style={{ marginTop: '-28px', marginBottom: '-28px' }}>
+              <a 
+                href="#products" 
+                className="group flex items-center gap-3 bg-white border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[#377355] font-extrabold uppercase tracking-[0.15em] text-xs md:text-sm transition-all duration-300 hover:scale-105 hover:bg-[#377355] hover:text-white"
+              >
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-[#f4f7f5] flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                  <Leaf className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                </div>
+                View Our Shop
+              </a>
+            </div>
+
+            {/* Section 2.5: Soil Health Pillars */}
+            <section className="py-12 md:py-20 px-4 md:px-12 bg-white border-b border-gray-100">
+              <div className="max-w-7xl mx-auto">
+                <div className="flex justify-center md:justify-start gap-3 md:gap-4 mb-8 md:mb-10">
+                  <button className="flex items-center gap-1.5 md:gap-2 bg-[#377355] text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-extrabold shadow-md">
+                    <Leaf className="w-3.5 h-3.5 md:w-4 md:h-4" /> Organic Benefits
+                  </button>
+                  <button className="flex items-center gap-1.5 md:gap-2 bg-[#f7f6ee] border border-gray-200 text-gray-600 px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-extrabold hover:bg-gray-100 transition-colors">
+                    <FlaskConical className="w-3.5 h-3.5 md:w-4 md:h-4" /> Chemical Farming
+                  </button>
+                </div>
+
+                <div className="max-w-3xl mb-8 md:mb-12">
+                  <h2 className="text-3xl md:text-5xl font-extrabold text-[#377355] tracking-tight mb-3 md:mb-4">Why Choose Organic Farming?</h2>
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                    See how organic farming nourishes your soil, strengthens your crops, and builds a sustainable future.
+                  </p>
+                </div>
+
+                {/* 4 icons row */}
+                <div className="flex flex-row overflow-x-auto md:grid md:grid-cols-4 gap-4 md:gap-6 mb-10 md:mb-14 pb-3 no-scrollbar snap-x">
+                  {[
+                    { icon: <Leaf className="w-5 h-5 md:w-6 md:h-6 text-[#377355]" />, title: 'Chemical-Free', desc: 'Safe for soil, crops and your family' },
+                    { icon: <Sprout className="w-5 h-5 md:w-6 md:h-6 text-[#377355]" />, title: 'Better Soil Health', desc: 'Improves fertility and soil structure' },
+                    { icon: <Recycle className="w-5 h-5 md:w-6 md:h-6 text-[#377355]" />, title: 'Sustainable Farming', desc: 'Protects environment for future generations' },
+                    { icon: <Droplet className="w-5 h-5 md:w-6 md:h-6 text-[#377355]" />, title: 'Water Efficient', desc: 'Improves water retention in soil' }
+                  ].map((feature, i) => (
+                    <div key={i} className="flex items-start gap-3 md:gap-4 min-w-[190px] md:min-w-0 snap-start">
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#f7f6ee] border border-gray-200 flex items-center justify-center shrink-0">
+                        {feature.icon}
+                      </div>
+                      <div>
+                        <h4 className="text-[11px] md:text-sm font-extrabold text-[#377355] mb-0.5 md:mb-1">{feature.title}</h4>
+                        <p className="text-[9px] md:text-xs text-gray-500 leading-snug pr-2">{feature.desc}</p>
+                      </div>
                     </div>
-                  )}
+                  ))}
+                </div>
+
+                {/* 3 month-stage cards — horizontal snap scroll on mobile, row on desktop */}
+                <div className="flex flex-row overflow-x-auto md:overflow-visible gap-4 items-stretch mb-8 md:mb-10 snap-x snap-mandatory no-scrollbar pb-4 md:pb-0">
+                  {[
+                    {
+                      month: 'Month 1',
+                      color: '#5a8b3d',
+                      title: 'Soil Activation',
+                      points: ['Beneficial microbes increase', 'Better nutrient availability', 'Improved soil structure'],
+                      img: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=400&q=80'
+                    },
+                    {
+                      month: 'Month 2',
+                      color: '#3d7a5a',
+                      title: 'Root Development',
+                      points: ['Deeper root growth', 'Higher water retention', 'Stronger nutrient uptake'],
+                      img: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=400&q=80'
+                    },
+                    {
+                      month: 'Month 3',
+                      color: '#2b6b3d',
+                      title: 'Healthy Crop Growth',
+                      points: ['Strong stems and leaves', 'Better resistance to stress', 'Improved crop quality'],
+                      img: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=400&q=80'
+                    }
+                  ].map((card, i) => (
+                    <React.Fragment key={i}>
+                      <div className="min-w-[82%] sm:min-w-[55%] md:min-w-0 snap-center md:snap-align-none bg-[#fcfbf7] border border-gray-200 shadow-sm rounded-[24px] p-5 md:p-6 flex-1 flex flex-col relative overflow-hidden group hover:border-[#D2AF6E] hover:shadow-lg transition-all duration-300">
+                        <div className="inline-block text-white text-[9px] md:text-[10px] font-black px-2.5 py-1 rounded-md w-max mb-3 md:mb-4 uppercase tracking-wider" style={{ backgroundColor: card.color }}>
+                          {card.month}
+                        </div>
+                        <h3 className="text-base md:text-lg font-extrabold text-[#377355] mb-3 md:mb-4 group-hover:text-[#5a8b3d] transition-colors">{card.title}</h3>
+                        <ul className="space-y-2 md:space-y-2.5 mb-5 md:mb-6 z-10 relative flex-grow">
+                          {card.points.map((pt, j) => (
+                            <li key={j} className="flex items-start gap-2 text-[10px] md:text-xs text-gray-600 font-semibold leading-snug">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#5a8b3d] mt-1.5 shrink-0"></span>
+                              {pt}
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="relative mt-auto h-36 md:h-44 w-full overflow-hidden rounded-xl">
+                          <img
+                            src={card.img}
+                            alt={card.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#fcfbf7]/50 to-transparent pointer-events-none" />
+                        </div>
+                      </div>
+                      {i < 2 && (
+                        <div className="hidden md:flex items-center justify-center shrink-0 w-8">
+                          <div className="w-6 h-6 rounded-full bg-[#377355] text-[#D2AF6E] flex items-center justify-center shadow-md border-2 border-white z-10">
+                            <ChevronRight className="w-3 h-3" strokeWidth={3} />
+                          </div>
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+
+                {/* Green organic banner */}
+                <div className="bg-[#fcfbf7] border border-gray-200 shadow-sm rounded-[24px] p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-5 md:gap-6 group hover:border-[#D2AF6E] hover:shadow-lg transition-all duration-300">
+                  <div className="flex items-center gap-3 md:gap-4 w-full md:w-auto">
+                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-md">
+                      <img
+                        src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=200&q=80"
+                        alt="Farm Landscape"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                    </div>
+                    <div className="flex-1 md:flex-none">
+                      <h3 className="text-base md:text-lg font-extrabold text-[#377355] mb-0.5 md:mb-1">Grow Naturally with Agriic</h3>
+                      <p className="text-[9px] md:text-[11px] font-bold text-gray-500 uppercase tracking-wider">Healthy Soil • Healthy Crops • Healthy Future</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-4 w-full md:w-auto mt-2 md:mt-0">
+                    <div className="flex items-center gap-2 bg-[#eaf1d4] px-3 md:px-4 py-2 md:py-2.5 rounded-xl text-[10px] md:text-xs font-black text-[#365922]">
+                      <Leaf className="w-3 h-3 md:w-4 md:h-4" />
+                      <span>Organic today,<br className="hidden md:block" />a better tomorrow.</span>
+                    </div>
+                    <a href="#products" className="bg-[#377355] hover:bg-[#377355] text-white text-[10px] md:text-xs font-extrabold px-5 md:px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-1.5 md:gap-2 shadow-md w-full sm:w-auto tracking-widest uppercase active:scale-95">
+                      Explore Organic Solutions <ArrowRight className="w-3 h-3 md:w-4 md:h-4" strokeWidth={3} />
+                    </a>
+                  </div>
                 </div>
               </div>
             </section>
 
             {/* Section 3: Who We Are */}
             <section className="bg-[#1b251f] text-white py-16 md:py-24 px-4 md:px-12 relative overflow-hidden" id="about">
-              <div className="absolute bottom-0 right-0 w-48 h-48 md:w-80 md:h-80 bg-[#c2dd74]/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-48 h-48 md:w-80 md:h-80 bg-[#D2AF6E]/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
               <div className="max-w-7xl mx-auto relative z-10">
 
                 <div className="flex flex-col-reverse lg:flex-row items-center gap-8 md:gap-12">
                   <div className="w-full lg:w-1/2">
-                    <span className="text-[10px] md:text-xs font-black text-[#c2dd74] uppercase tracking-widest block mb-2 md:mb-4">WHO WE ARE</span>
+                    <span className="text-[10px] md:text-xs font-black text-[#D2AF6E] uppercase tracking-widest block mb-2 md:mb-4">WHO WE ARE</span>
                     <h2 className="text-2xl md:text-5xl font-extrabold mb-4 md:mb-6 leading-tight tracking-tight">
-                      Built by farmers. <br className="hidden md:block" /><span className="text-[#c2dd74]">Backed by science.</span>
+                      Built by farmers. <br className="hidden md:block" /><span className="text-[#D2AF6E]">Backed by science.</span>
                     </h2>
                     <p className="text-white/75 text-xs md:text-base leading-relaxed mb-4 md:mb-5">
                       Agriic was born from a simple frustration — watching generations of Indian farmers apply generic chemicals to unique soils, and wondering why yields kept falling. Founded in 2021 in Pune, Maharashtra, we set out to change that with one core belief: <strong className="text-white">every farm deserves a personalized solution.</strong>
@@ -1849,7 +1975,7 @@ export default function App() {
                         { num: '2021', label: 'Founded In' },
                       ].map((stat, i) => (
                         <div key={i} className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-2.5 md:p-4 text-center backdrop-blur-sm">
-                          <div className="text-xl md:text-3xl font-black text-[#c2dd74] mb-0.5 md:mb-1">{stat.num}</div>
+                          <div className="text-xl md:text-3xl font-black text-[#D2AF6E] mb-0.5 md:mb-1">{stat.num}</div>
                           <div className="text-[9px] md:text-[11px] text-white/60 font-semibold uppercase tracking-wide leading-tight">{stat.label}</div>
                         </div>
                       ))}
@@ -1865,7 +1991,7 @@ export default function App() {
                       <div className="absolute inset-0 bg-gradient-to-t from-[#1a2a1e]/80 md:from-[#1a2a1e]/70 to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
                         <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl md:rounded-2xl px-3 py-2 md:px-5 md:py-3 inline-flex items-center space-x-2 md:space-x-3">
-                          <Award className="w-4 h-4 md:w-5 md:h-5 text-[#c2dd74] shrink-0" />
+                          <Award className="w-4 h-4 md:w-5 md:h-5 text-[#D2AF6E] shrink-0" />
                           <span className="text-[10px] md:text-sm font-bold text-white">ICAR Recognized Agri-Tech Company, 2024</span>
                         </div>
                       </div>
@@ -1885,36 +2011,50 @@ export default function App() {
                   <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Best Sellers</h2>
                 </div>
 
-                <div ref={bestSellersRef} className="flex flex-row overflow-x-auto no-scrollbar snap-x snap-mandatory gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 pb-4 scroll-smooth">
+                <div ref={bestSellersRef} className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 pb-4">
                   {liveProducts.slice(0, 4).map((p) => (
-                    <div key={p.id} className="bg-white rounded-[24px] overflow-hidden shadow-sm border border-gray-200 hover:border-[#c2dd74] group transition-all duration-300 hover:shadow-xl md:hover:-translate-y-2 flex flex-col h-full w-[85vw] max-w-[85vw] flex-shrink-0 snap-center md:w-auto md:max-w-none md:flex-shrink md:snap-start">
-                      <div className="relative p-6 bg-[#f7f6ee] flex justify-center items-center group-hover:bg-[#f0eedd] transition-colors h-56">
-                        <img src={p.img} alt={p.name} className="w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-xl" />
-                        <span className="absolute top-4 left-4 bg-white/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-agri-dark border border-gray-200">
-                          {p.category.replace('-', ' ')}
-                        </span>
+                    <div key={p.id} className="bg-white rounded-[16px] md:rounded-[24px] overflow-hidden border border-[#e6e6e6] hover:border-[#D2AF6E] group transition-all duration-300 hover:shadow-xl md:hover:-translate-y-1 flex flex-col h-full">
+                      <div className="relative bg-[#f7f6ee] flex justify-center items-center h-28 sm:h-36 md:h-64 overflow-hidden">
+                        <img
+                          src={p.img}
+                          alt={p.name}
+                          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                        />
                         {p.stock <= p.lowStockLimit && (
-                          <span className="absolute top-4 right-4 bg-red-100 text-red-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-200">
+                          <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-red-500/90 backdrop-blur-md px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md text-[7px] sm:text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-white z-10 shadow-sm">
                             Low Stock
-                          </span>
+                          </div>
                         )}
                       </div>
-                      <div className="p-6 flex flex-col flex-grow">
-                        <h3 className="text-lg font-extrabold text-gray-900 mb-2 leading-tight">{p.name}</h3>
-                        <p className="text-xs text-gray-500 mb-4 line-clamp-2">{p.desc}</p>
-                        
-                        <div className="mt-auto flex items-center justify-between">
-                          <div className="flex flex-col">
-                            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Price</span>
-                            <span className="text-xl font-black text-agri-dark">₹{p.price}</span>
+                      <div className="p-2.5 sm:p-3.5 md:p-6 flex flex-col flex-grow bg-white">
+                        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black text-[#5a8b3d] uppercase tracking-[0.15em] mb-1 sm:mb-1.5 md:mb-2 block truncate">
+                          {p.category.replace('-', ' ')}
+                        </span>
+                        <h3 className="text-xs sm:text-sm md:text-xl font-extrabold text-gray-900 mb-1 sm:mb-2 md:mb-3 leading-tight group-hover:text-[#5a8b3d] transition-colors line-clamp-1 sm:line-clamp-2">
+                          {p.name}
+                        </h3>
+                        <p className="hidden sm:block text-[9px] md:text-sm text-gray-500 mb-2 sm:mb-4 flex-grow leading-relaxed line-clamp-2 md:line-clamp-3">
+                          {p.desc}
+                        </p>
+                        <div className="mt-auto mb-2 sm:mb-3 pt-2 sm:pt-3 border-t border-gray-100 flex items-center justify-between">
+                          <div className="flex flex-col gap-0.5">
+                            <span className="text-[8px] sm:text-[10px] md:text-[11px] font-bold text-gray-400 line-through">₹{Math.round(p.price / 0.9)}</span>
+                            <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
+                              <span className="text-sm sm:text-base md:text-xl font-black text-gray-900 leading-none">₹{p.price}</span>
+                              <span className="bg-[#fee2e2] text-[#dc2626] px-1 py-0.5 sm:px-1.5 md:px-2 md:py-0.5 rounded text-[7px] sm:text-[8px] md:text-[9px] font-black uppercase tracking-widest leading-none">10% OFF</span>
+                            </div>
                           </div>
-                          <button 
-                            onClick={() => addToCart(p)}
-                            className="w-10 h-10 rounded-full bg-agri-dark text-white flex justify-center items-center hover:bg-[#c2dd74] hover:text-agri-dark transition-colors shadow-md"
-                          >
-                            <ShoppingCart className="w-4 h-4" />
-                          </button>
                         </div>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            addToCart(p);
+                          }}
+                          className="w-full flex items-center justify-center space-x-1.5 sm:space-x-2 border border-gray-200 sm:border-2 sm:border-gray-100 hover:border-[#5a8b3d] hover:bg-[#f9faf5] text-gray-800 font-extrabold py-1.5 sm:py-2 md:py-3.5 rounded-lg sm:rounded-xl text-[9px] sm:text-xs uppercase tracking-widest transition-all duration-300"
+                        >
+                          <ShoppingCart className="w-3 h-3 md:w-4 md:h-4" strokeWidth={2.5} />
+                          <span>Add to Cart</span>
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -1926,9 +2066,9 @@ export default function App() {
             {/* Section 6: Big Brand Science banner */}
             <section className="w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-[1440px] mx-auto bg-agri-dark text-white py-12 md:py-20 px-6 md:px-16 flex flex-col lg:flex-row items-center justify-between rounded-tl-[48px] rounded-br-[48px] rounded-tr-xl rounded-bl-xl md:rounded-tl-[120px] md:rounded-br-[120px] md:rounded-tr-2xl md:rounded-bl-2xl my-8 md:my-16 shadow-2xl relative overflow-hidden">
               {/* Decorative background blobs to enhance the premium feel */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#c2dd74]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#c2dd74]/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
-              
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#D2AF6E]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#D2AF6E]/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
+
               <div className="w-full lg:w-1/2 mb-8 lg:mb-0 max-w-xl z-10">
                 <span className="text-xs font-bold text-agri-lime tracking-widest uppercase block mb-2 font-mono">SOIL DISCIPLINE</span>
                 <h2 className="text-2xl md:text-5xl font-extrabold mb-4 md:mb-6 leading-tight">Root development science is our priority.</h2>
@@ -1940,9 +2080,9 @@ export default function App() {
                 </div>
               </div>
               <div className="w-full lg:w-1/2 flex justify-center z-10">
-                <img 
-                  src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=700&q=80" 
-                  alt="Root system structure photography" 
+                <img
+                  src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=700&q=80"
+                  alt="Root system structure photography"
                   className="rounded-tl-[48px] rounded-br-[48px] rounded-tr-xl rounded-bl-xl md:rounded-tl-[80px] md:rounded-br-[80px] md:rounded-tr-2xl md:rounded-bl-2xl w-full max-w-md object-cover h-52 md:h-72 shadow-2xl border-2 border-white/10"
                 />
               </div>
@@ -1951,40 +2091,26 @@ export default function App() {
             {/* Section 7: From Farmer to Future */}
             <section className="py-16 md:py-24 bg-white relative" id="farmer-to-future">
               <div className="max-w-[1440px] mx-auto px-4 md:px-8">
-                
+
                 {/* Part 1: Hero */}
                 <div className="flex flex-col lg:flex-row items-center gap-12 mb-20 max-w-7xl mx-auto">
                   <div className="w-full lg:w-[45%] pl-4 md:pl-8">
                     <h2 className="text-4xl md:text-6xl font-extrabold text-[#1a2a1e] leading-tight mb-6 tracking-tight">
-                      From Farmer to Future.<br/>
+                      From Farmer to Future.<br />
                       <span className="text-[#365922]">The Agriic Way.</span>
                     </h2>
                     <p className="text-gray-700 text-sm md:text-lg leading-relaxed mb-10 max-w-lg font-medium">
                       We move farmers to organic the right way — with complete support, end-to-end care, and a promise to buy, process, and sell their harvest.
                     </p>
-                    <button className="bg-[#2b4d36] hover:bg-[#1b3322] text-white font-extrabold px-8 py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1">
+                    <button className="bg-[#377355] hover:bg-[#377355] text-white font-extrabold px-8 py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1">
                       Our Journey Together
                     </button>
                   </div>
-                  <div className="w-full lg:w-[55%] relative">
-                    <div className="rounded-[40px] overflow-hidden shadow-2xl relative w-full aspect-[4/3] md:aspect-auto md:h-[450px]">
-                      <img src="/indian_farmer_hero.png" alt="Happy Indian Farmer" className="w-full h-full object-cover" />
+                  <div className="w-full lg:w-[55%] relative flex items-center justify-center">
+                    <div className="rounded-[32px] md:rounded-[40px] overflow-hidden shadow-2xl relative w-full h-auto">
+                      <img src="/farmerimg1.jpeg" alt="Happy Indian Farmer" className="w-full h-auto object-cover block" />
                       {/* Gradient overlay for text readability if needed */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                    </div>
-                    {/* Floating Promise Card */}
-                    <div className="absolute -top-6 -right-2 md:top-8 md:-right-8 bg-[#fcfbf7]/95 backdrop-blur-md p-5 md:p-6 rounded-2xl shadow-xl border border-gray-100 max-w-[280px] z-10">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-full bg-[#eaf1d4] flex items-center justify-center shrink-0">
-                          <Leaf className="w-5 h-5 text-[#365922]" />
-                        </div>
-                        <h4 className="font-extrabold text-[#1a2a1e] text-lg">Our Promise</h4>
-                      </div>
-                      <p className="text-xs md:text-sm font-semibold text-gray-700 leading-relaxed">
-                        Better soil. Better yield.<br/>
-                        Better income.<br/>
-                        A better tomorrow.
-                      </p>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
                     </div>
                   </div>
                 </div>
@@ -1992,12 +2118,13 @@ export default function App() {
                 {/* Part 2: End-to-End Support Process */}
                 <div className="mb-24 max-w-7xl mx-auto">
                   <h3 className="text-center text-2xl md:text-3xl font-extrabold text-[#1a2a1e] mb-16 tracking-tight">Our End-to-End Support for Farmers</h3>
-                  
+
                   <div className="relative">
                     {/* Dashed connector line for desktop */}
                     <div className="hidden md:block absolute top-[44px] left-[7%] right-[7%] h-0.5 border-t-2 border-dashed border-[#8dbb43] z-0"></div>
 
-                    <div className="flex flex-col md:grid md:grid-cols-7 gap-10 md:gap-4 relative z-10">
+                    {/* Mobile: horizontal snap scroll showing exactly 2 steps at a time. Desktop: 7-col grid */}
+                    <div className="flex flex-row overflow-x-auto snap-x snap-mandatory no-scrollbar gap-3 pb-4 md:pb-0 md:grid md:grid-cols-7 md:gap-4 md:overflow-visible relative z-10">
                       {[
                         { num: 1, icon: <ShoppingBag />, title: 'We Provide\nQuality Inputs', desc: 'We provide certified organic seeds and natural fertilizers to start your organic journey.' },
                         { num: 2, icon: <HandHeart />, title: 'Guidance for\nOrganic Transition', desc: 'We train and guide farmers to adopt organic practices and improve soil health.' },
@@ -2007,26 +2134,19 @@ export default function App() {
                         { num: 6, icon: <Factory />, title: 'We Process\nwith Care', desc: 'We clean, grade and process your produce while maintaining its quality.' },
                         { num: 7, icon: <ShoppingCart />, title: 'We Sell on Our\nOnline Platform', desc: 'Your crops reach thousands of customers through our online store - fresh and trusted.' }
                       ].map((step, i) => (
-                        <div key={i} className="flex flex-col items-center text-center relative group">
+                        <div key={i} className="snap-start flex-none flex flex-col items-center text-center relative group bg-gradient-to-b from-white to-[#f9faf5] md:bg-transparent rounded-2xl md:rounded-none p-4 md:p-0 border border-gray-150 md:border-0 shadow-sm hover:shadow-md hover:border-[#D2AF6E] md:shadow-none transition-all duration-300" style={{ width: 'calc(50% - 6px)' }}>
                           {/* Number badge */}
-                          <div className="absolute -top-3 -left-3 md:-top-2 md:-left-2 w-6 h-6 rounded-full bg-[#365922] text-white flex items-center justify-center text-[10px] font-black z-20 shadow-md transition-transform group-hover:scale-110">
+                          <div className="absolute top-2 left-2 md:-top-2 md:-left-2 w-5 h-5 md:w-6 md:h-6 rounded-full bg-[#365922] text-white flex items-center justify-center text-[9px] md:text-[10px] font-black z-20 shadow-md transition-transform group-hover:scale-110">
                             {step.num}
                           </div>
-                          
+
                           {/* Icon container */}
-                          <div className="w-24 h-24 bg-[#fcfbf7] rounded-[24px] shadow-sm border border-gray-100 flex items-center justify-center text-[#365922] mb-6 relative z-10 transition-all duration-300 group-hover:shadow-md group-hover:border-[#c2dd74] group-hover:-translate-y-1">
-                            <div className="[&>svg]:w-10 [&>svg]:h-10 [&>svg]:stroke-[1.5]">{step.icon}</div>
+                          <div className="w-14 h-14 md:w-24 md:h-24 bg-white md:bg-[#fcfbf7] rounded-[16px] md:rounded-[24px] shadow-sm border border-gray-100 flex items-center justify-center text-[#365922] mb-3 md:mb-6 mt-2 md:mt-0 relative z-10 transition-all duration-300 group-hover:shadow-md group-hover:border-[#D2AF6E] group-hover:-translate-y-1">
+                            <div className="[&>svg]:w-6 [&>svg]:h-6 md:[&>svg]:w-10 md:[&>svg]:h-10 [&>svg]:stroke-[1.5]">{step.icon}</div>
                           </div>
-                          
-                          <h4 className="font-extrabold text-[#1a2a1e] text-[13px] md:text-sm mb-3 whitespace-pre-line leading-tight h-10">{step.title}</h4>
-                          <p className="text-[11px] text-gray-500 font-medium px-1 leading-relaxed md:line-clamp-6">{step.desc}</p>
-                          
-                          {/* Mobile connector arrow */}
-                          {i < 6 && (
-                            <div className="md:hidden mt-6 text-[#c2dd74]">
-                              <ArrowRight className="w-6 h-6" />
-                            </div>
-                          )}
+
+                          <h4 className="font-extrabold text-[#1a2a1e] text-[11px] md:text-sm mb-1 md:mb-3 whitespace-pre-line leading-tight md:h-10">{step.title}</h4>
+                          <p className="text-[10px] md:text-[11px] text-gray-500 font-medium px-1 leading-relaxed line-clamp-3 md:line-clamp-6">{step.desc}</p>
                         </div>
                       ))}
                     </div>
@@ -2036,7 +2156,7 @@ export default function App() {
                 {/* Part 3: Why Choose Agriic (Benefits) */}
                 <div className="bg-[#fcfbf7] rounded-[40px] p-8 md:p-12 mb-10 shadow-sm border border-gray-100 max-w-7xl mx-auto transition-shadow hover:shadow-md">
                   <h3 className="text-center text-2xl font-extrabold text-[#1a2a1e] mb-12 tracking-tight">Why Farmers Choose Agriic</h3>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4 lg:gap-6">
                     {[
                       { icon: <HandHeart />, title: 'Complete Support', desc: 'From input to income, we are with you.' },
@@ -2070,7 +2190,7 @@ export default function App() {
                     </div>
                     <div className="h-10 w-px bg-white/20 hidden md:block mt-1"></div>
                     <p className="text-white/80 text-[10px] md:text-xs font-semibold leading-relaxed text-center md:text-left">
-                      Empowering farmers. Enriching lives.<br/>
+                      Empowering farmers. Enriching lives.<br />
                       Building a sustainable tomorrow.
                     </p>
                   </div>
@@ -2090,7 +2210,7 @@ export default function App() {
                   </div>
 
                   <div className="flex flex-col items-center md:items-end gap-2 z-10 w-full md:w-auto mt-4 md:mt-0">
-                    <button className="bg-[#c2dd74] hover:bg-white text-[#1a2a1e] font-extrabold px-6 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-lg w-full md:w-auto group">
+                    <button className="bg-[#D2AF6E] hover:bg-white text-[#1a2a1e] font-extrabold px-6 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-lg w-full md:w-auto group">
                       Join Agriic Today <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={3} />
                     </button>
                     <p className="text-[9px] text-white/60 font-semibold tracking-wide">
@@ -2104,22 +2224,22 @@ export default function App() {
 
             {/* Section 8: MEMBERSHIP HUB */}
             <div id="membership" className="w-full bg-white relative overflow-hidden">
-              
+
               {/* 1. Hero Section */}
               <section className="relative bg-gradient-to-br from-[#1a2a1e] to-[#2c3e2d] py-24 px-6 md:px-12 text-center text-white overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
                   <img src="https://images.unsplash.com/photo-1628183185360-1e5b15b6d9be?auto=format&fit=crop&w=1920&q=80" alt="Farm Background" className="w-full h-full object-cover mix-blend-overlay" />
                 </div>
                 <div className="max-w-4xl mx-auto relative z-10">
-                  <span className="text-xs md:text-sm font-black text-[#c2dd74] tracking-widest block mb-4 uppercase">AGRIIC PREMIUM MEMBERSHIP</span>
+                  <span className="text-xs md:text-sm font-black text-[#D2AF6E] tracking-widest block mb-4 uppercase">AGRIIC PREMIUM MEMBERSHIP</span>
                   <h2 className="text-4xl md:text-7xl font-extrabold mb-6 leading-tight tracking-tight">
-                    Own The Harvest,<br/>Not The Hassle.
+                    Own The Harvest,<br />Not The Hassle.
                   </h2>
                   <p className="text-white/80 text-sm md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
                     Become a member of India's most transparent organic farming ecosystem. Track your crops, visit your farm, and receive fresh harvests directly from your dedicated farmland.
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button className="w-full sm:w-auto px-8 py-4 bg-[#c2dd74] text-[#1a2a1e] rounded-full font-extrabold text-sm hover:bg-white transition shadow-xl">
+                    <button className="w-full sm:w-auto px-8 py-4 bg-[#D2AF6E] text-[#1a2a1e] rounded-full font-extrabold text-sm hover:bg-white transition shadow-xl">
                       Join Membership
                     </button>
                     <button className="w-full sm:w-auto px-8 py-4 bg-white/10 text-white rounded-full font-extrabold text-sm border border-white/20 hover:bg-white/20 transition backdrop-blur-md">
@@ -2133,12 +2253,12 @@ export default function App() {
               <section className="py-20 px-0 md:px-12 bg-[#f7f6ee]">
                 <div className="max-w-7xl mx-auto text-center">
                   <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-16 tracking-tight px-6 md:px-0">How Membership Works</h3>
-                  
+
                   <div className="overflow-x-auto no-scrollbar pb-8 px-6 md:px-0 snap-x snap-mandatory">
                     <div className="flex flex-row md:grid md:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-8 relative min-w-max md:min-w-0">
                       {/* Decorative connecting line */}
                       <div className="absolute top-8 left-16 right-16 h-0.5 bg-gray-200 z-0"></div>
-                      
+
                       {[
                         { step: '01', title: 'Choose Plan' },
                         { step: '02', title: 'Farm Allocation' },
@@ -2148,7 +2268,7 @@ export default function App() {
                         { step: '06', title: 'Harvest Delivery' },
                       ].map((item, i) => (
                         <div key={i} className="relative z-10 flex flex-col items-center min-w-[140px] md:min-w-0 flex-shrink-0 snap-center">
-                          <div className="w-16 h-16 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-xl font-black text-[#c2dd74] mb-4">
+                          <div className="w-16 h-16 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-xl font-black text-[#D2AF6E] mb-4">
                             {item.step}
                           </div>
                           <h4 className="font-bold text-gray-900 text-sm md:text-base whitespace-nowrap">{item.title}</h4>
@@ -2165,7 +2285,7 @@ export default function App() {
                   <div className="text-center mb-16">
                     <h3 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight">Select Your Farm Size</h3>
                   </div>
-                  <div 
+                  <div
                     ref={pricingRef}
                     className="flex flex-row overflow-x-auto no-scrollbar snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-8 pb-8 -mx-6 px-6 md:mx-0 md:px-0 scroll-smooth"
                     onScroll={(e) => {
@@ -2194,18 +2314,18 @@ export default function App() {
                       const isPopular = activePlanIndex === i;
                       const planColor = isPopular ? 'bg-[#2c3e2d]' : 'bg-white';
                       const planText = isPopular ? 'text-white' : 'text-gray-900';
-                      
+
                       return (
-                        <div 
-                          key={i} 
-                          className={`relative rounded-3xl p-8 border transition-all duration-500 ease-out ${isPopular ? 'border-[#c2dd74] shadow-2xl md:scale-105 z-10' : 'border-gray-200 shadow-lg'} ${planColor} flex flex-col w-[85vw] max-w-[85vw] flex-shrink-0 snap-center cursor-pointer md:w-auto md:max-w-none md:min-w-0`}
+                        <div
+                          key={i}
+                          className={`relative rounded-3xl p-8 border transition-all duration-500 ease-out ${isPopular ? 'border-[#D2AF6E] shadow-2xl md:scale-105 z-10' : 'border-gray-200 shadow-lg'} ${planColor} flex flex-col w-[85vw] max-w-[85vw] flex-shrink-0 snap-center cursor-pointer md:w-auto md:max-w-none md:min-w-0`}
                           onMouseEnter={() => window.innerWidth >= 768 && setActivePlanIndex(i)}
                         >
-                          {isPopular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#c2dd74] text-[#1a2a1e] font-black text-[10px] px-4 py-1 rounded-full tracking-widest uppercase shadow-md whitespace-nowrap transition-opacity duration-300">Selected</span>}
+                          {isPopular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#D2AF6E] text-[#1a2a1e] font-black text-[10px] px-4 py-1 rounded-full tracking-widest uppercase shadow-md whitespace-nowrap transition-opacity duration-300">Selected</span>}
                           <h4 className={`text-xl font-black mb-2 transition-colors duration-300 ${planText}`}>{plan.name} Plan</h4>
                           <div className={`text-4xl font-extrabold mb-1 transition-colors duration-300 ${planText}`}>{plan.price}</div>
                           <p className={`text-sm mb-6 transition-colors duration-300 ${isPopular ? 'text-white/70' : 'text-gray-500'}`}>Farm Allocation: {plan.area}</p>
-                          
+
                           <div className="space-y-4 mb-8 flex-grow">
                             {[
                               { label: 'Seasonal Vegetables', active: plan.veg },
@@ -2218,7 +2338,7 @@ export default function App() {
                             ].map((feat, j) => (
                               <div key={j} className="flex items-center text-sm font-semibold">
                                 {feat.active ? (
-                                  <div className="w-5 h-5 rounded-full bg-[#c2dd74] flex justify-center items-center mr-3 shrink-0 text-[#1a2a1e] text-[10px] font-black transition-colors duration-300">✓</div>
+                                  <div className="w-5 h-5 rounded-full bg-[#D2AF6E] flex justify-center items-center mr-3 shrink-0 text-[#1a2a1e] text-[10px] font-black transition-colors duration-300">✓</div>
                                 ) : (
                                   <div className={`w-5 h-5 rounded-full border transition-colors duration-300 ${isPopular ? 'border-white/20' : 'border-gray-300'} flex justify-center items-center mr-3 shrink-0 ${isPopular ? 'text-white/30' : 'text-gray-400'} text-[10px] font-black`}>✕</div>
                                 )}
@@ -2226,7 +2346,7 @@ export default function App() {
                               </div>
                             ))}
                           </div>
-                          <button className={`w-full py-4 rounded-xl font-extrabold text-sm transition-all duration-300 ${isPopular ? 'bg-[#c2dd74] text-[#1a2a1e] hover:bg-white' : 'bg-gray-100 text-gray-900 hover:bg-[#c2dd74]'}`}>
+                          <button className={`w-full py-4 rounded-xl font-extrabold text-sm transition-all duration-300 ${isPopular ? 'bg-[#D2AF6E] text-[#1a2a1e] hover:bg-white' : 'bg-gray-100 text-gray-900 hover:bg-[#D2AF6E]'}`}>
                             Become a Member
                           </button>
                         </div>
@@ -2251,15 +2371,15 @@ export default function App() {
                       <ul className="space-y-3">
                         {['Live Crop Status & Photos', 'Video Updates', 'Harvest Calendar', 'Delivery Tracking'].map((li, i) => (
                           <li key={i} className="flex items-center text-gray-800 font-bold text-sm">
-                            <div className="w-5 h-5 rounded-full bg-[#c2dd74] flex justify-center items-center mr-3 text-[#1a2a1e] text-[10px]">✓</div>
+                            <div className="w-5 h-5 rounded-full bg-[#D2AF6E] flex justify-center items-center mr-3 text-[#1a2a1e] text-[10px]">✓</div>
                             {li}
                           </li>
                         ))}
                       </ul>
                     </div>
                     <div className="w-full lg:w-1/2 relative pr-2 md:pr-0">
-                      <div className="absolute inset-0 bg-[#c2dd74]/20 rounded-[32px] transform translate-x-2 translate-y-2 md:translate-x-4 md:translate-y-4"></div>
-                      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Dashboard App Mockup" className="relative rounded-[32px] shadow-2xl w-full border border-gray-100 object-cover" />
+                      <div className="absolute inset-0 bg-[#D2AF6E]/20 rounded-[32px] transform translate-x-2 translate-y-2 md:translate-x-4 md:translate-y-4"></div>
+                      <img src="dashboard.jpeg" alt="Dashboard App Mockup" className="relative rounded-[32px] shadow-2xl w-full border border-gray-100 object-cover" />
                     </div>
                   </div>
 
@@ -2279,96 +2399,96 @@ export default function App() {
                 </div>
               </section>
 
-            {/* Section 9: Health & Organic Benefits */}
-            <section className="py-20 md:py-32 px-6 md:px-12 bg-white border-t border-gray-100">
-              <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-16 max-w-3xl mx-auto">
-                  <span className="text-xs font-black text-agri-green-mid uppercase tracking-widest block mb-4">YOUR HEALTH FIRST</span>
-                  <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">The true cost of what's on your plate.</h2>
-                  <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-                    The modern food industry has prioritized scale over safety. Discover the stark reality of chemical agriculture, and why transitioning to 100% organic is the only sustainable choice for your family's health and longevity.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 md:gap-12">
-                  {/* Danger Side */}
-                  <div className="bg-[#fffdfd] border border-red-100 p-4 md:p-12 rounded-[20px] md:rounded-[32px] relative overflow-hidden group transition-all duration-500 hover:shadow-xl hover:border-red-200">
-                    <div className="absolute top-0 right-0 w-24 h-24 md:w-48 md:h-48 bg-red-50 rounded-full blur-2xl md:blur-3xl -mr-8 -mt-8 md:-mr-16 md:-mt-16 transition duration-700 group-hover:scale-150"></div>
-                    <div className="relative z-10">
-                      <div className="w-8 h-8 md:w-14 md:h-14 bg-red-50 text-red-500 border border-red-100 rounded-full flex items-center justify-center text-sm md:text-2xl mb-4 md:mb-8 shadow-sm">⚠️</div>
-                      <h3 className="text-sm md:text-2xl font-extrabold text-gray-900 mb-2 md:mb-4">The Silent Dangers of Chemical Fertilizers</h3>
-                      <p className="text-gray-600 mb-4 md:mb-8 leading-tight md:leading-relaxed text-[9px] md:text-base">
-                        Conventional farming relies heavily on synthetic urea, toxic pesticides, and chemical herbicides. These don't just wash off in the sink—they absorb directly into the cellular structure of the crops you consume daily.
-                      </p>
-                      <ul className="space-y-3 md:space-y-6">
-                        {[
-                          { title: 'Endocrine Disruption', desc: 'Chemical pesticide residues act as hormone disruptors in the human body, heavily linked to severe metabolic imbalances and developmental issues in children.' },
-                          { title: 'Chronic & Severe Diseases', desc: 'Long-term accumulation of synthetic fertilizer residues is scientifically associated with significantly increased risks of neurodegenerative diseases and certain forms of cancer.' },
-                          { title: 'Severe Nutrient Depletion', desc: 'Chemicals rapidly degrade the soil biome. The result? Vegetables that look artificially large but are completely stripped of essential trace minerals and natural taste.' }
-                        ].map((item, i) => (
-                          <li key={i} className="flex items-start">
-                            <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-red-100 flex items-center justify-center mr-2 md:mr-4 mt-0.5 shrink-0">
-                              <span className="text-red-500 text-[7px] md:text-[10px] font-black">✕</span>
-                            </div>
-                            <div>
-                              <span className="block font-bold text-gray-900 text-[10px] md:text-base mb-0.5 md:mb-1">{item.title}</span>
-                              <span className="block text-[8px] md:text-sm text-gray-500 leading-tight md:leading-relaxed">{item.desc}</span>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+              {/* Section 9: Health & Organic Benefits */}
+              <section className="py-20 md:py-32 px-6 md:px-12 bg-white border-t border-gray-100">
+                <div className="max-w-7xl mx-auto">
+                  <div className="text-center mb-16 max-w-3xl mx-auto">
+                    <span className="text-xs font-black text-agri-green-mid uppercase tracking-widest block mb-4">YOUR HEALTH FIRST</span>
+                    <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">The true cost of what's on your plate.</h2>
+                    <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                      The modern food industry has prioritized scale over safety. Discover the stark reality of chemical agriculture, and why transitioning to 100% organic is the only sustainable choice for your family's health and longevity.
+                    </p>
                   </div>
 
-                  {/* Organic Side */}
-                  <div className="bg-[#f7fada] border border-[#d6e8a0] p-4 md:p-12 rounded-[20px] md:rounded-[32px] shadow-lg relative overflow-hidden group transition-all duration-500 hover:shadow-2xl">
-                    <div className="absolute top-0 right-0 w-32 h-32 md:w-64 md:h-64 bg-[#c2dd74] opacity-20 rounded-full blur-2xl md:blur-3xl -mr-8 -mt-8 md:-mr-16 md:-mt-16 transition duration-700 group-hover:scale-150"></div>
-                    <div className="relative z-10">
-                      <div className="w-8 h-8 md:w-14 md:h-14 bg-white text-[#5b7a2d] shadow-sm rounded-full flex items-center justify-center text-sm md:text-2xl mb-4 md:mb-8">🌿</div>
-                      <h3 className="text-sm md:text-2xl font-extrabold text-gray-900 mb-2 md:mb-4">The Healing Power of True Organic</h3>
-                      <p className="text-gray-700 mb-4 md:mb-8 leading-tight md:leading-relaxed text-[9px] md:text-base">
-                        True organic farming works in perfect harmony with nature. By nurturing the soil microbiome with cow dung manure, Jeevamrut, and vermicompost, we cultivate crops that actively heal and nourish your body.
-                      </p>
-                      <ul className="space-y-3 md:space-y-6">
-                        {[
-                          { title: 'Rich Antioxidant Profiles', desc: 'Organically grown plants are proven to produce up to 60% more natural antioxidants, actively protecting your cells from premature aging and oxidative stress.' },
-                          { title: 'Natural Immunity Boosting', desc: 'Completely free from toxic interference, organic foods naturally support a healthy gut microbiome, which serves as the absolute foundation of a strong human immune system.' },
-                          { title: 'Superior Nutrient Density', desc: 'Our traditional, unhurried farming methods ensure every single vegetable is densely packed with highly bioavailable vitamins, iron, and crucial earth minerals.' }
-                        ].map((item, i) => (
-                          <li key={i} className="flex items-start">
-                            <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-[#c2dd74] flex items-center justify-center mr-2 md:mr-4 mt-0.5 shrink-0">
-                              <span className="text-[#1a2a1e] text-[7px] md:text-[10px] font-black">✓</span>
-                            </div>
-                            <div>
-                              <span className="block font-bold text-gray-900 text-[10px] md:text-base mb-0.5 md:mb-1">{item.title}</span>
-                              <span className="block text-[8px] md:text-sm text-gray-700 leading-tight md:leading-relaxed">{item.desc}</span>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
+                  <div className="grid grid-cols-2 gap-3 md:gap-12">
+                    {/* Danger Side */}
+                    <div className="bg-[#fffdfd] border border-red-100 p-4 md:p-12 rounded-[20px] md:rounded-[32px] relative overflow-hidden group transition-all duration-500 hover:shadow-xl hover:border-red-200">
+                      <div className="absolute top-0 right-0 w-24 h-24 md:w-48 md:h-48 bg-red-50 rounded-full blur-2xl md:blur-3xl -mr-8 -mt-8 md:-mr-16 md:-mt-16 transition duration-700 group-hover:scale-150"></div>
+                      <div className="relative z-10">
+                        <div className="w-8 h-8 md:w-14 md:h-14 bg-red-50 text-red-500 border border-red-100 rounded-full flex items-center justify-center text-sm md:text-2xl mb-4 md:mb-8 shadow-sm">⚠️</div>
+                        <h3 className="text-sm md:text-2xl font-extrabold text-gray-900 mb-2 md:mb-4">The Silent Dangers of Chemical Fertilizers</h3>
+                        <p className="text-gray-600 mb-4 md:mb-8 leading-tight md:leading-relaxed text-[9px] md:text-base">
+                          Conventional farming relies heavily on synthetic urea, toxic pesticides, and chemical herbicides. These don't just wash off in the sink—they absorb directly into the cellular structure of the crops you consume daily.
+                        </p>
+                        <ul className="space-y-3 md:space-y-6">
+                          {[
+                            { title: 'Endocrine Disruption', desc: 'Chemical pesticide residues act as hormone disruptors in the human body, heavily linked to severe metabolic imbalances and developmental issues in children.' },
+                            { title: 'Chronic & Severe Diseases', desc: 'Long-term accumulation of synthetic fertilizer residues is scientifically associated with significantly increased risks of neurodegenerative diseases and certain forms of cancer.' },
+                            { title: 'Severe Nutrient Depletion', desc: 'Chemicals rapidly degrade the soil biome. The result? Vegetables that look artificially large but are completely stripped of essential trace minerals and natural taste.' }
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start">
+                              <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-red-100 flex items-center justify-center mr-2 md:mr-4 mt-0.5 shrink-0">
+                                <span className="text-red-500 text-[7px] md:text-[10px] font-black">✕</span>
+                              </div>
+                              <div>
+                                <span className="block font-bold text-gray-900 text-[10px] md:text-base mb-0.5 md:mb-1">{item.title}</span>
+                                <span className="block text-[8px] md:text-sm text-gray-500 leading-tight md:leading-relaxed">{item.desc}</span>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Organic Side */}
+                    <div className="bg-[#f7fada] border border-[#d6e8a0] p-4 md:p-12 rounded-[20px] md:rounded-[32px] shadow-lg relative overflow-hidden group transition-all duration-500 hover:shadow-2xl">
+                      <div className="absolute top-0 right-0 w-32 h-32 md:w-64 md:h-64 bg-[#D2AF6E] opacity-20 rounded-full blur-2xl md:blur-3xl -mr-8 -mt-8 md:-mr-16 md:-mt-16 transition duration-700 group-hover:scale-150"></div>
+                      <div className="relative z-10">
+                        <div className="w-8 h-8 md:w-14 md:h-14 bg-white text-[#5b7a2d] shadow-sm rounded-full flex items-center justify-center text-sm md:text-2xl mb-4 md:mb-8">🌿</div>
+                        <h3 className="text-sm md:text-2xl font-extrabold text-gray-900 mb-2 md:mb-4">The Healing Power of True Organic</h3>
+                        <p className="text-gray-700 mb-4 md:mb-8 leading-tight md:leading-relaxed text-[9px] md:text-base">
+                          True organic farming works in perfect harmony with nature. By nurturing the soil microbiome with cow dung manure, Jeevamrut, and vermicompost, we cultivate crops that actively heal and nourish your body.
+                        </p>
+                        <ul className="space-y-3 md:space-y-6">
+                          {[
+                            { title: 'Rich Antioxidant Profiles', desc: 'Organically grown plants are proven to produce up to 60% more natural antioxidants, actively protecting your cells from premature aging and oxidative stress.' },
+                            { title: 'Natural Immunity Boosting', desc: 'Completely free from toxic interference, organic foods naturally support a healthy gut microbiome, which serves as the absolute foundation of a strong human immune system.' },
+                            { title: 'Superior Nutrient Density', desc: 'Our traditional, unhurried farming methods ensure every single vegetable is densely packed with highly bioavailable vitamins, iron, and crucial earth minerals.' }
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start">
+                              <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-[#D2AF6E] flex items-center justify-center mr-2 md:mr-4 mt-0.5 shrink-0">
+                                <span className="text-[#1a2a1e] text-[7px] md:text-[10px] font-black">✓</span>
+                              </div>
+                              <div>
+                                <span className="block font-bold text-gray-900 text-[10px] md:text-base mb-0.5 md:mb-1">{item.title}</span>
+                                <span className="block text-[8px] md:text-sm text-gray-700 leading-tight md:leading-relaxed">{item.desc}</span>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </section>
+              </section>
               {/* 6. Testimonials */}
               <section className="py-20 px-6 md:px-12 bg-gradient-to-b from-[#f7f6ee] to-white">
                 <div className="max-w-7xl mx-auto text-center">
                   <span className="text-xs font-black text-agri-green-mid uppercase tracking-widest block mb-4">MEMBER STORIES</span>
                   <h3 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-16">Trusted by families.</h3>
-                  
-                  <div className="flex flex-row overflow-x-auto no-scrollbar snap-x snap-mandatory gap-6 md:grid md:grid-cols-3 md:gap-8 text-left pb-8 -mx-6 px-6 md:mx-0 md:px-0">
+
+                  <div className="flex flex-row overflow-x-auto no-scrollbar snap-x snap-mandatory gap-4 md:grid md:grid-cols-3 md:gap-8 text-left pb-8 -mx-6 px-6 md:mx-0 md:px-0">
                     {[
                       { name: 'Rahul Sharma', plan: 'Family Member', txt: 'Knowing exactly where my vegetables come from has completely changed our diets. The weekly photos are something my kids look forward to!' },
                       { name: 'Priya Patel', plan: 'Premium Member', txt: 'The farm visits on weekends are therapeutic. The quality of grains and fruits is significantly better than anything at the organic supermarkets.' },
                       { name: 'Ananya & Raj', plan: 'Elite Members', txt: 'Having our own farm manager who customizes crops based on our exact dietary needs is a luxury that has become a necessity for us.' }
                     ].map((t, i) => (
-                      <div key={i} className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 min-w-[300px] md:min-w-0 flex-shrink-0 snap-center">
-                        <div className="flex text-yellow-400 text-xs tracking-widest mb-4">★★★★★</div>
-                        <p className="text-gray-600 italic mb-6 leading-relaxed">"{t.txt}"</p>
-                        <div className="border-t border-gray-100 pt-4">
-                          <span className="block font-bold text-gray-900 text-sm">{t.name}</span>
-                          <span className="block font-semibold text-agri-green-mid text-[10px] uppercase tracking-widest mt-1">{t.plan}</span>
+                      <div key={i} className="bg-white p-5 md:p-8 rounded-2xl md:rounded-3xl shadow-sm border border-gray-100 w-[80vw] min-w-[260px] md:w-auto md:min-w-0 flex-shrink-0 snap-center">
+                        <div className="flex text-yellow-400 text-[10px] md:text-xs tracking-widest mb-3 md:mb-4">★★★★★</div>
+                        <p className="text-gray-600 italic mb-4 md:mb-6 text-sm md:text-base leading-relaxed">"{t.txt}"</p>
+                        <div className="border-t border-gray-100 pt-3 md:pt-4">
+                          <span className="block font-bold text-gray-900 text-xs md:text-sm">{t.name}</span>
+                          <span className="block font-semibold text-agri-green-mid text-[8px] md:text-[10px] uppercase tracking-widest mt-0.5 md:mt-1">{t.plan}</span>
                         </div>
                       </div>
                     ))}
@@ -2391,12 +2511,12 @@ export default function App() {
                       { q: 'What if crops fail?', a: 'Farming is subject to nature. However, our vast ecosystem allows us to buffer minor failures from aggregate reserves so you never go empty-handed.' }
                     ].map((faq, i) => (
                       <div key={i} className="border border-gray-200 rounded-2xl overflow-hidden bg-white">
-                        <button 
+                        <button
                           className="w-full text-left p-6 font-bold text-gray-900 flex justify-between items-center focus:outline-none"
                           onClick={() => setFaqOpen(faqOpen === i ? null : i)}
                         >
                           {faq.q}
-                          <span className={`text-[#c2dd74] text-xl font-black transition-transform ${faqOpen === i ? 'rotate-45' : ''}`}>+</span>
+                          <span className={`text-[#D2AF6E] text-xl font-black transition-transform ${faqOpen === i ? 'rotate-45' : ''}`}>+</span>
                         </button>
                         {faqOpen === i && (
                           <div className="p-6 pt-0 text-sm text-gray-600 leading-relaxed bg-gray-50 border-t border-gray-100">
@@ -2417,7 +2537,7 @@ export default function App() {
                     Join thousands of families who know exactly where their food comes from. Transparent, organic, and delivered fresh.
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button className="w-full sm:w-auto px-8 py-4 bg-[#c2dd74] text-[#1a2a1e] rounded-full font-extrabold text-sm hover:bg-white transition shadow-xl">
+                    <button className="w-full sm:w-auto px-8 py-4 bg-[#D2AF6E] text-[#1a2a1e] rounded-full font-extrabold text-sm hover:bg-white transition shadow-xl">
                       Become a Member
                     </button>
                     <button className="w-full sm:w-auto px-8 py-4 bg-transparent text-white rounded-full font-extrabold text-sm border border-white hover:bg-white/10 transition">
@@ -2426,7 +2546,7 @@ export default function App() {
                   </div>
                 </div>
               </section>
-              
+
             </div>
 
           </div>
@@ -2464,15 +2584,15 @@ export default function App() {
               <h2 className="text-xl md:text-2xl font-extrabold text-slate-900 mb-4 md:mb-6 text-center md:text-left">Longitudinal Case Studies</h2>
               <div className="flex flex-row overflow-x-auto no-scrollbar snap-x snap-mandatory gap-4 md:grid md:grid-cols-2 pb-4">
                 {[
-                  { 
-                    farmer: 'Amit Deshmukh (Pune District)', 
+                  {
+                    farmer: 'Amit Deshmukh (Pune District)',
                     crop: 'Pomegranate Growth',
                     before: 'https://images.unsplash.com/photo-1508849789987-4e5333c12b78?auto=format&fit=crop&w=350&q=80',
                     after: 'https://images.unsplash.com/photo-1610341592771-74946011232f?auto=format&fit=crop&w=350&q=80',
                     desc: 'Soil pH recovery from 5.4 back to balanced 6.7 in just 120 days. Fruit output weight increased by active 42%.'
                   },
-                  { 
-                    farmer: 'Vikas Patel (Anand District)', 
+                  {
+                    farmer: 'Vikas Patel (Anand District)',
                     crop: 'Leaf Nitrogen Density',
                     before: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=350&q=80',
                     after: 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=350&q=80',
@@ -2503,7 +2623,7 @@ export default function App() {
             <div className="bg-gradient-to-r from-agri-dark to-agri-green-mid text-white p-6 md:p-12 rounded-2xl md:rounded-3xl text-center">
               <h3 className="text-xl md:text-2xl font-extrabold mb-3">Ready to test your soil baseline?</h3>
               <p className="text-white/80 max-w-sm mx-auto text-[11px] md:text-xs leading-relaxed mb-5">Receive a custom mineral and composition breakdown analysis through our direct digital Soil Test™ quiz.</p>
-              <a href="#soil-test" className="bg-agri-lime text-[#1b3322] font-black text-xs md:text-sm px-6 py-3.5 rounded-xl shadow-md hover:scale-105 active:scale-95 transition-transform inline-block uppercase">Start diagnostic free</a>
+              <a href="#soil-test" className="bg-agri-lime text-[#377355] font-black text-xs md:text-sm px-6 py-3.5 rounded-xl shadow-md hover:scale-105 active:scale-95 transition-transform inline-block uppercase">Start diagnostic free</a>
             </div>
           </div>
         )}
@@ -2513,10 +2633,10 @@ export default function App() {
           <div className="py-12 px-4 md:px-12 bg-white max-w-5xl mx-auto">
             <span className="text-xs font-black text-agri-green-mid tracking-widest block uppercase mb-2">OUR BOTANICS MISSION</span>
             <h1 className="text-3xl md:text-5xl font-extrabold text-gray-950 mb-6 tracking-tight">Rooted in science, grown for India</h1>
-            
+
             <div className="prose prose-sm text-gray-600 leading-relaxed space-y-6 text-sm mb-12">
               <p>
-                Agriic was established in Vapi, Gujarat with a primary mission: to provide Indian agriculture with customized, soil-specific organic plant nutrition solutions. 
+                Agriic was established in Vapi, Gujarat with a primary mission: to provide Indian agriculture with customized, soil-specific organic plant nutrition solutions.
               </p>
               <p>
                 By avoiding typical synthetic nitrates that permanently crystallize the topsoil, our slow-release recipes integrate trace botanical enzymes to maintain soil porosity and balanced biological biomes.
@@ -2555,375 +2675,207 @@ export default function App() {
 
         {/* VIEW 4: liveProducts */}
         {routePath === '#products' && (
-          <div className="pb-16 bg-white max-w-7xl mx-auto px-4 md:px-8">
-            
-            {/* Tractor Banner Carousel */}
-            <div className="relative w-full rounded-[32px] overflow-hidden my-6 bg-[#f5f4eb] flex flex-col md:flex-row min-h-[360px] md:min-h-[450px] shadow-sm">
-              <div className="flex-1 p-8 md:p-16 flex flex-col justify-center items-start z-10">
-                <span className="text-xs font-black text-[#2b4d36] tracking-widest block uppercase mb-4">
-                  ★ COWBERRY TRUSTED ORGANICS ★
-                </span>
-                <h1 className="text-4xl md:text-6xl font-black text-[#1b3322] leading-[1.1] mb-6 tracking-tight">
-                  ALL INDIA.<br/>
-                  <span className="text-[#3b6d11]">FREE DELIVERY.</span>
-                </h1>
-                <p className="text-slate-650 text-sm md:text-base max-w-md mb-8 leading-relaxed font-semibold">
-                  Get high-quality certified organic food items, grains, spices, and ghee delivered straight to your home with zero shipping charges.
-                </p>
-                <div className="flex items-center space-x-3">
-                  <button 
-                    onClick={() => {
-                      const el = document.getElementById('catalog-products-section');
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className="bg-[#2b4d36] hover:bg-[#3B6D11] text-white font-black text-xs md:text-sm px-6 py-3.5 rounded-xl shadow-lg transition-transform active:scale-95 uppercase tracking-wider"
-                  >
-                    Shop Now
-                  </button>
-                </div>
-              </div>
-              
-              {/* Banner Right Image */}
-              <div className="flex-1 relative min-h-[220px] md:min-h-full">
-                <img 
-                  src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80" 
-                  alt="Tractor in agricultural field" 
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#f5f4eb] via-[#f5f4eb]/40 to-transparent hidden md:block"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#f5f4eb] via-[#f5f4eb]/40 to-transparent md:hidden"></div>
-              </div>
-              
-              {/* Pagination Dots */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-2 z-25">
-                <span className="w-8 h-2 rounded-full bg-[#2b4d36] transition-all"></span>
-                <span className="w-2 h-2 rounded-full bg-[#2b4d36]/30"></span>
-                <span className="w-2 h-2 rounded-full bg-[#2b4d36]/30"></span>
-                <span className="w-2 h-2 rounded-full bg-[#2b4d36]/30"></span>
-              </div>
-            </div>
-
-            {/* Categories Section */}
-            <div className="my-16 text-center">
-              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2">SHOP BY CATEGORY</span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-800">Categories</h2>
-              <div className="w-16 h-1 bg-[#d4af37] mx-auto mt-2 mb-10 rounded-full"></div>
-              
-              <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-4 items-start justify-center">
-                {[
-                  { 
-                    key: 'grains-millet', 
-                    label: 'Whole Grains & Millet', 
-                    svg: (
-                      <svg className="w-10 h-10 text-[#3B6D11]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18M12 3c-1.5 1.5-3 3-3 5.5s1.5 4.5 3 6.5m0-12c1.5 1.5 3 3 3 5.5s-1.5 4.5-3 6.5M9 8h6M9 13h6" />
-                      </svg>
-                    )
-                  },
-                  { 
-                    key: 'rice-poha', 
-                    label: 'Rice & Poha', 
-                    svg: (
-                      <svg className="w-10 h-10 text-[#3B6D11]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c-4.5 0-8 3.5-8 8v1c0 2.5 1.5 5 4 6l4 2 4-2c2.5-1 4-3.5 4-6v-1c0-4.5-3.5-8-8-8zM9 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm4 4a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
-                      </svg>
-                    )
-                  },
-                  { 
-                    key: 'dals-pulses', 
-                    label: 'Dals & Pulses', 
-                    svg: (
-                      <svg className="w-10 h-10 text-[#3B6D11]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-2 0-3 1.5-3 3s1.5 3 3 3 3-1.5 3-3-1-3-3-3zm-6 4c-1.5 0-2.5 1-2.5 2.5S4.5 17 6 17s2.5-1 2.5-2.5S7.5 12 6 12zm12 0c-1.5 0-2.5 1-2.5 2.5s1 2.5 2.5 2.5 2.5-1 2.5-2.5S19.5 12 18 12z" />
-                      </svg>
-                    )
-                  },
-                  { 
-                    key: 'seeds', 
-                    label: 'Seeds', 
-                    svg: (
-                      <svg className="w-10 h-10 text-[#3B6D11]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3c1.5 4.5 4.5 7.5 4.5 10.5S14 19 12 19s-4.5-2.5-4.5-5.5S10.5 7.5 12 3z" />
-                      </svg>
-                    )
-                  },
-                  { 
-                    key: 'salt-spices', 
-                    label: 'Salt & Spices', 
-                    svg: (
-                      <svg className="w-10 h-10 text-[#3B6D11]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.656 48.656 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3M4.5 12l-3-3m3 3l3-3M12 12c-2.5 0-4.5 1-4.5 2.5s2 2.5 4.5 2.5 4.5-1 4.5-2.5-2-2.5-4.5-2.5z" />
-                      </svg>
-                    )
-                  },
-                  { 
-                    key: 'flours-sooji', 
-                    label: 'Flours & Sooji', 
-                    svg: (
-                      <svg className="w-10 h-10 text-[#3B6D11]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a3 3 0 003 3h8a3 3 0 003-3V8m-7 4v5" />
-                      </svg>
-                    )
-                  },
-                  { 
-                    key: 'sweeteners', 
-                    label: 'Sweeteners', 
-                    svg: (
-                      <svg className="w-10 h-10 text-[#3B6D11]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v4M12 17v4m-9-9h4m10 0h4m-3.536-6.364l-2.828 2.828m-4.243 4.243l-2.828 2.828m0-11.314l2.828 2.828m4.243 4.243l2.828 2.828" />
-                      </svg>
-                    )
-                  },
-                  { 
-                    key: 'ghee-oils', 
-                    label: 'Ghee & Oils', 
-                    svg: (
-                      <svg className="w-10 h-10 text-[#3B6D11]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l1.5 3h-3L12 3zm0 3c-3 0-5 2-5 5v7c0 1.5 1 3 3 3h4c2 0 3-1.5 3-3v-7c0-3-2-5-5-5zm-2 6a1 1 0 112 0v3a1 1 0 11-2 0v-3z" />
-                      </svg>
-                    )
-                  }
-                ].map(cat => {
-                  const isActive = productFilter === cat.key;
-                  return (
-                    <button
-                      key={cat.key}
-                      onClick={() => setProductFilter(isActive ? 'all' : cat.key)}
-                      className="flex flex-col items-center group cursor-pointer transition-all duration-200"
-                    >
-                      <div className={`w-18 h-18 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${isActive ? 'bg-[#e8f5e9] border-[#3B6D11] shadow-md scale-105' : 'bg-[#f4f7f5] border-gray-150 group-hover:border-[#3B6D11] group-hover:bg-[#edf4f0] shadow-sm'}`}>
-                        {cat.svg}
-                      </div>
-                      <span className={`text-[10px] font-bold text-center mt-2.5 leading-tight transition-colors ${isActive ? 'text-[#3B6D11]' : 'text-slate-650 group-hover:text-slate-800'}`}>
-                        {cat.label}
-                      </span>
-                    </button>
-                  );
-                })}
-
-                {/* All Categories Block */}
-                <button
-                  onClick={() => setProductFilter('all')}
-                  className="flex flex-col items-center justify-center group cursor-pointer h-full"
-                >
-                  <div className={`w-18 h-18 rounded-xl flex flex-col items-center justify-center border-2 transition-all duration-300 text-center ${productFilter === 'all' ? 'bg-[#e8f5e9] border-[#3B6D11] shadow-md' : 'bg-[#f4f7f5] border-gray-150 group-hover:border-[#3B6D11] group-hover:bg-[#edf4f0]'}`}>
-                    <span className="text-[#3B6D11] text-[10px] font-black leading-none uppercase">All</span>
-                    <span className="text-[#3B6D11] text-[8px] font-bold uppercase mt-1 leading-none">Categories</span>
-                    <ChevronRight className="w-3.5 h-3.5 text-[#3B6D11] mt-1.5 transition-transform group-hover:translate-x-0.5" />
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Best Selling Products Section */}
-            <div className="my-16" id="catalog-products-section">
-              <div className="text-center mb-10">
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2">SELECTED FOR YOU</span>
-                <h2 className="text-2xl md:text-3xl font-extrabold text-slate-800">Best Selling Products</h2>
-                <div className="w-16 h-1 bg-[#d4af37] mx-auto mt-2 rounded-full"></div>
-              </div>
-
-              {/* Product Grid with Faint Background Numbers */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 relative">
-                {liveProducts
-                  .filter(p => (productFilter === 'all' || p.category === productFilter) && p.name.toLowerCase().includes(allProductsSearch.toLowerCase()))
-                  .map((p, idx) => {
-                    const selectedSize = selectedSizes[p.id] || (p.sizes && p.sizes[0]) || 'Standard';
-                    
-                    return (
-                      <div 
-                        key={p.id} 
-                        className="relative bg-white rounded-[32px] border border-stone-200 p-5 hover:shadow-xl hover:-translate-y-1.5 group transition-all duration-300 flex flex-col justify-between h-[360px] overflow-hidden"
-                      >
-                        {/* Faint Ranking Number */}
-                        <div className="absolute -left-4 top-0 bottom-0 flex items-center text-[150px] font-black text-[#f7f6f0] select-none pointer-events-none z-0">
-                          {idx + 1}
-                        </div>
-
-                        {/* Card Content */}
-                        <div className="relative z-10 flex flex-col h-full justify-between">
-                          
-                          {/* Image */}
-                          <div className="relative rounded-2xl overflow-hidden bg-slate-50 border border-gray-100 flex items-center justify-center p-4 h-40">
-                            
-                            {/* Badge */}
-                            {p.badge && (
-                              <span className="absolute top-2 left-2 bg-[#2b4d36] text-white text-[9px] font-black px-2 py-0.5 rounded-r-md uppercase tracking-wider shadow-sm z-20">
-                                {p.badge}
-                              </span>
-                            )}
-                            
-                            {/* Rating */}
-                            {p.rating && (
-                              <span className="absolute bottom-2 right-2 bg-[rgba(15,23,42,0.75)] text-[#ffc107] text-[9.5px] font-black px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm z-20">
-                                <span>{p.rating}</span>
-                                <Star className="w-2.5 h-2.5 fill-[#ffc107] text-[#ffc107] inline" />
-                              </span>
-                            )}
-
-                            <a href={`#product?id=${p.id}`} className="block">
-                              <img 
-                                src={p.img} 
-                                className="max-h-32 object-contain group-hover:scale-105 transition-transform duration-350" 
-                                alt={p.name} 
-                              />
-                            </a>
-                          </div>
-
-                          {/* Info */}
-                          <div className="mt-3">
-                            <a href={`#product?id=${p.id}`} className="block">
-                              <h4 className="font-extrabold text-slate-800 text-sm leading-tight group-hover:text-[#3B6D11] transition-colors line-clamp-1">
-                                {p.name}
-                              </h4>
-                            </a>
-                            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mt-1">{p.category.split('-').join(' & ')}</p>
-                          </div>
-
-                          {/* Actions */}
-                          <div className="mt-4 flex flex-col justify-end">
-                            <div className="flex items-end justify-between">
-                              <div className="flex flex-col">
-                                <div className="flex items-center space-x-1.5">
-                                  <span className="font-black text-[#3B6D11] text-base">₹{p.price}</span>
-                                  {p.originalPrice && (
-                                    <span className="text-xs text-gray-400 line-through">₹{p.originalPrice}</span>
-                                  )}
-                                </div>
-
-                                {/* Size */}
-                                {p.sizes && p.sizes.length > 0 && (
-                                  <div className="relative mt-1 inline-block text-left">
-                                    <select 
-                                      value={selectedSize}
-                                      onChange={(e) => setSelectedSizes({ ...selectedSizes, [p.id]: e.target.value })}
-                                      className="appearance-none bg-white border border-[#3B6D11] border-opacity-30 hover:border-[#3B6D11] text-[#3B6D11] font-bold text-[10px] pl-2.5 pr-6 py-1 rounded-lg cursor-pointer focus:outline-none transition-colors"
-                                    >
-                                      {p.sizes.map(size => (
-                                        <option key={size} value={size}>{size}</option>
-                                      ))}
-                                    </select>
-                                    <ChevronDown className="absolute right-1.5 top-2 w-3 h-3 text-[#3B6D11] pointer-events-none" />
-                                  </div>
-                                )}
-                              </div>
-
-                              {/* Cart */}
-                              <button 
-                                onClick={() => {
-                                  addToCart(p, 1);
-                                }}
-                                className="w-10 h-10 rounded-full bg-[#2b4d36] hover:bg-[#3B6D11] text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md cursor-pointer shrink-0"
-                              >
-                                <ShoppingCart className="w-4.5 h-4.5" />
-                              </button>
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
-          </div>
+          <ShopModule
+            liveProducts={liveProducts}
+            productFilter={productFilter}
+            setProductFilter={setProductFilter}
+            allProductsSearch={allProductsSearch}
+            setAllProductsSearch={setAllProductsSearch}
+            cart={cart}
+            addToCart={addToCart}
+            updateCartQty={updateCartQty}
+            currentUser={currentUser}
+            handleLogout={handleLogout}
+            isCartDrawerOpen={isCartDrawerOpen}
+            setIsCartDrawerOpen={setIsCartDrawerOpen}
+          />
         )}
 
         {/* VIEW 5: PRODUCT DETAIL */}
+        {/* VIEW 5: PRODUCT DETAIL */}
         {routePath === '#product' && (
-          <div className="py-12 px-4 md:px-12 bg-white max-w-6xl mx-auto">
+          <div className="py-12 px-4 md:px-12 bg-[#FBFBFA] min-h-screen">
             {(() => {
               const prodId = routeParams.id;
               const product = liveProducts.find(p => p.id === prodId);
-              
+
               if (!product) {
                 return (
-                  <div className="text-center py-16">
-                    <HelpCircle className="w-12 h-12 text-slate-350 mx-auto mb-4" />
-                    <h2 className="text-xl font-bold mb-2">Product Not Found</h2>
-                    <p className="text-sm text-gray-550 mb-6">The item you searched for could not be traced.</p>
-                    <a href="#products" className="btn-primary">Browse All Products</a>
+                  <div className="text-center py-24 bg-white rounded-3xl border border-gray-100 shadow-sm max-w-xl mx-auto px-6">
+                    <HelpCircle className="w-16 h-16 text-slate-300 mx-auto mb-4 animate-bounce" />
+                    <h2 className="text-2xl font-black text-slate-800 mb-2">Product Not Found</h2>
+                    <p className="text-sm text-gray-500 mb-6">The item you searched for could not be traced.</p>
+                    <a href="#products" className="inline-block bg-[#377355] text-white font-black text-xs px-6 py-3 rounded-full hover:bg-[#2d5a3d] transition-all uppercase tracking-wider shadow">Browse All Products</a>
                   </div>
                 );
               }
 
               // Related products
-              const related = liveProducts.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
+              const related = liveProducts.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
               const selectedSize = selectedSizes[product.id] || (product.sizes && product.sizes[0]) || 'Standard';
-              
-              return (
-                <div>
-                  <a href="#products" className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#3B6D11] hover:underline mb-8">
-                    <ArrowLeft className="w-4 h-4" />
-                    <span>Back to shop catalog</span>
-                  </a>
+              const cartItem = cart.find(item => item.product.id === product.id);
+              const cartQty = cartItem ? cartItem.qty : 0;
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 mb-16">
-                    {/* Left side Image container */}
-                    <div className="bg-[#f5f4eb] rounded-[32px] p-8 flex items-center justify-center min-h-[300px] md:min-h-[400px] border border-gray-150">
-                      <img src={product.img} className="max-h-72 object-contain drop-shadow-md group-hover:scale-105 transition-transform" alt={product.name} />
+              return (
+                <div className="max-w-6xl mx-auto">
+                  {/* Breadcrumb Trail */}
+                  <nav className="flex items-center space-x-2 text-xs font-bold text-slate-400 mb-8 overflow-x-auto no-scrollbar py-1">
+                    <a href="#home" className="hover:text-[#377355] transition-colors">Home</a>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                    <a href="#products" className="hover:text-[#377355] transition-colors">Shop</a>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                    <span className="capitalize">{product.category.replace('-', ' ')}</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                    <span className="text-slate-800 font-extrabold line-clamp-1">{product.name}</span>
+                  </nav>
+
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-14 mb-16 bg-white p-6 md:p-10 rounded-[32px] border border-gray-100 shadow-[0px_8px_30px_0px_rgba(55,115,85,0.06)] relative overflow-hidden">
+                    {/* Floating ambient glow in container */}
+                    <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#377355]/5 blur-3xl pointer-events-none" />
+
+                    {/* Left side Image container (5 cols) */}
+                    <div className="md:col-span-5 flex flex-col gap-6">
+                      <div className="relative bg-gradient-to-br from-[#fbfbf9] to-[#e8f5ee]/40 rounded-[28px] p-8 flex items-center justify-center min-h-[300px] md:min-h-[380px] border border-emerald-100/50 shadow-inner group overflow-hidden">
+                        {/* Radial light behind image */}
+                        <div className="absolute w-48 h-48 rounded-full bg-[#377355]/8 blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
+                        
+                        <img
+                          src={product.img}
+                          className="max-h-72 object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.08)] group-hover:scale-105 transition-transform duration-500 z-10"
+                          alt={product.name}
+                        />
+
+                        {/* Floating organic badge */}
+                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm border border-emerald-100 text-[#377355] text-[9px] font-black px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                          <Leaf className="w-3 h-3 text-[#377355]" /> 100% ORGANIC
+                        </div>
+                      </div>
+
+                      {/* Mini trust checklist under image */}
+                      <div className="grid grid-cols-2 gap-3 bg-[#fbfbfa] p-4 rounded-2xl border border-gray-100">
+                        <div className="flex items-center gap-2">
+                          <Check className="w-4 h-4 text-emerald-600 bg-emerald-50 rounded-full p-0.5 shrink-0" />
+                          <span className="text-[10px] font-bold text-slate-600">Lab Tested Pure</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Check className="w-4 h-4 text-emerald-600 bg-emerald-50 rounded-full p-0.5 shrink-0" />
+                          <span className="text-[10px] font-bold text-slate-600">Pesticide Free</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Check className="w-4 h-4 text-emerald-600 bg-emerald-50 rounded-full p-0.5 shrink-0" />
+                          <span className="text-[10px] font-bold text-slate-600">Direct Farm Sourced</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Check className="w-4 h-4 text-emerald-600 bg-emerald-50 rounded-full p-0.5 shrink-0" />
+                          <span className="text-[10px] font-bold text-slate-600">Eco-Friendly Pack</span>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Right side detail fields */}
-                    <div className="flex flex-col justify-between">
+                    {/* Right side detail fields (7 cols) */}
+                    <div className="md:col-span-7 flex flex-col justify-between">
                       <div>
-                        <span className="text-xs font-black text-[#3B6D11] tracking-widest block uppercase mb-2">
-                          {product.category.replace('-', ' & ')}
+                        {/* Category badge */}
+                        <span className="bg-[#e8f5ee] text-[#377355] text-[10px] font-black px-3 py-1 rounded-full w-max block uppercase mb-4 tracking-wider">
+                          🌿 {product.category.replace('-', ' & ')}
                         </span>
-                        <h1 className="text-2xl md:text-4xl font-extrabold text-slate-800 leading-tight mb-4 tracking-tight">
+                        
+                        <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-800 leading-tight mb-3 tracking-tight">
                           {product.name}
                         </h1>
-                        
-                        <div className="flex items-center space-x-3 mb-6">
-                          <div className="flex text-[#ffc107]">
-                            {Array.from({ length: 5 }).map((_, starIdx) => (
-                              <Star key={starIdx} className="w-4 h-4 fill-[#ffc107] text-[#ffc107]" />
+
+                        {/* Star Rating list */}
+                        <div className="flex items-center space-x-3 mb-6 bg-slate-50 border border-gray-100 w-max px-3 py-1.5 rounded-full">
+                          <div className="flex items-center text-amber-400 gap-0.5">
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <Star key={s} className="w-3.5 h-3.5 fill-current" />
                             ))}
                           </div>
-                          <span className="text-xs text-gray-400 font-semibold">Verified Buyer Ratings</span>
+                          <span className="text-[11px] text-slate-600 font-extrabold">{product.rating || '4.8'}</span>
+                          <span className="text-gray-300">|</span>
+                          <span className="text-[10px] text-gray-500 font-bold">124 Verified Buyer Reviews</span>
                         </div>
 
-                        <div className="flex items-end space-x-2.5 mb-6">
-                          <span className="text-2xl font-black text-[#3B6D11]">₹ {product.price}</span>
+                        {/* Price box */}
+                        <div className="flex items-baseline space-x-3 mb-6 bg-[#fbfbfa] p-4 rounded-2xl border border-gray-100 w-max">
+                          <span className="text-2xl md:text-3xl font-black text-slate-900">₹{product.price}</span>
                           {product.originalPrice && (
-                            <span className="text-xs text-gray-455 line-through mb-1">₹ {product.originalPrice}</span>
+                            <span className="text-sm text-gray-400 line-through font-semibold">₹{product.originalPrice}</span>
                           )}
-                          {product.badge && (
-                            <span className="text-xs text-red-500 font-bold ml-2">({product.badge} applied)</span>
+                          {product.originalPrice && (
+                            <span className="text-xs font-black text-[#377355] bg-[#e8f5ee] px-2.5 py-1 rounded-lg">
+                              Save ₹{product.originalPrice - product.price} ({Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% off)
+                            </span>
                           )}
                         </div>
 
-                        <p className="text-sm text-slate-600 leading-relaxed font-normal mb-8">
-                          {product.desc} Certified organic and sourced directly from sustainable local farms. Packed in a highly hygienic facility keeping quality, purity, and natural nutrition intact.
+                        {/* Product Description */}
+                        <p className="text-sm text-slate-600 leading-relaxed mb-8">
+                          {product.desc} Our certified organic plant solutions are sourced responsibly from local growers using zero chemical fertilizers. Guaranteed to keep your soil health and natural nutrition intact.
                         </p>
 
-                        {/* Size Dropdown Selector */}
+                        {/* Size selector buttons (upgraded from dropdown) */}
                         {product.sizes && product.sizes.length > 0 && (
                           <div className="mb-8">
-                            <span className="text-xs font-bold text-slate-500 block mb-2">Select Pack Size:</span>
-                            <div className="relative inline-block w-48 text-left">
-                              <select 
-                                value={selectedSize}
-                                onChange={(e) => setSelectedSizes({ ...selectedSizes, [product.id]: e.target.value })}
-                                className="appearance-none w-full bg-white border border-[#3B6D11] text-[#3B6D11] font-bold text-xs pl-3.5 pr-8 py-2 rounded-lg cursor-pointer focus:outline-none transition-colors"
-                              >
-                                {product.sizes.map(size => (
-                                  <option key={size} value={size}>{size}</option>
-                                ))}
-                              </select>
-                              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#3B6D11] pointer-events-none" />
+                            <span className="text-xs font-bold text-slate-500 block mb-3 uppercase tracking-wider">Select Pack Size:</span>
+                            <div className="flex flex-wrap gap-2.5">
+                              {product.sizes.map(size => {
+                                const isSelected = selectedSize === size;
+                                return (
+                                  <button
+                                    key={size}
+                                    onClick={() => setSelectedSizes({ ...selectedSizes, [product.id]: size })}
+                                    className={`px-5 py-2.5 text-xs font-extrabold rounded-xl border transition-all ${
+                                      isSelected
+                                        ? 'bg-[#377355] text-white border-[#377355] shadow-md shadow-[#377355]/15'
+                                        : 'bg-white text-slate-700 border-slate-200 hover:border-[#377355] hover:text-[#377355]'
+                                    }`}
+                                  >
+                                    {size}
+                                  </button>
+                                );
+                              })}
                             </div>
                           </div>
                         )}
                       </div>
 
+                      {/* Add to cart or Stepper controls */}
                       <div className="border-t border-gray-100 pt-6">
-                        <button 
-                          onClick={() => addToCart(product, 1)}
-                          className="w-full bg-[#2b4d36] hover:bg-[#3b6d11] text-white font-extrabold py-4 rounded-xl shadow-lg transition text-sm tracking-wider uppercase"
-                        >
-                          ADD TO CART • ₹ {product.price}
-                        </button>
+                        {cartQty === 0 ? (
+                          <button
+                            onClick={() => addToCart(product, 1)}
+                            className="w-full bg-[#377355] hover:bg-[#2d5a3d] text-white font-black py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all text-sm tracking-widest uppercase flex items-center justify-center gap-2"
+                          >
+                            <ShoppingCart className="w-4 h-4" /> ADD TO CART • ₹{product.price}
+                          </button>
+                        ) : (
+                          <div className="flex items-center gap-4">
+                            {/* Stepper container */}
+                            <div className="flex items-center bg-[#377355] text-white rounded-2xl overflow-hidden h-[52px] shadow-md border border-[#377355]">
+                              <button
+                                onClick={() => updateCartQty(product.id, cartQty - 1)}
+                                className="w-14 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors text-white/80 hover:text-white"
+                              >
+                                <Minus className="w-4 h-4" />
+                              </button>
+                              <span className="w-12 text-center font-black text-sm select-none">{cartQty} in cart</span>
+                              <button
+                                onClick={() => updateCartQty(product.id, cartQty + 1)}
+                                className="w-14 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors text-white/80 hover:text-white"
+                              >
+                                <Plus className="w-4 h-4" />
+                              </button>
+                            </div>
+                            {/* Secondary view cart link */}
+                            <a
+                              href="#cart"
+                              className="flex-1 bg-[#e8f5ee] hover:bg-[#377355] text-[#377355] hover:text-white font-black py-4 rounded-2xl text-center text-xs tracking-wider uppercase transition-colors"
+                            >
+                              Go to cart 🛒
+                            </a>
+                          </div>
+                        )}
                       </div>
 
                       {/* Accordions */}
@@ -2936,15 +2888,15 @@ export default function App() {
                           const isOpen = openAccordion === acc.id;
                           return (
                             <div key={acc.id} className="border-b border-slate-100 pb-3">
-                              <button 
+                              <button
                                 onClick={() => setOpenAccordion(isOpen ? null : acc.id)}
                                 className="w-full flex items-center justify-between text-left focus:outline-none py-2"
                               >
-                                <span className="font-bold text-xs tracking-wide text-slate-800 uppercase">{acc.title}</span>
+                                <span className="font-extrabold text-xs tracking-wider text-slate-800 uppercase">{acc.title}</span>
                                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                               </button>
                               {isOpen && (
-                                <p className="text-xs text-gray-550 leading-relaxed mt-2 animate-fade-in pl-1">
+                                <p className="text-xs text-gray-500 leading-relaxed mt-2 animate-fade-in pl-1">
                                   {acc.txt}
                                 </p>
                               )}
@@ -2955,30 +2907,109 @@ export default function App() {
                     </div>
                   </div>
 
+                  {/* ── LUXURY ADDITION 1: ACTIVE BOTANICAL INGREDIENTS SHOWCASE ── */}
+                  <div className="bg-white border border-gray-100 rounded-[32px] p-6 md:p-10 mb-16 shadow-[0px_8px_30px_0px_rgba(55,115,85,0.04)] relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-64 h-64 rounded-full bg-[#D2AF6E]/5 blur-3xl pointer-events-none" />
+                    
+                    <div className="mb-8">
+                      <p className="text-[10px] font-black text-[#D2AF6E] uppercase tracking-[0.25em] mb-1">🔬 Science-Led Nutrition</p>
+                      <h3 className="text-xl md:text-2xl font-black text-slate-800">Active Bio-Ingredients</h3>
+                      <div className="mt-2 w-10 h-[3px] rounded-full bg-[#D2AF6E]" />
+                    </div>
+
+                    <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6">
+                      {[
+                        { name: 'Seaweed Kelp Extract', origin: 'Direct Coastal Sourced', benefits: 'Stimulates root growth & triggers internal plant defense pathways against heat and stress.', color: 'bg-emerald-50 text-emerald-800 border-emerald-100/50' },
+                        { name: 'Premium Humic Acids', origin: 'Eco-Degraded Forest Soil', benefits: 'Maximizes soil mineral intake, unlocking trapped trace elements and nitrogen loops.', color: 'bg-amber-50 text-amber-900 border-amber-100/50' },
+                        { name: 'Neem Cake Concentrate', origin: 'Cold-Pressed Seed Kernels', benefits: 'Acts as a natural systemic barrier, shielding tender root layers from nematodes.', color: 'bg-teal-50 text-teal-800 border-teal-100/50' },
+                        { name: 'Alfalfa Meal Bio-Booster', origin: 'Certified Organic Legumes', benefits: 'Delivers natural triacontanol growth regulators for lush leaf canopy expansions.', color: 'bg-lime-50 text-lime-900 border-lime-100/50' },
+                      ].map((ing, i) => (
+                        <div key={i} className={`p-5 rounded-2xl border ${ing.color} flex flex-col justify-between hover:scale-[1.02] transition-transform flex-shrink-0 w-[240px] md:w-auto`}>
+                          <div>
+                            <span className="text-[9px] font-bold uppercase tracking-wider block opacity-75 mb-1">{ing.origin}</span>
+                            <h4 className="font-extrabold text-sm mb-3 leading-snug">{ing.name}</h4>
+                            <p className="text-[11px] leading-relaxed opacity-90 font-medium">{ing.benefits}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* ── LUXURY ADDITION 2: LIVE ECO-IMPACT TICKER ── */}
+                  <div className="relative overflow-hidden rounded-[32px] p-6 md:p-8 mb-16 bg-[#122e1f] text-white shadow-[0_12px_40px_rgba(18,46,31,0.25)]">
+                    {/* Subtle dot pattern background */}
+                    <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,_#fff_1px,_transparent_1px)] bg-[size:16px_16px]" />
+                    <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-[#D2AF6E]/10 blur-2xl pointer-events-none" />
+
+                    <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                      <div className="text-center md:text-left">
+                        <span className="text-[9px] font-black text-[#D2AF6E] uppercase tracking-[0.2em] block mb-1">🌿 Conscious Living</span>
+                        <h4 className="text-lg font-black tracking-tight">Our Collective Ecological Footprint</h4>
+                        <p className="text-xs text-white/50 font-semibold mt-1">Every purchase supports sustainable chemical-free soil restoration.</p>
+                      </div>
+
+                      <div className="flex flex-wrap justify-center gap-6 md:gap-10">
+                        {[
+                          { val: '14,240 kg', label: 'Chemicals Replaced' },
+                          { val: '82,000 sqm', label: 'Soil Restored' },
+                          { val: '98%', label: 'Plastic-Free Packs' },
+                        ].map((stat, i) => (
+                          <div key={i} className="text-center">
+                            <div className="text-xl md:text-2xl font-black text-[#5ecb8e]">{stat.val}</div>
+                            <div className="text-[10px] font-bold text-white/60 uppercase tracking-wider mt-0.5">{stat.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Related items */}
                   {related.length > 0 && (
                     <div className="border-t border-gray-100 pt-12">
-                      <h3 className="text-lg font-black text-gray-900 mb-6">Other Organic Products</h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        {related.map((rp) => (
-                          <div key={rp.id} className="bg-[#fcfbf9] p-4 rounded-2xl flex flex-col justify-between border border-gray-150 shadow-xs hover:shadow-md transition">
-                            <a href={`#product?id=${rp.id}`} className="block">
-                              <div className="bg-slate-50 border border-gray-100 rounded-lg p-2 flex items-center justify-center h-28 mb-3">
-                                <img src={rp.img} className="h-24 object-contain rounded-lg" alt={rp.name} />
+                      <div className="flex items-center justify-between mb-8">
+                        <div>
+                          <h3 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">Other Organic Products</h3>
+                          <div className="mt-1.5 w-8 h-[3px] rounded-full bg-[#D2AF6E]" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6">
+                        {related.map((rp) => {
+                          const rpQty = cart.find(item => item.product.id === rp.id)?.qty || 0;
+                          return (
+                            <div key={rp.id} className="bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col relative overflow-hidden p-3">
+                              {/* Image */}
+                              <div className="relative h-28 md:h-36 bg-[#f7f7f5] flex items-center justify-center p-2 cursor-pointer rounded-xl mb-3" onClick={() => window.location.hash = `#product?id=${rp.id}`}>
+                                <img src={rp.img} className="max-h-full object-contain group-hover:scale-105 transition-transform duration-500" alt={rp.name} />
+                                {rp.badge && (
+                                  <span className="absolute top-1.5 left-1.5 bg-[#377355] text-white text-[8px] font-black px-1.5 py-0.5 rounded tracking-wide uppercase">{rp.badge}</span>
+                                )}
                               </div>
-                              <h4 className="font-extrabold text-xs text-gray-900 hover:text-[#3B6D11] leading-tight line-clamp-1">{rp.name}</h4>
-                            </a>
-                            <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-50">
-                              <span className="font-bold text-xs text-slate-700">₹ {rp.price}</span>
-                              <button 
-                                onClick={() => addToCart(rp)}
-                                className="bg-[#2b4d36] hover:bg-[#3B6D11] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm transition-colors"
-                              >
-                                Add to Cart
-                              </button>
+                              {/* Info */}
+                              <div className="flex flex-col flex-1">
+                                <h4 className="font-extrabold text-[11px] md:text-xs text-slate-800 hover:text-[#377355] transition-colors leading-tight line-clamp-2 mb-2 cursor-pointer" onClick={() => window.location.hash = `#product?id=${rp.id}`}>
+                                  {rp.name}
+                                </h4>
+                                <div className="mt-auto flex items-center justify-between pt-1 border-t border-gray-50">
+                                  <span className="font-black text-slate-900 text-xs">₹{rp.price}</span>
+                                  {rpQty === 0 ? (
+                                    <button
+                                      onClick={() => addToCart(rp, 1)}
+                                      className="bg-[#e8f5ee] text-[#377355] hover:bg-[#377355] hover:text-white px-2.5 py-1.5 rounded-lg text-[9px] font-black shadow-sm transition-colors uppercase tracking-wide"
+                                    >
+                                      ADD
+                                    </button>
+                                  ) : (
+                                    <div className="flex items-center bg-[#377355] text-white rounded-lg overflow-hidden h-[24px] border border-[#377355]">
+                                      <button onClick={() => updateCartQty(rp.id, rpQty - 1)} className="px-2 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors text-white"><Minus className="w-2.5 h-2.5" /></button>
+                                      <span className="px-1 text-center font-black text-[10px]">{rpQty}</span>
+                                      <button onClick={() => updateCartQty(rp.id, rpQty + 1)} className="px-2 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors text-white"><Plus className="w-2.5 h-2.5" /></button>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -3001,7 +3032,7 @@ export default function App() {
 
                 {/* Progress bar */}
                 <div className="w-full bg-gray-200 h-2 rounded-full mb-2 overflow-hidden">
-                  <div 
+                  <div
                     className="bg-agri-lime-alt h-full transition-all duration-300"
                     style={{ width: `${((quizStep + 1) / liveQuizQuestions.length) * 100}%` }}
                   ></div>
@@ -3024,15 +3055,14 @@ export default function App() {
                             updated[quizStep] = optIdx;
                             setQuizAnswers(updated);
                           }}
-                          className={`w-full text-left p-4.5 rounded-xl border text-xs font-bold leading-tight transition-all flex items-center justify-between ${
-                            isSelected 
-                              ? 'bg-white border-agri-lime text-agri-dark ring-2 ring-agri-lime/20' 
-                              : 'bg-white border-gray-250 hover:bg-gray-50 text-gray-700'
-                          }`}
+                          className={`w-full text-left p-4.5 rounded-xl border text-xs font-bold leading-tight transition-all flex items-center justify-between ${isSelected
+                            ? 'bg-white border-agri-lime text-agri-dark ring-2 ring-agri-lime/20'
+                            : 'bg-white border-gray-250 hover:bg-gray-50 text-gray-700'
+                            }`}
                         >
                           <span>{opt}</span>
                           <span className={`w-4.5 h-4.5 rounded-full border flex items-center justify-center ${isSelected ? 'border-agri-lime bg-agri-lime' : 'border-gray-300'}`}>
-                            {isSelected && <span className="w-2 h-2 rounded-full bg-[#1b3322]"></span>}
+                            {isSelected && <span className="w-2 h-2 rounded-full bg-[#377355]"></span>}
                           </span>
                         </button>
                       );
@@ -3042,7 +3072,7 @@ export default function App() {
 
                 <div className="flex justify-between items-center-pt-4">
                   {quizStep > 0 ? (
-                    <button 
+                    <button
                       onClick={() => setQuizStep(quizStep - 1)}
                       className="text-xs font-bold text-gray-500 hover:text-black transition"
                     >
@@ -3059,11 +3089,10 @@ export default function App() {
                       }
                     }}
                     disabled={quizAnswers[quizStep] === undefined}
-                    className={`px-6 py-3.5 rounded-xl text-xs font-extrabold tracking-wider ${
-                      quizAnswers[quizStep] !== undefined 
-                        ? 'bg-agri-dark text-white cursor-pointer hover:bg-black' 
-                        : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    }`}
+                    className={`px-6 py-3.5 rounded-xl text-xs font-extrabold tracking-wider ${quizAnswers[quizStep] !== undefined
+                      ? 'bg-agri-dark text-white cursor-pointer hover:bg-black'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      }`}
                   >
                     {quizStep === liveQuizQuestions.length - 1 ? 'See Recommendations' : 'Next Question →'}
                   </button>
@@ -3089,7 +3118,7 @@ export default function App() {
                   </div>
                   <div className="flex justify-between items-center-pt-2 border-t border-slate-100 mt-2">
                     <span className="font-extrabold text-slate-800 text-sm">₹ {liveProducts[0].price}</span>
-                    <button 
+                    <button
                       onClick={() => addToCart(liveProducts[0], 1)}
                       className="bg-[#2b3a30] text-agri-lime hover:bg-black font-black text-[10px] tracking-wider px-3 py-1.5 rounded-md"
                     >
@@ -3099,7 +3128,7 @@ export default function App() {
                 </div>
 
                 <div className="flex justify-center space-x-4">
-                  <button 
+                  <button
                     onClick={() => {
                       setQuizStep(0);
                       setQuizAnswers([]);
@@ -3147,7 +3176,7 @@ export default function App() {
             <div className="bg-[#f7f6ee] p-8 md:p-12 rounded-[32px] mt-16 text-center max-w-3xl mx-auto border border-[#e2e1d7]/60">
               <h3 className="text-xl font-extrabold text-slate-900 mb-2">Subscribe to Agriic Digest</h3>
               <p className="text-xs text-gray-550 max-w-md mx-auto mb-6">Receive seasonal crop guidance, localized soil alerts, and exclusive discounts directly in your inbox.</p>
-              <form 
+              <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   if (newsEmail) {
@@ -3157,16 +3186,16 @@ export default function App() {
                 }}
                 className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
               >
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   value={newsEmail}
                   onChange={(e) => setNewsEmail(e.target.value)}
-                  placeholder="Enter email address" 
-                  className="bg-white border border-gray-300 px-4 py-3 rounded-xl flex-1 text-slate-800 text-xs font-semibold focus:outline-none" 
+                  placeholder="Enter email address"
+                  className="bg-white border border-gray-300 px-4 py-3 rounded-xl flex-1 text-slate-800 text-xs font-semibold focus:outline-none"
                   required
                 />
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="bg-agri-dark text-white font-extrabold text-xs px-6 py-3.5 rounded-xl hover:bg-black transition whitespace-nowrap"
                 >
                   Join Newsletter
@@ -3184,9 +3213,9 @@ export default function App() {
             <p className="text-sm text-gray-600 mb-10 max-w-md lead-relaxed">We provide responsive, direct advice. Send a custom enquiry about crop health or order problems.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              
+
               {/* Form panel */}
-              <form 
+              <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   showToastMsg('Message received. Our advisor will return with research data soon.');
@@ -3196,41 +3225,41 @@ export default function App() {
               >
                 <div>
                   <label className="text-[11px] font-bold text-gray-700 block mb-1">Your Name</label>
-                  <input 
-                    type="text" 
-                    value={contactForm.name} 
-                    onChange={e => setContactForm({ ...contactForm, name: e.target.value })} 
-                    placeholder="Enter name" 
-                    className="w-full bg-slate-50 border border-gray-250 p-3 text-xs font-semibold rounded-xl focus:bg-white focus:outline-none" 
-                    required 
+                  <input
+                    type="text"
+                    value={contactForm.name}
+                    onChange={e => setContactForm({ ...contactForm, name: e.target.value })}
+                    placeholder="Enter name"
+                    className="w-full bg-slate-50 border border-gray-250 p-3 text-xs font-semibold rounded-xl focus:bg-white focus:outline-none"
+                    required
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="text-[11px] font-bold text-gray-700 block mb-1">Email</label>
-                    <input 
-                      type="email" 
-                      value={contactForm.email} 
-                      onChange={e => setContactForm({ ...contactForm, email: e.target.value })} 
-                      placeholder="you@example.com" 
-                      className="w-full bg-slate-50 border border-gray-250 p-3 text-xs font-semibold rounded-xl focus:bg-white focus:outline-none" 
-                      required 
+                    <input
+                      type="email"
+                      value={contactForm.email}
+                      onChange={e => setContactForm({ ...contactForm, email: e.target.value })}
+                      placeholder="you@example.com"
+                      className="w-full bg-slate-50 border border-gray-250 p-3 text-xs font-semibold rounded-xl focus:bg-white focus:outline-none"
+                      required
                     />
                   </div>
                   <div>
                     <label className="text-[11px] font-bold text-gray-700 block mb-1">Phone (Format)</label>
-                    <input 
-                      type="tel" 
-                      value={contactForm.phone} 
-                      onChange={e => setContactForm({ ...contactForm, phone: e.target.value })} 
-                      placeholder="+91" 
-                      className="w-full bg-slate-50 border border-gray-250 p-3 text-xs font-semibold rounded-xl focus:bg-white focus:outline-none" 
+                    <input
+                      type="tel"
+                      value={contactForm.phone}
+                      onChange={e => setContactForm({ ...contactForm, phone: e.target.value })}
+                      placeholder="+91"
+                      className="w-full bg-slate-50 border border-gray-250 p-3 text-xs font-semibold rounded-xl focus:bg-white focus:outline-none"
                     />
                   </div>
                 </div>
                 <div>
                   <label className="text-[11px] font-bold text-gray-700 block mb-1">Subject</label>
-                  <select 
+                  <select
                     value={contactForm.subject}
                     onChange={e => setContactForm({ ...contactForm, subject: e.target.value })}
                     className="w-full bg-slate-50 border border-gray-250 p-3 text-xs font-semibold rounded-xl focus:bg-white focus:outline-none"
@@ -3245,18 +3274,18 @@ export default function App() {
                 </div>
                 <div>
                   <label className="text-[11px] font-bold text-gray-700 block mb-1">Enquiry</label>
-                  <textarea 
-                    value={contactForm.message} 
-                    onChange={e => setContactForm({ ...contactForm, message: e.target.value })} 
-                    placeholder="Provide details about your soil or crop type..." 
-                    rows={4} 
-                    className="w-full bg-slate-50 border border-gray-250 p-3 text-xs font-semibold rounded-xl focus:bg-white focus:outline-none" 
-                    required 
+                  <textarea
+                    value={contactForm.message}
+                    onChange={e => setContactForm({ ...contactForm, message: e.target.value })}
+                    placeholder="Provide details about your soil or crop type..."
+                    rows={4}
+                    className="w-full bg-slate-50 border border-gray-250 p-3 text-xs font-semibold rounded-xl focus:bg-white focus:outline-none"
+                    required
                   />
                 </div>
-                <button 
-                  type="submit" 
-                  className="bg-agri-dark text-[#c2dd74] font-black tracking-wider text-xs px-6 py-4.5 rounded-xl hover:bg-black transition-colors"
+                <button
+                  type="submit"
+                  className="bg-agri-dark text-[#D2AF6E] font-black tracking-wider text-xs px-6 py-4.5 rounded-xl hover:bg-black transition-colors"
                 >
                   SEND ADVICE ENQUIRY
                 </button>
@@ -3272,9 +3301,9 @@ export default function App() {
                   <p className="text-xs text-gray-650 leading-relaxed font-normal mb-4">
                     Send photos of your crops directly to our botanical advisors. We will review leaf spot damages immediately.
                   </p>
-                  <a 
-                    href="https://wa.me/918047863601" 
-                    target="_blank" 
+                  <a
+                    href="https://wa.me/918047863601"
+                    target="_blank"
                     rel="noopener"
                     className="bg-[#25D366] text-white font-extrabold text-xs px-5 py-2.5 rounded-lg inline-flex items-center space-x-2 shadow-sm"
                   >
@@ -3326,16 +3355,16 @@ export default function App() {
                         <h4 className="font-extrabold text-sm text-gray-900 truncate">{item.product.name}</h4>
                         <span className="text-[11px] text-gray-500 font-bold uppercase">{item.product.category}</span>
                       </div>
-                      
+
                       <div className="flex items-center space-x-2 bg-slate-50 px-2 py-1 rounded-lg border border-gray-200">
-                        <button 
+                        <button
                           onClick={() => updateCartQty(item.product.id, item.qty - 1)}
                           className="p-1 hover:text-red-500 transition-colors"
                         >
                           <Minus className="w-3.5 h-3.5" />
                         </button>
                         <span className="w-6 text-center text-xs font-bold">{item.qty}</span>
-                        <button 
+                        <button
                           onClick={() => updateCartQty(item.product.id, item.qty + 1)}
                           className="p-1 hover:text-agri-green-mid transition-colors"
                         >
@@ -3348,7 +3377,7 @@ export default function App() {
                         <span className="text-[10px] text-slate-400">₹ {item.product.price}/ea</span>
                       </div>
 
-                      <button 
+                      <button
                         onClick={() => updateCartQty(item.product.id, 0)}
                         className="text-gray-300 hover:text-red-500 p-1 transition-colors"
                       >
@@ -3392,7 +3421,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <a 
+                  <a
                     href={currentUser ? "#checkout" : "#auth"}
                     onClick={(e) => {
                       if (!currentUser) {
@@ -3417,14 +3446,14 @@ export default function App() {
             {!currentUser ? (
               <div className="text-center py-16 bg-[#f7f6ee] border border-gray-200 rounded-3xl p-6 max-w-md mx-auto">
                 <User className="w-12 h-12 text-[#2b3a30] mx-auto mb-4" />
-                <h3 className="text-lg font-black text-[#1b3322] mb-1">Authentication Required</h3>
+                <h3 className="text-lg font-black text-[#377355] mb-1">Authentication Required</h3>
                 <p className="text-xs text-gray-500 mb-6">You must be logged in to securely place an order and track its delivery.</p>
                 <a href="#auth" className="btn-primary inline-block">Sign In / Register</a>
               </div>
             ) : cart.length === 0 ? (
               <div className="text-center py-16 bg-[#f7f6ee] border border-gray-200 rounded-3xl p-6 max-w-md mx-auto">
                 <ShoppingCart className="w-12 h-12 text-[#2b3a30] mx-auto mb-4" />
-                <h3 className="text-lg font-black text-[#1b3322] mb-1">Cart is empty</h3>
+                <h3 className="text-lg font-black text-[#377355] mb-1">Cart is empty</h3>
                 <p className="text-xs text-gray-500 mb-6">Explore our diagnostic mixtures to start crop recovery.</p>
                 <a href="#products" className="btn-primary inline-block">Browse Shop Products</a>
               </div>
@@ -3434,11 +3463,11 @@ export default function App() {
                 <p className="text-xs text-gray-400 mb-6 font-normal">Complete your organic soil biome restoration order parameters.</p>
 
                 {/* AUTOFILL HELPER BANNER */}
-                <div className="bg-[#f7f6ee] border border-dashed border-[#1b3322]/30 p-4 rounded-2xl mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="bg-[#f7f6ee] border border-dashed border-[#377355]/30 p-4 rounded-2xl mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-start space-x-3">
                     <span className="text-xl">⚡</span>
                     <div>
-                      <h4 className="text-xs font-black text-[#1b3322] uppercase tracking-wide">Grower Profile Auto-fill</h4>
+                      <h4 className="text-xs font-black text-[#377355] uppercase tracking-wide">Grower Profile Auto-fill</h4>
                       <p className="text-[11px] text-gray-500 leading-normal mt-0.5 font-normal">
                         {currentUser ? `Speed up dispatch with registered profile details: Name: "${currentUser.name || 'Alok'}", Phone: "${currentUser.phone || 'N/A'}", State: "${currentUser.location || 'N/A'}"` : 'Please register or log in to automatically load your location and phone metrics!'}
                       </p>
@@ -3454,19 +3483,19 @@ export default function App() {
                         setCheckoutState(currentUser.location || '');
                         showToastMsg('⚡ Successfully pre-loaded Address and Phone from Grower Profile!');
                       }}
-                      className="bg-[#1b3322] hover:bg-black text-[#c2dd74] hover:text-white px-4 py-2 rounded-xl text-xs font-extrabold uppercase transition whitespace-nowrap cursor-pointer shadow-sm"
+                      className="bg-[#377355] hover:bg-black text-[#D2AF6E] hover:text-white px-4 py-2 rounded-xl text-xs font-extrabold uppercase transition whitespace-nowrap cursor-pointer shadow-sm"
                     >
                       Fill Profile Details
                     </button>
                   )}
                 </div>
-                
+
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   {/* Left Side forms */}
-                  <form 
+                  <form
                     onSubmit={async (e) => {
                       e.preventDefault();
-                      
+
                       const email = checkoutEmail || 'farmer@agriic.com';
                       const fullname = checkoutFullname || 'Alok Patel';
                       const street = checkoutStreet || '';
@@ -3503,10 +3532,10 @@ export default function App() {
 
                         // 2. Post to Shopify integration backend (API sends it to Shopify)
                         const shopifyPayload = {
-                          email, phone, name: fullname, address: newOrder.address, 
+                          email, phone, name: fullname, address: newOrder.address,
                           items: newOrder.items, total: newOrder.total, firebaseOrderId: newOrder.id
                         };
-                        
+
                         fetch('http://localhost:5000/create-order', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
@@ -3531,26 +3560,26 @@ export default function App() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                           <label className="text-[11px] font-bold text-gray-500 block mb-1">Email</label>
-                          <input 
-                            name="email" 
-                            type="email" 
+                          <input
+                            name="email"
+                            type="email"
                             value={checkoutEmail}
                             onChange={e => setCheckoutEmail(e.target.value)}
-                            placeholder="farmer@agriic.com" 
-                            className="w-full border p-3 text-xs font-semibold rounded-xl" 
-                            required 
+                            placeholder="farmer@agriic.com"
+                            className="w-full border p-3 text-xs font-semibold rounded-xl"
+                            required
                           />
                         </div>
                         <div>
                           <label className="text-[11px] font-bold text-gray-500 block mb-1">Mobile Phone</label>
-                          <input 
-                            name="phone" 
-                            type="tel" 
+                          <input
+                            name="phone"
+                            type="tel"
                             value={checkoutPhone}
                             onChange={e => setCheckoutPhone(e.target.value)}
-                            placeholder="+91" 
-                            className="w-full border p-3 text-xs font-semibold rounded-xl" 
-                            required 
+                            placeholder="+91"
+                            className="w-full border p-3 text-xs font-semibold rounded-xl"
+                            required
                           />
                         </div>
                       </div>
@@ -3561,63 +3590,63 @@ export default function App() {
                       <h3 className="font-extrabold text-slate-900 text-sm border-b pb-2 mb-2">Shipping Destination</h3>
                       <div>
                         <label className="text-[11px] font-bold text-gray-500 block mb-1">Complete Full Name</label>
-                        <input 
-                          name="fullname" 
-                          type="text" 
+                        <input
+                          name="fullname"
+                          type="text"
                           value={checkoutFullname}
                           onChange={e => setCheckoutFullname(e.target.value)}
-                          placeholder="Add name" 
-                          className="w-full border p-3 text-xs font-semibold rounded-xl" 
-                          required 
+                          placeholder="Add name"
+                          className="w-full border p-3 text-xs font-semibold rounded-xl"
+                          required
                         />
                       </div>
                       <div>
                         <label className="text-[11px] font-bold text-gray-500 block mb-1">Street Address</label>
-                        <input 
-                          name="street" 
-                          type="text" 
+                        <input
+                          name="street"
+                          type="text"
                           value={checkoutStreet}
                           onChange={e => setCheckoutStreet(e.target.value)}
-                          placeholder="Apartment, block, area details" 
-                          className="w-full border p-3 text-xs font-semibold rounded-xl" 
-                          required 
+                          placeholder="Apartment, block, area details"
+                          className="w-full border p-3 text-xs font-semibold rounded-xl"
+                          required
                         />
                       </div>
                       <div className="grid grid-cols-3 gap-3">
                         <div>
                           <label className="text-[11px] font-bold text-gray-500 block mb-1">Pin Code</label>
-                          <input 
-                            name="pincode" 
-                            type="text" 
+                          <input
+                            name="pincode"
+                            type="text"
                             value={checkoutPincode}
                             onChange={e => setCheckoutPincode(e.target.value)}
-                            placeholder="400001" 
-                            className="w-full border p-3 text-xs font-semibold rounded-xl" 
-                            required 
+                            placeholder="400001"
+                            className="w-full border p-3 text-xs font-semibold rounded-xl"
+                            required
                           />
                         </div>
                         <div>
                           <label className="text-[11px] font-bold text-gray-500 block mb-1">City</label>
-                          <input 
-                            name="city" 
-                            type="text" 
+                          <input
+                            name="city"
+                            type="text"
                             value={checkoutCity}
                             onChange={e => setCheckoutCity(e.target.value)}
-                            placeholder="Mumbai" 
-                            className="w-full border p-3 text-xs font-semibold rounded-xl" 
-                            required 
+                            placeholder="Mumbai"
+                            className="w-full border p-3 text-xs font-semibold rounded-xl"
+                            required
                           />
                         </div>
                         <div>
                           <label className="text-[11px] font-bold text-gray-500 block mb-1">State</label>
-                          <input 
-                            name="state" 
-                            type="text" 
+                          <input
+                            name="state"
+                            type="text"
                             value={checkoutState}
                             onChange={e => setCheckoutState(e.target.value)}
-                            placeholder="Maharashtra" 
-                            className="w-full border p-3 text-xs font-semibold rounded-xl" 
-                            required 
+                            placeholder="Maharashtra"
+                            className="w-full border p-3 text-xs font-semibold rounded-xl"
+                            required
                           />
                         </div>
                       </div>
@@ -3627,22 +3656,22 @@ export default function App() {
                     <div className="border border-gray-200 p-6 rounded-2xl space-y-4">
                       <h3 className="font-extrabold text-slate-900 text-sm border-b pb-2 mb-2">Billing Method</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           onClick={() => setPaymentMethod('card')}
                           className={`p-4 rounded-xl border text-xs font-bold transition text-center ${paymentMethod === 'card' ? 'border-agri-lime bg-[#f7f6ee]' : 'border-gray-250 bg-white'}`}
                         >
                           Credit / Debit Card
                         </button>
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           onClick={() => setPaymentMethod('upi')}
                           className={`p-4 rounded-xl border text-xs font-bold transition text-center ${paymentMethod === 'upi' ? 'border-agri-lime bg-[#f7f6ee]' : 'border-gray-250 bg-white'}`}
                         >
                           UPI / QR Instant
                         </button>
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           onClick={() => setPaymentMethod('cod')}
                           className={`p-4 rounded-xl border text-xs font-bold transition text-center ${paymentMethod === 'cod' ? 'border-agri-lime bg-[#f7f6ee]' : 'border-gray-250 bg-white'}`}
                         >
@@ -3678,9 +3707,9 @@ export default function App() {
                       )}
                     </div>
 
-                    <button 
+                    <button
                       type="submit"
-                      className="w-full bg-[#1b3322] hover:bg-black text-white py-4 rounded-xl font-extrabold text-sm tracking-wide transition-all shadow-md"
+                      className="w-full bg-[#377355] hover:bg-black text-white py-4 rounded-xl font-extrabold text-sm tracking-wide transition-all shadow-md"
                     >
                       PLACE SECURED ORDER • ₹ {getSubtotal() + (getSubtotal() >= 499 ? 0 : 49)}
                     </button>
@@ -3730,7 +3759,7 @@ export default function App() {
           <div className="py-12 px-4 md:px-12 bg-white max-w-sm mx-auto">
             <div className="bg-agri-cream p-6 rounded-3xl border border-agri-cream-border shadow-md">
               <div id="recaptcha-container"></div>
-              
+
               {authMode === 'login' && (
                 <>
                   <h1 className="text-xl font-black text-gray-905 mb-2 text-center uppercase tracking-wide">Sign In Back</h1>
@@ -3747,7 +3776,7 @@ export default function App() {
                     <div className="flex justify-end">
                       <button type="button" onClick={() => setAuthMode('forgot_password')} className="text-[10px] text-agri-green-mid font-bold hover:underline">Forgot Password?</button>
                     </div>
-                    <button type="submit" className="w-full bg-[#1b3322] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">LOGIN USER</button>
+                    <button type="submit" className="w-full bg-[#377355] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">LOGIN USER</button>
                   </form>
                   <div className="mt-4">
                     <button onClick={handleGoogleSignIn} className="w-full bg-white border border-gray-200 text-slate-800 font-bold text-xs py-3 rounded-xl flex items-center justify-center space-x-2 hover:bg-gray-50 shadow-sm transition-all"><img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="G" /><span>Sign in with Google</span></button>
@@ -3788,7 +3817,7 @@ export default function App() {
                         <label className="text-[11px] font-bold text-gray-750 block mb-1">Phone Number (with +91)</label>
                         <input type="tel" value={authPhone} onChange={e => setAuthPhone(e.target.value)} placeholder="+91 9876543210" className="w-full border bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none" required />
                       </div>
-                      <button type="submit" className="w-full bg-[#1b3322] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">SEND OTP</button>
+                      <button type="submit" className="w-full bg-[#377355] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">SEND OTP</button>
                     </form>
                   ) : (
                     <form onSubmit={handleVerifyPhoneOTP} className="space-y-4">
@@ -3796,7 +3825,7 @@ export default function App() {
                         <label className="text-[11px] font-bold text-gray-750 block mb-1">Enter 6-digit OTP</label>
                         <input type="text" value={otpCode} onChange={e => setOtpCode(e.target.value)} placeholder="123456" className="w-full border bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none" required />
                       </div>
-                      <button type="submit" className="w-full bg-[#1b3322] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">VERIFY & CREATE ACCOUNT</button>
+                      <button type="submit" className="w-full bg-[#377355] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">VERIFY & CREATE ACCOUNT</button>
                     </form>
                   )}
                   <div className="mt-6 border-t pt-4 text-center">
@@ -3809,7 +3838,7 @@ export default function App() {
                 <>
                   <h1 className="text-xl font-black text-gray-905 mb-2 text-center uppercase tracking-wide">Recover Account</h1>
                   <p className="text-[11px] text-gray-500 text-center mb-6 leading-normal">Reset via Email link or Login directly via Mobile OTP.</p>
-                  
+
                   <div className="space-y-4">
                     <div className="p-3 border border-agri-cream-border rounded-xl bg-white space-y-2">
                       <label className="text-[11px] font-bold text-gray-750 block">Email Address</label>
@@ -3824,7 +3853,7 @@ export default function App() {
                         <>
                           <label className="text-[11px] font-bold text-gray-750 block">Phone Number (with +91)</label>
                           <input type="tel" value={authPhone} onChange={e => setAuthPhone(e.target.value)} placeholder="+91 9876543210" className="w-full border p-2 text-xs font-semibold rounded focus:outline-none" />
-                          <button type="button" onClick={handleSendPhoneOTP} className="w-full bg-[#1b3322] text-white font-bold text-[10px] py-2 rounded">SEND OTP TO LOGIN</button>
+                          <button type="button" onClick={handleSendPhoneOTP} className="w-full bg-[#377355] text-white font-bold text-[10px] py-2 rounded">SEND OTP TO LOGIN</button>
                         </>
                       ) : (
                         <form onSubmit={handleVerifyPhoneOTP}>
@@ -3853,7 +3882,7 @@ export default function App() {
               <div className="flex-1 flex items-center justify-center py-20 px-4">
                 <div className="bg-white rounded-3xl p-8 border border-emerald-100 shadow-xl max-w-md w-full text-center space-y-6">
                   <div>
-                    <span className="inline-flex p-3 rounded-2xl bg-emerald-50 text-[#3B6D11] mb-3">
+                    <span className="inline-flex p-3 rounded-2xl bg-emerald-50 text-[#377355] mb-3">
                       <Leaf className="w-8 h-8 animate-pulse" />
                     </span>
                     <h2 className="text-2xl font-black text-slate-900 tracking-tight">Agriic Staff Hub</h2>
@@ -3863,27 +3892,27 @@ export default function App() {
                   <form onSubmit={handleAdminEmailSignIn} className="space-y-4 text-left">
                     <div>
                       <label className="text-[11px] font-bold text-gray-750 block mb-1">Email address</label>
-                      <input 
-                        type="email" 
-                        value="abhiirana2031@gmail.com" 
+                      <input
+                        type="email"
+                        value="abhiirana2031@gmail.com"
                         readOnly
-                        className="w-full border bg-gray-50 p-3 text-xs font-semibold rounded-xl focus:outline-none text-gray-500 cursor-not-allowed" 
+                        className="w-full border bg-gray-50 p-3 text-xs font-semibold rounded-xl focus:outline-none text-gray-500 cursor-not-allowed"
                       />
                     </div>
                     <div>
                       <label className="text-[11px] font-bold text-gray-750 block mb-1 font-mono">Password</label>
-                      <input 
-                        type="password" 
-                        value={authPassword} 
-                        onChange={e => setAuthPassword(e.target.value)} 
-                        placeholder="••••••••" 
-                        className="w-full border bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none" 
-                        required 
+                      <input
+                        type="password"
+                        value={authPassword}
+                        onChange={e => setAuthPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="w-full border bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none"
+                        required
                       />
                     </div>
-                    <button 
-                      type="submit" 
-                      className="w-full bg-[#3B6D11] hover:bg-[#2c520c] text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow"
+                    <button
+                      type="submit"
+                      className="w-full bg-[#377355] hover:bg-[#2c520c] text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow"
                     >
                       LOGIN TO ADMIN HUB
                     </button>
@@ -3892,7 +3921,7 @@ export default function App() {
                   </form>
 
                   <p className="text-[10px] text-gray-400 leading-relaxed">
-                    Connecting to secure Cloud Firestore instance IDs: <br/>
+                    Connecting to secure Cloud Firestore instance IDs: <br />
                     <strong className="font-mono text-slate-500">ai-studio-a19b472c-b3ef-4bd2-bee0-ad2edf9f388c</strong>
                   </p>
                 </div>
@@ -3931,11 +3960,10 @@ export default function App() {
                         <button
                           key={tab.id}
                           onClick={() => setAdminActiveTab(tab.id)}
-                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                            isActive 
-                              ? 'bg-[#333333] text-white' 
-                              : 'text-[#a3a3a3] hover:bg-[#2d2d2d] hover:text-white'
-                          }`}
+                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${isActive
+                            ? 'bg-[#333333] text-white'
+                            : 'text-[#a3a3a3] hover:bg-[#2d2d2d] hover:text-white'
+                            }`}
                         >
                           <IconComp className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#a3a3a3]'}`} />
                           <span>{tab.label}</span>
@@ -3998,145 +4026,145 @@ export default function App() {
                       </span>
                     </div>
 
-                   {/* Modules Rendering router */}
-                  {adminActiveTab === 'home' && (
-                    <HomeModule 
-                      farmers={liveFarmers}
-                      soilReports={liveSoilReports}
-                      orders={liveOrders as any}
-                      alertRules={liveAlertRules}
-                      activities={liveActivities}
-                      onClearActivities={handleClearActivities}
-                      onNavigateToTab={(tabId) => setAdminActiveTab(tabId)}
-                    />
-                  )}
-
-                  {adminActiveTab === 'customers' && (
-                    <FarmersModule 
-                      farmers={liveFarmers}
-                      onUpdateRole={handleUpdateFarmerRole}
-                      onUpdateStatus={handleUpdateFarmerStatus}
-                      onAddFarmer={async (farmer) => {
-                        try {
-                          const newId = `usr_${Date.now()}`;
-                          await setDoc(doc(db, "users", newId), { id: newId, ...farmer });
-                        } catch(e) {
-                          handleLiveSyncError(e, 'create', 'users');
-                        }
-                      }}
-                    />
-                  )}
-
-                  {adminActiveTab === 'products' && (
-                    <ProductsModule 
-                      products={liveProducts as any}
-                      orders={liveOrders as any}
-                      onAddProduct={handleAddProductAdmin}
-                      onEditProductStock={handleEditProductStock}
-                      onDeleteProduct={handleDeleteProductAdmin}
-                      onUpdateOrderStatus={handleUpdateOrderStatusAdmin}
-                    />
-                  )}
-
-                  {adminActiveTab === 'analytics' && (
-                    adminUser.role === 'Super Admin' ? (
-                      <AnalyticsModule 
+                    {/* Modules Rendering router */}
+                    {adminActiveTab === 'home' && (
+                      <HomeModule
+                        farmers={liveFarmers}
+                        soilReports={liveSoilReports}
                         orders={liveOrders as any}
-                        farmers={liveFarmers}
-                        soilReports={liveSoilReports}
+                        alertRules={liveAlertRules}
+                        activities={liveActivities}
+                        onClearActivities={handleClearActivities}
+                        onNavigateToTab={(tabId) => setAdminActiveTab(tabId)}
                       />
-                    ) : (
-                      <div className="bg-white border rounded-2xl p-12 text-center text-slate-500 max-w-lg mx-auto mt-10 shadow-sm animate-fade-in">
-                        <span className="text-4xl block mb-4">🔒</span>
-                        <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">Analytics Restricted</h3>
-                        <p className="text-[10px] mt-1.5 leading-relaxed text-gray-500">Only users logged in with the <strong className="text-[#3B6D11]">Super Admin</strong> privilege are autorun to query business and gross revenues. Please use the sidebar's role toggle to elevate privilege levels.</p>
-                      </div>
-                    )
-                  )}
+                    )}
 
-                  {adminActiveTab === 'marketing' && (
-                    <ContentModule 
-                      contentItems={liveContent}
-                      onAddContent={handlePublishArticle}
-                      onDeleteContent={handleDeleteArticle}
-                      onSendSegmentalPush={async (segment, subj, msg) => {
-                        try {
-                          const actId = `ACT_SMS_${Date.now()}`;
-                          await setDoc(doc(db, "activities", actId), {
-                            id: actId,
-                            message: `⚡ SMS Broadcast: "${subj}" pushed to segment ${segment}`,
-                            type: 'content',
-                            time: 'just now'
-                          });
-                          showToastMsg(`SMS broadcast successfully scheduled to segment [${segment}]`);
-                        } catch (e) {
-                          handleLiveSyncError(e, 'create', 'activities');
-                        }
-                      }}
-                    />
-                  )}
-
-                  {adminActiveTab === 'discounts' && (
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center text-gray-500">
-                      <Tag className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                      <h3 className="text-lg font-medium text-gray-800 mb-2">Discounts & Promotions</h3>
-                      <p className="text-sm">Create and manage coupon codes and automatic discounts.</p>
-                    </div>
-                  )}
-
-                  {adminActiveTab === 'orders' && (
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center text-gray-500">
-                      <ShoppingBag className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                      <h3 className="text-lg font-medium text-gray-800 mb-2">Order Management</h3>
-                      <p className="text-sm">View, fulfill, and manage customer orders.</p>
-                      <div className="mt-8 text-left max-w-4xl mx-auto bg-gray-50 rounded-lg p-4">
-                        <p className="font-semibold text-gray-700 mb-4">Recent Orders ({liveOrders.length})</p>
-                        {liveOrders.map(o => (
-                          <div key={o.id} className="bg-white p-3 mb-2 rounded border border-gray-100 shadow-sm flex justify-between items-center text-sm">
-                            <div><strong className="text-blue-600">{o.id}</strong> • {o.date}</div>
-                            <div className="font-medium">₹{o.total.toFixed(2)}</div>
-                            <div>
-                               <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">{o.status}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {adminActiveTab === 'settings' && (
-                    adminUser.role === 'Super Admin' ? (
-                      <SettingsModule 
+                    {adminActiveTab === 'customers' && (
+                      <FarmersModule
                         farmers={liveFarmers}
-                        products={liveProducts as any}
-                        soilReports={liveSoilReports}
-                        brandingTitle={liveSettings?.primaryBrandName || "Agriic Science HQ"}
-                        onUpdateBranding={async (newTitle) => {
+                        onUpdateRole={handleUpdateFarmerRole}
+                        onUpdateStatus={handleUpdateFarmerStatus}
+                        onAddFarmer={async (farmer) => {
                           try {
-                            const defaultSetts = {
-                              primaryBrandName: newTitle,
-                              primaryColor: "#3B6D11",
-                              secondaryColor: "#0F6E56",
-                              enableSMS: true,
-                              enablePayments: true,
-                              enableWeather: true,
-                              twoFactorEnabled: false
-                            };
-                            await setDoc(doc(db, "settings", "global_workspace"), defaultSetts);
-                            showToastMsg(`Successfully updated settings branding title to: "${newTitle}"`);
+                            const newId = `usr_${Date.now()}`;
+                            await setDoc(doc(db, "users", newId), { id: newId, ...farmer });
                           } catch (e) {
-                            handleLiveSyncError(e, 'write', 'settings/global_workspace');
+                            handleLiveSyncError(e, 'create', 'users');
                           }
                         }}
                       />
-                    ) : (
-                      <div className="bg-white border rounded-2xl p-12 text-center text-slate-500 max-w-lg mx-auto mt-10 shadow-sm animate-fade-in">
-                        <span className="text-4xl block mb-4">🔒</span>
-                        <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">Workspace Settings Restricted</h3>
-                        <p className="text-[10px] mt-1.5 leading-relaxed text-gray-500">Workspace settings and core system switches are restricted with ABAC permissions to <strong className="text-[#3B6D11]">Super Admin</strong>. Elevate role below to view or manage setting profiles.</p>
+                    )}
+
+                    {adminActiveTab === 'products' && (
+                      <ProductsModule
+                        products={liveProducts as any}
+                        orders={liveOrders as any}
+                        onAddProduct={handleAddProductAdmin}
+                        onEditProductStock={handleEditProductStock}
+                        onDeleteProduct={handleDeleteProductAdmin}
+                        onUpdateOrderStatus={handleUpdateOrderStatusAdmin}
+                      />
+                    )}
+
+                    {adminActiveTab === 'analytics' && (
+                      adminUser.role === 'Super Admin' ? (
+                        <AnalyticsModule
+                          orders={liveOrders as any}
+                          farmers={liveFarmers}
+                          soilReports={liveSoilReports}
+                        />
+                      ) : (
+                        <div className="bg-white border rounded-2xl p-12 text-center text-slate-500 max-w-lg mx-auto mt-10 shadow-sm animate-fade-in">
+                          <span className="text-4xl block mb-4">🔒</span>
+                          <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">Analytics Restricted</h3>
+                          <p className="text-[10px] mt-1.5 leading-relaxed text-gray-500">Only users logged in with the <strong className="text-[#377355]">Super Admin</strong> privilege are autorun to query business and gross revenues. Please use the sidebar's role toggle to elevate privilege levels.</p>
+                        </div>
+                      )
+                    )}
+
+                    {adminActiveTab === 'marketing' && (
+                      <ContentModule
+                        contentItems={liveContent}
+                        onAddContent={handlePublishArticle}
+                        onDeleteContent={handleDeleteArticle}
+                        onSendSegmentalPush={async (segment, subj, msg) => {
+                          try {
+                            const actId = `ACT_SMS_${Date.now()}`;
+                            await setDoc(doc(db, "activities", actId), {
+                              id: actId,
+                              message: `⚡ SMS Broadcast: "${subj}" pushed to segment ${segment}`,
+                              type: 'content',
+                              time: 'just now'
+                            });
+                            showToastMsg(`SMS broadcast successfully scheduled to segment [${segment}]`);
+                          } catch (e) {
+                            handleLiveSyncError(e, 'create', 'activities');
+                          }
+                        }}
+                      />
+                    )}
+
+                    {adminActiveTab === 'discounts' && (
+                      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center text-gray-500">
+                        <Tag className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                        <h3 className="text-lg font-medium text-gray-800 mb-2">Discounts & Promotions</h3>
+                        <p className="text-sm">Create and manage coupon codes and automatic discounts.</p>
                       </div>
-                    )
-                  )}
+                    )}
+
+                    {adminActiveTab === 'orders' && (
+                      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center text-gray-500">
+                        <ShoppingBag className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                        <h3 className="text-lg font-medium text-gray-800 mb-2">Order Management</h3>
+                        <p className="text-sm">View, fulfill, and manage customer orders.</p>
+                        <div className="mt-8 text-left max-w-4xl mx-auto bg-gray-50 rounded-lg p-4">
+                          <p className="font-semibold text-gray-700 mb-4">Recent Orders ({liveOrders.length})</p>
+                          {liveOrders.map(o => (
+                            <div key={o.id} className="bg-white p-3 mb-2 rounded border border-gray-100 shadow-sm flex justify-between items-center text-sm">
+                              <div><strong className="text-blue-600">{o.id}</strong> • {o.date}</div>
+                              <div className="font-medium">₹{o.total.toFixed(2)}</div>
+                              <div>
+                                <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">{o.status}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {adminActiveTab === 'settings' && (
+                      adminUser.role === 'Super Admin' ? (
+                        <SettingsModule
+                          farmers={liveFarmers}
+                          products={liveProducts as any}
+                          soilReports={liveSoilReports}
+                          brandingTitle={liveSettings?.primaryBrandName || "Agriic Science HQ"}
+                          onUpdateBranding={async (newTitle) => {
+                            try {
+                              const defaultSetts = {
+                                primaryBrandName: newTitle,
+                                primaryColor: "#377355",
+                                secondaryColor: "#0F6E56",
+                                enableSMS: true,
+                                enablePayments: true,
+                                enableWeather: true,
+                                twoFactorEnabled: false
+                              };
+                              await setDoc(doc(db, "settings", "global_workspace"), defaultSetts);
+                              showToastMsg(`Successfully updated settings branding title to: "${newTitle}"`);
+                            } catch (e) {
+                              handleLiveSyncError(e, 'write', 'settings/global_workspace');
+                            }
+                          }}
+                        />
+                      ) : (
+                        <div className="bg-white border rounded-2xl p-12 text-center text-slate-500 max-w-lg mx-auto mt-10 shadow-sm animate-fade-in">
+                          <span className="text-4xl block mb-4">🔒</span>
+                          <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">Workspace Settings Restricted</h3>
+                          <p className="text-[10px] mt-1.5 leading-relaxed text-gray-500">Workspace settings and core system switches are restricted with ABAC permissions to <strong className="text-[#377355]">Super Admin</strong>. Elevate role below to view or manage setting profiles.</p>
+                        </div>
+                      )
+                    )}
                   </main>
                 </div>
               </div>
@@ -4150,36 +4178,36 @@ export default function App() {
             {/* Header info card */}
             <div className="bg-gradient-to-br from-[#2b3a30] to-[#1b251f] rounded-3xl p-6 md:p-8 text-white shadow-xl mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
               <div className="absolute -right-12 -bottom-12 w-64 h-64 rounded-full bg-white/5 blur-3xl pointer-events-none"></div>
-              
-               <div className="flex items-center gap-3.5 sm:gap-5 relative z-10 min-w-0 flex-1">
+
+              <div className="flex items-center gap-3.5 sm:gap-5 relative z-10 min-w-0 flex-1">
                 {/* PROFILE AVATAR WITH PHOTO UPLOADER */}
                 <div className="relative group shrink-0">
                   {profileImage ? (
-                    <img 
-                      src={profileImage} 
-                      className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border-4 border-white/20 shadow-md object-cover transition-transform group-hover:scale-105 duration-200 bg-white" 
-                      alt="Grower Profile" 
+                    <img
+                      src={profileImage}
+                      className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border-4 border-white/20 shadow-md object-cover transition-transform group-hover:scale-105 duration-200 bg-white"
+                      alt="Grower Profile"
                     />
                   ) : (
-                    <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full bg-[#c2dd74] text-[#1b3322] flex items-center justify-center font-black text-xl sm:text-2.5xl border-4 border-white/20 shadow-md uppercase">
+                    <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full bg-[#D2AF6E] text-[#377355] flex items-center justify-center font-black text-xl sm:text-2.5xl border-4 border-white/20 shadow-md uppercase">
                       {(currentUser?.name || editName || 'Alok')[0]}
                     </div>
                   )}
                   {/* Small trigger Camera Badge */}
-                  <button 
+                  <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="absolute -right-0.5 -bottom-0.5 w-5 h-5 sm:w-6.5 sm:h-6.5 rounded-full bg-[#1b3322] border-2 border-white text-[#c2dd74] flex items-center justify-center hover:bg-[#c2dd74] hover:text-[#1b3322] transition-colors shadow-md cursor-pointer text-[10px] sm:text-xs"
+                    className="absolute -right-0.5 -bottom-0.5 w-5 h-5 sm:w-6.5 sm:h-6.5 rounded-full bg-[#377355] border-2 border-white text-[#D2AF6E] flex items-center justify-center hover:bg-[#D2AF6E] hover:text-[#377355] transition-colors shadow-md cursor-pointer text-[10px] sm:text-xs"
                     title="Change Profile Photo"
                     type="button"
                   >
                     <Camera className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5" />
                   </button>
-                  <input 
-                    type="file" 
-                    ref={fileInputRef} 
-                    onChange={handleAvatarChange} 
-                    className="hidden" 
-                    accept="image/*" 
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleAvatarChange}
+                    className="hidden"
+                    accept="image/*"
                   />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -4198,7 +4226,7 @@ export default function App() {
                   </p>
                   <div className="text-[9.5px] sm:text-[11px] text-white/95 font-medium mt-2 flex flex-wrap gap-1.5 sm:gap-2">
                     <span className="bg-white/10 px-2 py-0.5 rounded-md flex items-center gap-1">
-                      <MapPin className="w-2.5 h-2.5 text-[#c2dd74]" />
+                      <MapPin className="w-2.5 h-2.5 text-[#D2AF6E]" />
                       <span>State: <strong className="font-bold text-white">{currentUser?.location || editLocation || 'Maharashtra'}</strong></span>
                     </span>
                     <span className="bg-white/10 px-2 py-0.5 rounded-md flex items-center gap-1">
@@ -4213,11 +4241,11 @@ export default function App() {
 
               <div className="flex items-center gap-3 relative z-10">
                 {!currentUser ? (
-                  <a href="#auth" className="bg-[#c2dd74] text-[#1b3322] text-xs font-black px-4.5 py-3 rounded-xl hover:bg-white transition-all shadow-md uppercase tracking-wider">
+                  <a href="#auth" className="bg-[#D2AF6E] text-[#377355] text-xs font-black px-4.5 py-3 rounded-xl hover:bg-white transition-all shadow-md uppercase tracking-wider">
                     Sign in to Account
                   </a>
                 ) : (
-                  <button 
+                  <button
                     onClick={handleLogout}
                     className="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-4 py-2.5 rounded-xl border border-white/10 transition-all"
                   >
@@ -4239,7 +4267,7 @@ export default function App() {
                   {orders.filter(o => o.status !== 'Delivered').length}
                 </span>
               </div>
-              <div className="bg-[#c2dd74]/10 border border-[#c2dd74]/30 p-5 rounded-2xl">
+              <div className="bg-[#D2AF6E]/10 border border-[#D2AF6E]/30 p-5 rounded-2xl">
                 <span className="text-[10px] text-[#2b3a30] font-extrabold block uppercase tracking-wider">Arrived Safely</span>
                 <span className="text-2xl font-extrabold text-[#2b3a30] block mt-1">
                   {orders.filter(o => o.status === 'Delivered').length}
@@ -4257,11 +4285,11 @@ export default function App() {
               {/* EDITABLE FORM SIDEBAR */}
               <div className="lg:col-span-5 bg-[#fcfbf7] border border-[#e2e1d7] rounded-3xl p-5 md:p-6 shadow-sm">
                 <div className="flex items-center space-x-2.5 mb-5 border-b pb-4 border-[#e2e1d7]">
-                  <div className="w-8 h-8 rounded-full bg-[#1b3322] flex items-center justify-center text-white shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-[#377355] flex items-center justify-center text-white shrink-0">
                     <User className="w-4 h-4 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-sm text-[#1b3322] tracking-tight">Grower Profile Settings</h3>
+                    <h3 className="font-extrabold text-sm text-[#377355] tracking-tight">Grower Profile Settings</h3>
                     <p className="text-[10px] text-gray-400">Modify information metrics displayed in your agricultural logs.</p>
                   </div>
                 </div>
@@ -4269,56 +4297,56 @@ export default function App() {
                 <form onSubmit={saveUserProfile} className="space-y-4">
                   <div>
                     <label className="text-[10px] font-black tracking-wider text-gray-500 uppercase block mb-1">Grower Full Name</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={editName}
                       onChange={e => setEditName(e.target.value)}
-                      placeholder="e.g. Alok Patel" 
-                      className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none focus:ring-1 focus:ring-agri-lime" 
-                      required 
+                      placeholder="e.g. Alok Patel"
+                      className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none focus:ring-1 focus:ring-agri-lime"
+                      required
                     />
                   </div>
 
                   <div>
                     <label className="text-[10px] font-black tracking-wider text-gray-500 uppercase block mb-1">Email Address</label>
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       value={editEmail}
                       onChange={e => setEditEmail(e.target.value)}
-                      placeholder="you@example.com" 
-                      className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none focus:ring-1 focus:ring-agri-lime" 
-                      required 
+                      placeholder="you@example.com"
+                      className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none focus:ring-1 focus:ring-agri-lime"
+                      required
                     />
                   </div>
 
                   <div>
                     <label className="text-[10px] font-black tracking-wider text-gray-500 uppercase block mb-1">Phone / WhatsApp Number</label>
-                    <input 
-                      type="tel" 
+                    <input
+                      type="tel"
                       value={editPhone}
                       onChange={e => setEditPhone(e.target.value)}
-                      placeholder="e.g. 9845012345" 
-                      className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none focus:ring-1 focus:ring-agri-lime" 
-                      required 
+                      placeholder="e.g. 9845012345"
+                      className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none focus:ring-1 focus:ring-agri-lime"
+                      required
                     />
                   </div>
 
                   <div>
                     <label className="text-[10px] font-black tracking-wider text-gray-500 uppercase block mb-1">Indian State / Location</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={editLocation}
                       onChange={e => setEditLocation(e.target.value)}
-                      placeholder="e.g. Maharashtra" 
-                      className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none focus:ring-1 focus:ring-[#1b3322]" 
-                      required 
+                      placeholder="e.g. Maharashtra"
+                      className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none focus:ring-1 focus:ring-[#377355]"
+                      required
                     />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
                       <label className="text-[10px] font-black tracking-wider text-gray-500 uppercase block mb-1">Crop focus</label>
-                      <select 
+                      <select
                         value={editCropType}
                         onChange={e => setEditCropType(e.target.value)}
                         className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none"
@@ -4333,7 +4361,7 @@ export default function App() {
 
                     <div>
                       <label className="text-[10px] font-black tracking-wider text-gray-500 uppercase block mb-1">Cultivation scale</label>
-                      <select 
+                      <select
                         value={editLandSize}
                         onChange={e => setEditLandSize(e.target.value)}
                         className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none"
@@ -4347,16 +4375,16 @@ export default function App() {
                     </div>
                   </div>
 
-                  <button 
-                    type="submit" 
-                    className="w-full bg-[#1b3322] hover:bg-black text-white hover:text-agri-lime font-extrabold text-xs py-3.5 rounded-xl transition-all shadow-md uppercase tracking-wider mt-2 flex items-center justify-center space-x-2 cursor-pointer"
+                  <button
+                    type="submit"
+                    className="w-full bg-[#377355] hover:bg-black text-white hover:text-agri-lime font-extrabold text-xs py-3.5 rounded-xl transition-all shadow-md uppercase tracking-wider mt-2 flex items-center justify-center space-x-2 cursor-pointer"
                   >
                     <span>Save grower settings</span>
                   </button>
                 </form>
 
-                <div className="mt-5 bg-[#c2dd74]/15 border border-[#c2dd74]/30 rounded-2xl p-4 text-[10px] text-gray-600 leading-normal">
-                  <span className="font-extrabold text-[#1b3322] block mb-1">🌱 Verified Diagnostics</span>
+                <div className="mt-5 bg-[#D2AF6E]/15 border border-[#D2AF6E]/30 rounded-2xl p-4 text-[10px] text-gray-600 leading-normal">
+                  <span className="font-extrabold text-[#377355] block mb-1">🌱 Verified Diagnostics</span>
                   All mineral evaluations, diagnostic Soil Test™ logs, and temperature-controlled crop dispatch routes are protected under soil cybersecurity protocols.
                 </div>
               </div>
@@ -4372,7 +4400,7 @@ export default function App() {
                     </h2>
                     <p className="text-xs text-gray-400 mt-1 font-normal">Real-time dynamic transit checkpoints for formulation dispatch logs.</p>
                   </div>
-                  <span className="text-[10px] font-bold text-[#c2dd74] bg-[#2b3a30] px-3 py-1.5 rounded-full uppercase tracking-wider">
+                  <span className="text-[10px] font-bold text-[#D2AF6E] bg-[#2b3a30] px-3 py-1.5 rounded-full uppercase tracking-wider">
                     Live Feed
                   </span>
                 </div>
@@ -4390,7 +4418,7 @@ export default function App() {
                     {orders.filter(o => o.farmerId === currentUser?.id).map((order) => {
                       return (
                         <div key={order.id} className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition duration-200">
-                          
+
                           {/* Top Order Row */}
                           <div className="bg-slate-50/80 px-4 sm:px-5 py-4 border-b border-gray-150 flex flex-wrap justify-between items-center gap-4">
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -4411,7 +4439,7 @@ export default function App() {
                             </div>
 
                             <div className="flex flex-wrap items-center gap-2">
-                              <button 
+                              <button
                                 title="Simulate step transitions"
                                 onClick={() => {
                                   const nextStatusMap: Record<string, 'Processing' | 'In-Transit' | 'Delivered'> = {
@@ -4428,7 +4456,7 @@ export default function App() {
                                 <span>🔄 Upgrade Status</span>
                               </button>
 
-                              <button 
+                              <button
                                 type="button"
                                 title="Generate custom invoice template"
                                 onClick={() => {
@@ -4442,7 +4470,7 @@ export default function App() {
                               </button>
 
                               {order.status !== 'Delivered' && order.status !== 'Cancelled' && (
-                                <button 
+                                <button
                                   type="button"
                                   onClick={() => handleCancelOrder(order.id)}
                                   className="text-[10px] bg-red-50 hover:bg-red-100 text-red-700 font-extrabold px-2.5 py-1.5 rounded-lg border border-red-200/50 transition shrink-0 flex items-center space-x-1 shadow-sm cursor-pointer"
@@ -4458,7 +4486,7 @@ export default function App() {
                             {/* Status tracker steps */}
                             <div className="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-gray-150 pb-6 lg:pb-0 lg:pr-8 flex flex-col justify-center">
                               <span className="text-[10px] font-bold text-gray-400 block mb-5 uppercase tracking-wider">Live Delivery Milestones</span>
-                              
+
                               {/* Steps tracker UI */}
                               {order.status === 'Cancelled' ? (
                                 <div className="text-center py-6 px-4 bg-red-50 rounded-xl border border-red-100">
@@ -4469,68 +4497,63 @@ export default function App() {
                               ) : (
                                 <>
                                   <div className="relative flex items-center justify-between w-full px-2 sm:px-4">
-                                    
+
                                     {/* Connector bar background */}
                                     <div className="absolute top-4.5 left-6 sm:left-8 right-6 sm:right-8 h-1 bg-gray-200 -z-10 rounded-full" />
-                                    
+
                                     {/* Connector bar active fill */}
-                                    <div 
-                                      className="absolute top-4.5 left-6 sm:left-8 h-1 bg-[#2b3a30] -z-10 rounded-full transition-all duration-500" 
-                                      style={{ 
-                                        width: order.status === 'Processing' ? '0%' : order.status === 'In-Transit' ? '50%' : '100%' 
+                                    <div
+                                      className="absolute top-4.5 left-6 sm:left-8 h-1 bg-[#2b3a30] -z-10 rounded-full transition-all duration-500"
+                                      style={{
+                                        width: order.status === 'Processing' ? '0%' : order.status === 'In-Transit' ? '50%' : '100%'
                                       }}
                                     />
 
-                                {/* Milestone 1 : Processing */}
-                                <div className="flex flex-col items-center">
-                                  <div 
-                                    className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                                      order.status === 'Processing'
-                                        ? 'bg-amber-50 border-amber-600 text-amber-700 font-bold ring-4 ring-amber-100 scale-105 shadow-md'
-                                        : 'bg-[#2b3a30] border-[#2b3a30] text-[#c2dd74]'
-                                    }`}
-                                  >
-                                    <Clock className="w-4 h-4" />
-                                  </div>
-                                  <span className="text-[10px] sm:text-[11px] font-bold mt-2 text-center text-slate-800">Processing</span>
-                                  <span className="text-[8px] sm:text-[9px] text-gray-400 mt-0.5">Scanned</span>
-                                </div>
+                                    {/* Milestone 1 : Processing */}
+                                    <div className="flex flex-col items-center">
+                                      <div
+                                        className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${order.status === 'Processing'
+                                          ? 'bg-amber-50 border-amber-600 text-amber-700 font-bold ring-4 ring-amber-100 scale-105 shadow-md'
+                                          : 'bg-[#2b3a30] border-[#2b3a30] text-[#D2AF6E]'
+                                          }`}
+                                      >
+                                        <Clock className="w-4 h-4" />
+                                      </div>
+                                      <span className="text-[10px] sm:text-[11px] font-bold mt-2 text-center text-slate-800">Processing</span>
+                                      <span className="text-[8px] sm:text-[9px] text-gray-400 mt-0.5">Scanned</span>
+                                    </div>
 
-                                {/* Milestone 2 : In-Transit */}
-                                <div className="flex flex-col items-center">
-                                  <div 
-                                    className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                                      order.status === 'In-Transit'
-                                        ? 'bg-amber-50 border-amber-600 text-amber-700 ring-4 ring-amber-100 scale-105 shadow-md'
-                                        : order.status === 'Delivered'
-                                          ? 'bg-[#2b3a30] border-[#2b3a30] text-[#c2dd74]'
+                                    {/* Milestone 2 : In-Transit */}
+                                    <div className="flex flex-col items-center">
+                                      <div
+                                        className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${order.status === 'In-Transit'
+                                          ? 'bg-amber-50 border-amber-600 text-amber-700 ring-4 ring-amber-100 scale-105 shadow-md'
+                                          : order.status === 'Delivered'
+                                            ? 'bg-[#2b3a30] border-[#2b3a30] text-[#D2AF6E]'
+                                            : 'bg-white border-gray-200 text-gray-350'
+                                          }`}
+                                      >
+                                        <Truck className="w-4.5 h-4.5" />
+                                      </div>
+                                      <span className={`text-[10px] sm:text-[11px] font-bold mt-2 text-center ${order.status === 'Processing' ? 'text-gray-400' : 'text-slate-800'
+                                        }`}>In Transit</span>
+                                      <span className="text-[8px] sm:text-[9px] text-gray-400 mt-0.5">Underway</span>
+                                    </div>
+
+                                    {/* Milestone 3 : Delivered */}
+                                    <div className="flex flex-col items-center">
+                                      <div
+                                        className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${order.status === 'Delivered'
+                                          ? 'bg-emerald-50 border-emerald-600 text-emerald-800 font-bold ring-4 ring-emerald-100 scale-105 shadow-md'
                                           : 'bg-white border-gray-200 text-gray-350'
-                                    }`}
-                                  >
-                                    <Truck className="w-4.5 h-4.5" />
-                                  </div>
-                                  <span className={`text-[10px] sm:text-[11px] font-bold mt-2 text-center ${
-                                    order.status === 'Processing' ? 'text-gray-400' : 'text-slate-800'
-                                  }`}>In Transit</span>
-                                  <span className="text-[8px] sm:text-[9px] text-gray-400 mt-0.5">Underway</span>
-                                </div>
-
-                                {/* Milestone 3 : Delivered */}
-                                <div className="flex flex-col items-center">
-                                  <div 
-                                    className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                                      order.status === 'Delivered'
-                                        ? 'bg-emerald-50 border-emerald-600 text-emerald-800 font-bold ring-4 ring-emerald-100 scale-105 shadow-md'
-                                        : 'bg-white border-gray-200 text-gray-350'
-                                    }`}
-                                  >
-                                    <CheckCircle className="w-4.5 h-4.5" />
-                                  </div>
-                                  <span className={`text-[10px] sm:text-[11px] font-bold mt-2 text-center ${
-                                    order.status !== 'Delivered' ? 'text-gray-400' : 'text-slate-800'
-                                  }`}>Delivered</span>
-                                  <span className="text-[8px] sm:text-[9px] text-gray-400 mt-0.5">Arrived</span>
-                                </div>
+                                          }`}
+                                      >
+                                        <CheckCircle className="w-4.5 h-4.5" />
+                                      </div>
+                                      <span className={`text-[10px] sm:text-[11px] font-bold mt-2 text-center ${order.status !== 'Delivered' ? 'text-gray-400' : 'text-slate-800'
+                                        }`}>Delivered</span>
+                                      <span className="text-[8px] sm:text-[9px] text-gray-400 mt-0.5">Arrived</span>
+                                    </div>
 
                                   </div>
                                 </>
@@ -4543,7 +4566,7 @@ export default function App() {
                                     {order.status === 'Processing' ? '⚙️' : order.status === 'In-Transit' ? '🚚' : '📦'}
                                   </span>
                                   <div>
-                                    <p className="font-extrabold text-[#1b3322]">
+                                    <p className="font-extrabold text-[#377355]">
                                       {order.status === 'Processing' && 'Formulation and raw-ingredient testing checks are active. Bagged and sealed.'}
                                       {order.status === 'In-Transit' && 'En-route past central transport corridors. Expected delivery in 32 Hours.'}
                                       {order.status === 'Delivered' && 'Checkpoints clear. Delivery verified successfully.'}
@@ -4569,7 +4592,7 @@ export default function App() {
                                           <span className="text-xs font-black text-slate-800 block truncate leading-snug">{item.name}</span>
                                           <p className="text-[9px] text-gray-400 mt-0.5 font-mono">ID: {item.productId}</p>
                                           <div className="flex flex-wrap gap-1.5 mt-1.5">
-                                            <span className="bg-[#1b3322]/10 text-[#1b3322] text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase font-sans">
+                                            <span className="bg-[#377355]/10 text-[#377355] text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase font-sans">
                                               ₹{item.price}/bag
                                             </span>
                                             <span className="bg-amber-100 text-amber-900 text-[9px] font-black px-1.5 py-0.5 rounded uppercase font-sans">
@@ -4581,7 +4604,7 @@ export default function App() {
                                           <span className="text-xs font-extrabold text-slate-950 block font-mono">₹{item.price * item.qty}</span>
                                         </div>
                                       </div>
-                                      
+
                                       {/* GROWER QUANTITY SUMMARY FOOTPRINT */}
                                       <div className="border-t border-dashed border-gray-200 pt-2 flex items-center justify-between text-[10px] text-gray-500 font-semibold gap-1">
                                         <span>⚖️ Total Batch dispatch mass:</span>
@@ -4613,10 +4636,10 @@ export default function App() {
             {/* Quick reference block */}
             <div className="mt-12 bg-[#2b3a30] text-white p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1">
-                <h4 className="text-sm font-black text-[#c2dd74] uppercase tracking-wide">Need Delivery Interventions?</h4>
+                <h4 className="text-sm font-black text-[#D2AF6E] uppercase tracking-wide">Need Delivery Interventions?</h4>
                 <p className="text-xs text-white/70 leading-normal">Our organic dispatches are temperature-controlled. Contact regional helpline for reroutes.</p>
               </div>
-              <a href="#contact" className="bg-[#c2dd74] text-[#1b3322] hover:bg-white text-xs font-black uppercase px-4 py-2.5 rounded-xl transition-all whitespace-nowrap shadow-sm text-center">
+              <a href="#contact" className="bg-[#D2AF6E] text-[#377355] hover:bg-white text-xs font-black uppercase px-4 py-2.5 rounded-xl transition-all whitespace-nowrap shadow-sm text-center">
                 Contact Desk
               </a>
             </div>
@@ -4659,12 +4682,11 @@ export default function App() {
       {/* Persistent Footer */}
       <footer className="bg-agri-dark text-white pt-10 pb-6 px-6 md:px-12 border-t border-[#bad15a]/10 relative z-30">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-8">
-          
+
           {/* Logo column */}
           <div className="space-y-3">
-            <a href="#home" className="flex items-center space-x-2">
-              <Leaf className="w-6 h-6 text-agri-lime fill-agri-lime" />
-              <span className="text-lg font-bold text-white tracking-widest font-display">Agriic<span className="text-agri-lime">.</span></span>
+            <a href="#home" className="flex items-center inline-block">
+              <img src="/logo2.jpeg" alt="Agriic Logo" className="h-12 w-auto object-contain rounded-md" />
             </a>
             <p className="text-[11px] text-white/70 leading-relaxed max-w-xs font-normal">
               Science-led, Ayurveda-inspired organic nutrition blends customized for Indian soils. Securing sustainable crop harvests since 2019.
@@ -4718,11 +4740,11 @@ export default function App() {
               <div className="flex items-center space-x-2.5">
                 <span className="text-xl">🧾</span>
                 <div>
-                  <h3 className="font-black text-sm uppercase tracking-wider text-[#c2dd74]">Grower Order Invoice Dispatch</h3>
+                  <h3 className="font-black text-sm uppercase tracking-wider text-[#D2AF6E]">Grower Order Invoice Dispatch</h3>
                   <p className="text-[10px] text-white/70">Secure PDF Summary & Automation Template Panel</p>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setInvoiceModalOrder(null)}
                 className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all text-white text-sm font-bold cursor-pointer"
                 title="Dismiss View"
@@ -4737,22 +4759,20 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => setInvoiceEmailType('visual')}
-                className={`flex-1 py-2 px-3 text-xs font-bold rounded-xl transition-all cursor-pointer text-center ${
-                  invoiceEmailType === 'visual'
-                    ? 'bg-white text-[#1b3322] shadow-sm ring-1 ring-black/5'
-                    : 'text-gray-500 hover:text-slate-800'
-                }`}
+                className={`flex-1 py-2 px-3 text-xs font-bold rounded-xl transition-all cursor-pointer text-center ${invoiceEmailType === 'visual'
+                  ? 'bg-white text-[#377355] shadow-sm ring-1 ring-black/5'
+                  : 'text-gray-500 hover:text-slate-800'
+                  }`}
               >
                 🖼️ Beautiful Visual Preview
               </button>
               <button
                 type="button"
                 onClick={() => setInvoiceEmailType('code')}
-                className={`flex-1 py-2 px-3 text-xs font-bold rounded-xl transition-all cursor-pointer text-center ${
-                  invoiceEmailType === 'code'
-                    ? 'bg-white text-[#1b3322] shadow-sm ring-1 ring-black/5'
-                    : 'text-gray-500 hover:text-slate-800'
-                }`}
+                className={`flex-1 py-2 px-3 text-xs font-bold rounded-xl transition-all cursor-pointer text-center ${invoiceEmailType === 'code'
+                  ? 'bg-white text-[#377355] shadow-sm ring-1 ring-black/5'
+                  : 'text-gray-500 hover:text-slate-800'
+                  }`}
               >
                 💻 Raw email HTML layout
               </button>
@@ -4771,9 +4791,8 @@ export default function App() {
                   {/* Header */}
                   <div className="flex justify-between items-start gap-4">
                     <div>
-                      <div className="flex items-center space-x-2">
-                        <Leaf className="w-5 h-5 text-emerald-700 fill-emerald-600" />
-                        <span className="font-black text-sm tracking-widest text-[#1b3322]">Agriic.</span>
+                      <div className="flex items-center shrink-0">
+                        <img src="/logo2.jpeg" alt="Agriic Logo" className="h-8 w-auto object-contain rounded-md shadow-sm" />
                       </div>
                       <p className="text-[9px] text-gray-400 mt-1">Science-Led Botanical Nutrition Solutions</p>
                     </div>
@@ -4827,7 +4846,7 @@ export default function App() {
                       <span>Itemized Subtotal:</span>
                       <span className="font-mono">₹{invoiceModalOrder.total}</span>
                     </div>
-                    <div className="flex justify-between w-48 text-[#1b3322] font-black text-sm border-t border-dashed border-gray-200 pt-1.5">
+                    <div className="flex justify-between w-48 text-[#377355] font-black text-sm border-t border-dashed border-gray-200 pt-1.5">
                       <span>Grand Total:</span>
                       <span className="font-mono text-slate-900">₹{invoiceModalOrder.total}</span>
                     </div>
@@ -4884,12 +4903,150 @@ export default function App() {
                     showToastMsg(`Email summary generated and successfully dispatched payload via simulated SMTP gateway to ${currentUser?.email || 'registered grower'}!`);
                     setInvoiceModalOrder(null);
                   }}
-                  className="bg-[#1b3322] hover:bg-[#2b3a30] text-[#c2dd74] text-[11px] font-black py-2 md:py-2.5 px-4 rounded-xl transition-all shadow-md cursor-pointer flex items-center space-x-1"
+                  className="bg-[#377355] hover:bg-[#2b3a30] text-[#D2AF6E] text-[11px] font-black py-2 md:py-2.5 px-4 rounded-xl transition-all shadow-md cursor-pointer flex items-center space-x-1"
                 >
                   <Mail className="w-3.5 h-3.5 mr-0.5 text-agri-lime" />
                   <span>📬 Dispatch via Simulated SMTP</span>
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* ═══════════════════════════════════════════════════════
+          GLOBAL SIDE-OUT MINI CART DRAWER
+      ═══════════════════════════════════════════════════════ */}
+      {isCartDrawerOpen && (
+        <div className="fixed inset-0 z-50 overflow-hidden">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity animate-fade-in"
+            onClick={() => setIsCartDrawerOpen(false)}
+          />
+
+          <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            {/* Panel */}
+            <div className="w-screen max-w-md bg-white flex flex-col shadow-2xl border-l border-gray-100 animate-slide-in">
+              {/* Header */}
+              <div className="px-5 py-6 bg-[#fbfbfa] border-b border-gray-100 flex items-center justify-between">
+                <div>
+                  <h3 className="text-base font-black text-slate-800 flex items-center gap-2">
+                    🛒 Shopping Cart <span className="bg-[#377355] text-white text-[10px] font-black px-2 py-0.5 rounded-full">{getCartCount()}</span>
+                  </h3>
+                  <p className="text-[10px] text-slate-455 font-semibold uppercase tracking-wider mt-0.5">Your Selected Organic Nutrition</p>
+                </div>
+                <button
+                  onClick={() => setIsCartDrawerOpen(false)}
+                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-650 transition-colors flex items-center justify-center font-bold"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Cart List */}
+              <div className="flex-1 overflow-y-auto px-5 py-4 no-scrollbar">
+                {cart.length === 0 ? (
+                  <div className="h-full flex flex-col items-center justify-center text-center p-6">
+                    <div className="w-16 h-16 bg-[#e8f5ee] text-[#377355] rounded-full flex items-center justify-center mb-4">
+                      <ShoppingCart className="w-8 h-8" />
+                    </div>
+                    <h4 className="font-extrabold text-sm text-slate-800">Your cart is empty</h4>
+                    <p className="text-xs text-slate-400 mt-1 max-w-[220px] font-semibold leading-relaxed">Add bio-nutrition solutions or seeds to start growing organic.</p>
+                    <button
+                      onClick={() => { setIsCartDrawerOpen(false); window.location.hash = '#products'; }}
+                      className="mt-6 bg-[#377355] hover:bg-[#2d5a3d] text-white text-xs font-black px-6 py-3 rounded-xl transition-all shadow"
+                    >
+                      BROWSE CATALOG
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {cart.map((item, idx) => {
+                      const selectedSize = selectedSizes[item.product.id] || (item.product.sizes && item.product.sizes[0]) || 'Standard';
+                      return (
+                        <div key={idx} className="flex gap-4 p-3 bg-[#fbfbfa] rounded-2xl border border-gray-100">
+                          {/* Image */}
+                          <div className="w-20 h-20 bg-slate-50 border border-gray-100 rounded-xl p-1.5 flex items-center justify-center shrink-0">
+                            <img src={item.product.img} className="max-h-full object-contain mix-blend-multiply" alt={item.product.name} />
+                          </div>
+                          
+                          {/* Details */}
+                          <div className="flex-1 flex flex-col justify-between">
+                            <div>
+                              <h4 className="font-extrabold text-xs text-slate-800 leading-tight line-clamp-2">{item.product.name}</h4>
+                              <p className="text-[9px] font-bold text-[#377355] uppercase tracking-wider mt-0.5">{item.product.category}</p>
+                              <span className="text-[10px] text-slate-450 font-bold bg-white px-2 py-0.5 rounded border border-gray-100 w-max block mt-1">{selectedSize}</span>
+                            </div>
+
+                            <div className="flex items-center justify-between mt-3">
+                              {/* Price */}
+                              <div>
+                                <span className="font-black text-slate-900 text-sm">₹{item.product.price * item.qty}</span>
+                                {item.product.originalPrice && (
+                                  <span className="text-[10px] text-gray-400 line-through ml-1.5 font-semibold">₹{item.product.originalPrice * item.qty}</span>
+                                )}
+                              </div>
+
+                              {/* Stepper */}
+                              <div className="flex items-center bg-[#377355] text-white rounded-lg overflow-hidden h-[26px] border border-[#377355]">
+                                <button onClick={() => updateCartQty(item.product.id, item.qty - 1)} className="px-2 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors"><Minus className="w-2.5 h-2.5" /></button>
+                                <span className="px-1.5 text-center font-black text-xs min-w-[16px]">{item.qty}</span>
+                                <button onClick={() => updateCartQty(item.product.id, item.qty + 1)} className="px-2 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors"><Plus className="w-2.5 h-2.5" /></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Footer Checkout Summary */}
+              {cart.length > 0 && (
+                <div className="border-t border-gray-150 p-5 bg-[#fbfbfa]">
+                  <div className="space-y-2 mb-4">
+                    <div className="flex justify-between text-xs font-bold text-slate-550">
+                      <span>Items Subtotal</span>
+                      <span>₹{getSubtotal()}</span>
+                    </div>
+                    {(() => {
+                      const totalOriginal = cart.reduce((acc, curr) => acc + (curr.product.originalPrice || curr.product.price) * curr.qty, 0);
+                      const savings = totalOriginal - getSubtotal();
+                      if (savings > 0) {
+                        return (
+                          <div className="flex justify-between text-xs font-black text-emerald-600">
+                            <span>Your Total Savings</span>
+                            <span>- ₹{savings}</span>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
+                    <div className="flex justify-between text-sm font-black text-slate-900 border-t border-gray-100 pt-2">
+                      <span>Grand Total</span>
+                      <span>₹{getSubtotal()}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2.5 mt-6">
+                    <a
+                      href="#checkout"
+                      onClick={() => setIsCartDrawerOpen(false)}
+                      className="w-full bg-[#377355] hover:bg-[#2d5a3d] text-white font-black py-4.5 rounded-2xl shadow-lg hover:shadow-xl transition-all text-xs tracking-wider uppercase text-center block"
+                    >
+                      PROCEED TO CHECKOUT ⚡
+                    </a>
+                    <a
+                      href="#cart"
+                      onClick={() => setIsCartDrawerOpen(false)}
+                      className="w-full bg-white hover:bg-slate-50 text-[#377355] border-2 border-[#377355]/20 font-black py-3.5 rounded-2xl transition-colors text-xs tracking-wider uppercase text-center block"
+                    >
+                      View Detailed Cart
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
