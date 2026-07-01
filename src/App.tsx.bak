@@ -1619,7 +1619,7 @@ export default function App() {
               <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-10 md:mb-16">
                   <div className="text-center md:text-left mb-6 md:mb-0">
-                    <span className="text-xs font-black text-agri-green-mid uppercase tracking-widest block mb-2">PREMIUM SOLUTIONS</span>
+                    <span className="text-xs font-black text-agri-green-mid uppercase tracking-widest block mb-2">OUR STORE</span>
                     <h2 className="text-3xl md:text-5xl font-extrabold text-gray-950 tracking-tight leading-tight">
                       Grow More. <span className="text-agri-green-mid">Spend Less.</span>
                     </h2>
