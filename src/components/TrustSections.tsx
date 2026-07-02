@@ -145,24 +145,24 @@ export const TrustSections: React.FC = () => {
               <p className="text-sm text-slate-500 font-semibold">See how we compare against local nurseries and other online sellers.</p>
             </div>
             <div className="rounded-3xl overflow-x-auto border border-gray-100 shadow-lg bg-white">
-              <table className="w-full text-sm border-collapse w-full">
+              <table className="w-full text-sm border-collapse table-fixed">
                 <thead>
                   <tr>
-                    <th className="text-left px-2 md:px-6 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs w-32 md:w-48 border-b border-gray-100">Feature</th>
-                    <th className="px-1 md:px-4 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs border-b border-gray-100 text-center">
-                      <div className="text-slate-400">Local Nurseries</div>
-                      <div className="text-[9px] text-slate-300 font-semibold mt-0.5">No quality checks</div>
+                    <th className="text-left px-1 md:px-6 py-2 md:py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[9px] md:text-xs w-[28%] border-b border-gray-100">Feature</th>
+                    <th className="px-0.5 md:px-4 py-2 md:py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[9px] md:text-xs border-b border-gray-100 text-center w-[22%]">
+                      <div className="text-slate-400 break-words">Local Nurseries</div>
+                      <div className="hidden md:block text-[9px] text-slate-300 font-semibold mt-0.5">No quality checks</div>
                     </th>
-                    <th className="px-1 md:px-4 py-4 bg-[#0f2d1e] text-center border-b border-[#1a4a2e]">
-                      <div className="flex items-center justify-center gap-2">
-                        <img src="/logo2.jpeg" alt="Agriic" className="h-5 w-5 md:h-6 md:w-6 rounded-md object-cover" />
-                        <span className="font-black text-white text-xs md:text-sm">Agriic</span>
+                    <th className="px-0.5 md:px-4 py-2 md:py-4 bg-[#0f2d1e] text-center border-b border-[#1a4a2e] w-[28%]">
+                      <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
+                        <img src="/logo2.jpeg" alt="Agriic" className="h-4 w-4 md:h-6 md:w-6 rounded-md object-cover" />
+                        <span className="font-black text-white text-[10px] md:text-sm">Agriic</span>
                       </div>
-                      <div className="text-[9px] text-[#5ecb8e] font-bold mt-1 uppercase tracking-wider">Our Standard</div>
+                      <div className="hidden md:block text-[9px] text-[#5ecb8e] font-bold mt-1 uppercase tracking-wider">Our Standard</div>
                     </th>
-                    <th className="px-1 md:px-4 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs border-b border-gray-100 text-center">
-                      <div className="text-slate-400">Others</div>
-                      <div className="text-[9px] text-slate-300 font-semibold mt-0.5">Online sellers</div>
+                    <th className="px-0.5 md:px-4 py-2 md:py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[9px] md:text-xs border-b border-gray-100 text-center w-[22%]">
+                      <div className="text-slate-400 break-words">Others</div>
+                      <div className="hidden md:block text-[9px] text-slate-300 font-semibold mt-0.5">Online sellers</div>
                     </th>
                   </tr>
                 </thead>
@@ -177,23 +177,23 @@ export const TrustSections: React.FC = () => {
                     { feature: 'Satisfaction Guarantee', sub: 'Buyer protection', local: { val: '✕', note: 'No guarantee' }, agriic: { note: 'Assured quality, 14-day return' }, others: { val: '~', note: 'Conditional' } },
                   ].map((row, i) => (
                     <tr key={i} className={`border-b border-gray-50 transition-colors hover:bg-gray-50/60 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
-                      <td className="px-2 md:px-6 py-4">
-                        <div className="font-extrabold text-[#1a2a1e] text-[11px] md:text-xs">{row.feature}</div>
-                        <div className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-0.5">{row.sub}</div>
+                      <td className="px-1 md:px-6 py-3 md:py-4 align-top">
+                        <div className="font-extrabold text-[#1a2a1e] text-[9px] md:text-xs leading-tight break-words">{row.feature}</div>
+                        <div className="hidden md:block text-[9px] md:text-[10px] text-slate-400 font-medium mt-0.5">{row.sub}</div>
                       </td>
-                      <td className="px-1 md:px-4 py-4 text-center">
-                        <div className="text-base md:text-lg font-black text-red-400">{row.local.val}</div>
-                        <div className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-0.5">{row.local.note}</div>
+                      <td className="px-0.5 md:px-4 py-3 md:py-4 text-center align-top">
+                        <div className="text-sm md:text-lg font-black text-red-400 leading-none">{row.local.val}</div>
+                        <div className="text-[8px] md:text-[10px] text-slate-400 font-medium mt-1 leading-tight break-words">{row.local.note}</div>
                       </td>
-                      <td className="px-1 md:px-4 py-4 text-center bg-[#f0faf4] border-x border-emerald-100">
-                        <div className="w-5 h-5 md:w-6 md:h-6 bg-[#2D5A3F] rounded-full flex items-center justify-center mx-auto mb-1">
-                          <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                      <td className="px-0.5 md:px-4 py-3 md:py-4 text-center bg-[#f0faf4] border-x border-emerald-100 align-top">
+                        <div className="w-4 h-4 md:w-6 md:h-6 bg-[#2D5A3F] rounded-full flex items-center justify-center mx-auto mb-1">
+                          <svg className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
                         </div>
-                        <div className="text-[9px] md:text-[10px] font-black text-[#2D5A3F]">{row.agriic.note}</div>
+                        <div className="text-[8.5px] md:text-[10px] font-black text-[#2D5A3F] leading-tight break-words">{row.agriic.note}</div>
                       </td>
-                      <td className="px-1 md:px-4 py-4 text-center">
-                        <div className="text-base md:text-lg font-black text-slate-400">{row.others.val}</div>
-                        <div className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-0.5">{row.others.note}</div>
+                      <td className="px-0.5 md:px-4 py-3 md:py-4 text-center align-top">
+                        <div className="text-sm md:text-lg font-black text-slate-400 leading-none">{row.others.val}</div>
+                        <div className="text-[8px] md:text-[10px] text-slate-400 font-medium mt-1 leading-tight break-words">{row.others.note}</div>
                       </td>
                     </tr>
                   ))}
