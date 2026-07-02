@@ -1151,18 +1151,18 @@ export default function App() {
           <div style="display: flex; align-items: center;">
             <img src="${item.img || 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=400&q=80'}" style="width: 40px; height: 40px; border-radius: 8px; margin-right: 12px; object-fit: cover;" />
             <div>
-              <div style="font-weight: bold; color: #377355; font-size: 14px;">${item.name}</div>
+              <div style="font-weight: bold; color: #2D5A3F; font-size: 14px;">${item.name}</div>
               <div style="color: #666; font-size: 11px;">ID: ${item.productId}</div>
             </div>
           </div>
         </td>
-        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: center; color: #377355; font-weight: bold;">
+        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: center; color: #2D5A3F; font-weight: bold;">
           ${item.qty}
         </td>
-        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: right; color: #377355; font-family: monospace;">
+        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: right; color: #2D5A3F; font-family: monospace;">
           ₹${item.price}
         </td>
-        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: right; color: #377355; font-weight: bold; font-family: monospace;">
+        <td style="padding: 12px; border-bottom: 1px solid #e2e1d7; text-align: right; color: #2D5A3F; font-weight: bold; font-family: monospace;">
           ₹${item.price * item.qty}
         </td>
       </tr>
@@ -1177,26 +1177,26 @@ export default function App() {
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #fcfbf7; margin: 0; padding: 20px; color: #333;">
   <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e1d7; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-    <div style="background-color: #377355; padding: 24px; text-align: center; border-bottom: 4px solid #D2AF6E;">
-      <h1 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 2px;">Agriic<span style="color: #D2AF6E;">.</span></h1>
-      <p style="color: #D2AF6E; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin: 5px 0 0 0; font-weight: bold;">Order Purchase Receipt</p>
+    <div style="background-color: #2D5A3F; padding: 24px; text-align: center; border-bottom: 4px solid #D4A373;">
+      <h1 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 2px;">Agriic<span style="color: #D4A373;">.</span></h1>
+      <p style="color: #D4A373; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin: 5px 0 0 0; font-weight: bold;">Order Purchase Receipt</p>
     </div>
     <div style="padding: 24px;">
-      <h2 style="color: #377355; margin-top: 0; font-size: 18px;">Grower Dispatch Invoice</h2>
+      <h2 style="color: #2D5A3F; margin-top: 0; font-size: 18px;">Grower Dispatch Invoice</h2>
       <p style="color: #555; font-size: 13px; line-height: 1.5;">
         Dear Grower, your organic order formulation has been processed. Here is the verified dynamic digital tax invoice showing active botanical dispatches.
       </p>
-      <div style="background-color: #f7f6ee; border-radius: 8px; padding: 12px; margin: 20px 0; border-left: 4px solid #377355; font-size: 12px;">
+      <div style="background-color: #f7f6ee; border-radius: 8px; padding: 12px; margin: 20px 0; border-left: 4px solid #2D5A3F; font-size: 12px;">
         <table style="width: 100%;">
-          <tr><td style="color: #666; padding: 2px 0;"><strong>Invoice ID:</strong></td><td style="color: #377355; text-align: right; font-weight: bold;">${order.id}</td></tr>
-          <tr><td style="color: #666; padding: 2px 0;"><strong>Issue Date:</strong></td><td style="color: #377355; text-align: right;">${order.date}</td></tr>
-          <tr><td style="color: #666; padding: 2px 0;"><strong>Shipping Destination:</strong></td><td style="color: #377355; text-align: right;">${order.address}</td></tr>
-          <tr><td style="color: #666; padding: 2px 0;"><strong>Billing Method:</strong></td><td style="color: #377355; text-align: right; text-transform: uppercase;">${order.paymentMethod}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Invoice ID:</strong></td><td style="color: #2D5A3F; text-align: right; font-weight: bold;">${order.id}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Issue Date:</strong></td><td style="color: #2D5A3F; text-align: right;">${order.date}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Shipping Destination:</strong></td><td style="color: #2D5A3F; text-align: right;">${order.address}</td></tr>
+          <tr><td style="color: #666; padding: 2px 0;"><strong>Billing Method:</strong></td><td style="color: #2D5A3F; text-align: right; text-transform: uppercase;">${order.paymentMethod}</td></tr>
         </table>
       </div>
       <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 15px;">
         <thead>
-          <tr style="background-color: #377355; color: #ffffff; text-align: left;">
+          <tr style="background-color: #2D5A3F; color: #ffffff; text-align: left;">
             <th style="padding: 8px;">Active Formulation</th>
             <th style="padding: 8px; text-align: center;">Qty</th>
             <th style="padding: 8px; text-align: right;">Rate</th>
@@ -1209,20 +1209,20 @@ export default function App() {
         <tfoot>
           <tr>
             <td colspan="3" style="padding: 10px 8px 2px 8px; text-align: right; color: #666;">Shipping charges:</td>
-            <td style="padding: 10px 8px 2px 8px; text-align: right; color: #377355; font-weight: bold; font-family: monospace;">
+            <td style="padding: 10px 8px 2px 8px; text-align: right; color: #2D5A3F; font-weight: bold; font-family: monospace;">
               ${order.total >= 499 ? '₹0 (Gratis)' : '₹49'}
             </td>
           </tr>
           <tr>
-            <td colspan="3" style="padding: 2px 8px 10px 8px; text-align: right; color: #377355; font-size: 14px; font-weight: bold; border-top: 1px solid #377355;">Grand Total:</td>
-            <td style="padding: 2px 8px 10px 8px; text-align: right; color: #377355; font-size: 15px; font-weight: bold; font-family: monospace; border-top: 1px solid #377355;">
+            <td colspan="3" style="padding: 2px 8px 10px 8px; text-align: right; color: #2D5A3F; font-size: 14px; font-weight: bold; border-top: 1px solid #2D5A3F;">Grand Total:</td>
+            <td style="padding: 2px 8px 10px 8px; text-align: right; color: #2D5A3F; font-size: 15px; font-weight: bold; font-family: monospace; border-top: 1px solid #2D5A3F;">
               ₹${order.total}
             </td>
           </tr>
         </tfoot>
       </table>
       <div style="margin-top: 25px; text-align: center; border-top: 1px dashed #e2e1d7; padding-top: 15px;">
-        <p style="color: #377355; font-size: 11px; font-weight: bold; margin: 0;">90-DAY ROOT & SOIL BIOME HEALTH GUARANTEE</p>
+        <p style="color: #2D5A3F; font-size: 11px; font-weight: bold; margin: 0;">90-DAY ROOT & SOIL BIOME HEALTH GUARANTEE</p>
         <p style="color: #666; font-size: 10px; margin: 4px 0 0 0; line-height: 1.4;">
           Your formulation has been packed and sealed under temperature control. Thank you for cultivating with Agriic.
         </p>
@@ -1269,13 +1269,13 @@ export default function App() {
               animation: toastShrink 3000ms linear forwards;
             }
           `}</style>
-          <div className="fixed top-24 left-1/2 z-50 bg-[#2b3a30] text-white px-5 py-3.5 rounded-xl border border-[#D2AF6E]/35 shadow-2.5xl flex flex-col overflow-hidden animate-toast-slide-in backdrop-blur-md min-w-[280px] sm:min-w-[345px]">
+          <div className="fixed top-24 left-1/2 z-50 bg-[#2b3a30] text-white px-5 py-3.5 rounded-xl border border-[#D4A373]/35 shadow-2.5xl flex flex-col overflow-hidden animate-toast-slide-in backdrop-blur-md min-w-[280px] sm:min-w-[345px]">
             <div className="flex items-center space-x-3 mb-2.5">
-              <CheckCircle className="w-4.5 h-4.5 text-[#D2AF6E] shrink-0" />
+              <CheckCircle className="w-4.5 h-4.5 text-[#D4A373] shrink-0" />
               <span className="text-xs sm:text-sm font-semibold tracking-wide">{toast}</span>
             </div>
             <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden">
-              <div className="bg-[#D2AF6E] h-full animate-toast-progress" />
+              <div className="bg-[#D4A373] h-full animate-toast-progress" />
             </div>
           </div>
         </>
@@ -1293,7 +1293,7 @@ export default function App() {
 
               {/* Location Selector */}
               <div className="hidden md:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-gray-200 text-xs shrink-0 text-slate-600">
-                <MapPin className="w-4 h-4 text-[#377355]" />
+                <MapPin className="w-4 h-4 text-[#2D5A3F]" />
                 <div className="flex flex-col text-left">
                   <span className="text-[8px] text-gray-400 font-bold uppercase leading-none">Location</span>
                   <span className="font-extrabold text-slate-700 leading-tight">Delhi, India</span>
@@ -1307,7 +1307,7 @@ export default function App() {
                 </div>
                 <input
                   type="text"
-                  className="block w-full pl-9 pr-28 py-2 border border-gray-200 rounded-full text-xs bg-slate-50 placeholder-gray-450 font-semibold focus:outline-none focus:bg-white focus:border-[#377355] focus:ring-2 focus:ring-[#377355]/20 transition-all"
+                  className="block w-full pl-9 pr-28 py-2 border border-gray-200 rounded-full text-xs bg-slate-50 placeholder-gray-450 font-semibold focus:outline-none focus:bg-white focus:border-[#2D5A3F] focus:ring-2 focus:ring-[#2D5A3F]/20 transition-all"
                   placeholder="Search Spices, Flour, Grains..."
                   value={allProductsSearch}
                   onChange={(e) => setAllProductsSearch(e.target.value)}
@@ -1336,11 +1336,11 @@ export default function App() {
                 <a
                   href="#cart"
                   onClick={(e) => { e.preventDefault(); setIsCartDrawerOpen(true); }}
-                  className="relative p-1.5 hover:bg-slate-100 rounded-full transition-colors flex items-center justify-center text-[#377355]"
+                  className="relative p-1.5 hover:bg-slate-100 rounded-full transition-colors flex items-center justify-center text-[#2D5A3F]"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   {getCartCount() > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-[#377355] text-white text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
+                    <span className="absolute -top-1 -right-1 bg-[#2D5A3F] text-white text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
                       {getCartCount()}
                     </span>
                   )}
@@ -1352,7 +1352,7 @@ export default function App() {
                       href="#profile"
                       className="flex items-center space-x-1 px-2.5 py-1.5 rounded-full bg-slate-50 border border-gray-200 font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
                     >
-                      <User className="w-3.5 h-3.5 text-[#377355]" />
+                      <User className="w-3.5 h-3.5 text-[#2D5A3F]" />
                       <span className="hidden sm:inline font-bold text-[10px]">{currentUser.name || 'Alok'}</span>
                     </a>
                     <button onClick={handleLogout} className="text-[10px] font-bold text-red-500 hover:underline">
@@ -1361,7 +1361,7 @@ export default function App() {
                   </div>
                 ) : (
                   <a href="#auth" className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full border border-gray-200 text-slate-700 hover:bg-slate-50 font-bold transition-all text-[11px]">
-                    <User className="w-4 h-4 text-[#377355]" />
+                    <User className="w-4 h-4 text-[#2D5A3F]" />
                     <span>Login</span>
                   </a>
                 )}
@@ -1373,15 +1373,15 @@ export default function App() {
               <a
                 href="#products"
                 onClick={() => setProductFilter('all')}
-                className={`hover:text-[#377355] transition-colors ${productFilter === 'all' ? 'text-[#377355]' : ''}`}
+                className={`hover:text-[#2D5A3F] transition-colors ${productFilter === 'all' ? 'text-[#2D5A3F]' : ''}`}
               >
                 All Products &gt;
               </a>
-              <a href="#products" className="hover:text-[#377355] transition-colors">Offers &gt;</a>
-              <a href="#profile" className="hover:text-[#377355] transition-colors">Membership</a>
-              <a href="#blog" className="hover:text-[#377355] transition-colors">Blogs</a>
-              <a href="#products" className="hover:text-[#377355] transition-colors">Recipes</a>
-              <a href="#home" className="hover:text-[#377355] transition-colors">About Us</a>
+              <a href="#products" className="hover:text-[#2D5A3F] transition-colors">Offers &gt;</a>
+              <a href="#profile" className="hover:text-[#2D5A3F] transition-colors">Membership</a>
+              <a href="#blog" className="hover:text-[#2D5A3F] transition-colors">Blogs</a>
+              <a href="#products" className="hover:text-[#2D5A3F] transition-colors">Recipes</a>
+              <a href="#home" className="hover:text-[#2D5A3F] transition-colors">About Us</a>
             </div>
           </header>
         ) : (
@@ -1448,11 +1448,11 @@ export default function App() {
                   <a
                     href="#profile"
                     className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full border transition-all ${routePath === '#profile'
-                      ? 'bg-[#D2AF6E]/20 border-[#D2AF6E]/50 text-[#D2AF6E]'
+                      ? 'bg-[#D4A373]/20 border-[#D4A373]/50 text-[#D4A373]'
                       : 'bg-white/5 hover:bg-white/15 border-white/10 text-white/90'
                       }`}
                   >
-                    <User className="w-4 h-4 text-[#D2AF6E]" />
+                    <User className="w-4 h-4 text-[#D4A373]" />
                     <span className="text-xs font-semibold hidden sm:inline">{currentUser.name || 'Alok'}</span>
                   </a>
                   <button
@@ -1512,7 +1512,7 @@ export default function App() {
             <a
               href="#soil-test"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="w-full text-center block bg-agri-lime text-[#377355] font-extrabold tracking-wider py-4 rounded-xl shadow-lg"
+              className="w-full text-center block bg-agri-lime text-[#2D5A3F] font-extrabold tracking-wider py-4 rounded-xl shadow-lg"
             >
               TAKE THE SOIL TEST™
             </a>
@@ -1585,7 +1585,7 @@ export default function App() {
                       <div className="max-w-xl text-left py-12">
                         <span 
                           className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-white mb-4 rounded-full"
-                          style={{ backgroundColor: '#D2AF6E' }}
+                          style={{ backgroundColor: '#D4A373' }}
                         >
                           OUR FORMULAS
                         </span>
@@ -1598,7 +1598,7 @@ export default function App() {
                         <a 
                           href="#products"
                           className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-transform hover:scale-105 rounded-full"
-                          style={{ backgroundColor: '#D2AF6E' }}
+                          style={{ backgroundColor: '#D4A373' }}
                         >
                           BUY NOW
                         </a>
@@ -1714,7 +1714,7 @@ export default function App() {
                     <button
                       onClick={() => setProductTab('fertilizer')}
                       className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${productTab === 'fertilizer'
-                        ? 'bg-[#2b3a30] text-[#D2AF6E] shadow-md scale-100'
+                        ? 'bg-[#2b3a30] text-[#D4A373] shadow-md scale-100'
                         : 'bg-transparent text-gray-500 hover:text-gray-900'
                         }`}
                     >
@@ -1723,7 +1723,7 @@ export default function App() {
                     <button
                       onClick={() => setProductTab('seeds')}
                       className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${productTab === 'seeds'
-                        ? 'bg-[#2b3a30] text-[#D2AF6E] shadow-md scale-100'
+                        ? 'bg-[#2b3a30] text-[#D4A373] shadow-md scale-100'
                         : 'bg-transparent text-gray-500 hover:text-gray-900'
                         }`}
                     >
@@ -1732,7 +1732,7 @@ export default function App() {
                     <button
                       onClick={() => setProductTab('gardening')}
                       className={`px-6 py-2.5 rounded-xl text-sm font-extrabold tracking-wide transition-all duration-300 ${productTab === 'gardening'
-                        ? 'bg-[#2b3a30] text-[#D2AF6E] shadow-md scale-100'
+                        ? 'bg-[#2b3a30] text-[#D4A373] shadow-md scale-100'
                         : 'bg-transparent text-gray-500 hover:text-gray-900'
                         }`}
                     >
@@ -1751,7 +1751,7 @@ export default function App() {
                     })
                     .slice(0, 4) // Show up to 4 per category
                     .map((p) => (
-                      <div key={p.id} className="bg-white rounded-[16px] md:rounded-[24px] overflow-hidden border border-[#e6e6e6] hover:border-[#D2AF6E] group transition-all duration-300 hover:shadow-xl md:hover:-translate-y-1 flex flex-col h-full">
+                      <div key={p.id} className="bg-white rounded-[16px] md:rounded-[24px] overflow-hidden border border-[#e6e6e6] hover:border-[#D4A373] group transition-all duration-300 hover:shadow-xl md:hover:-translate-y-1 flex flex-col h-full">
                         <div className="relative bg-[#f7f6ee] flex justify-center items-center h-28 sm:h-36 md:h-64 overflow-hidden">
                           <img
                             src={p.img}
@@ -1765,10 +1765,10 @@ export default function App() {
                           )}
                         </div>
                         <div className="p-2.5 sm:p-3.5 md:p-6 flex flex-col flex-grow bg-white">
-                          <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black text-[#5a8b3d] uppercase tracking-[0.15em] mb-1 sm:mb-1.5 md:mb-2 block truncate">
+                          <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black text-[#2D5A3F] uppercase tracking-[0.15em] mb-1 sm:mb-1.5 md:mb-2 block truncate">
                             {p.category.replace('-', ' ')}
                           </span>
-                          <h3 className="text-xs sm:text-sm md:text-xl font-extrabold text-gray-900 mb-1 sm:mb-2 md:mb-3 leading-tight group-hover:text-[#5a8b3d] transition-colors line-clamp-1 sm:line-clamp-2">
+                          <h3 className="text-xs sm:text-sm md:text-xl font-extrabold text-gray-900 mb-1 sm:mb-2 md:mb-3 leading-tight group-hover:text-[#2D5A3F] transition-colors line-clamp-1 sm:line-clamp-2">
                             {p.name}
                           </h3>
                           <p className="hidden sm:block text-xs md:text-sm text-gray-500 mb-2 sm:mb-4 flex-grow leading-relaxed line-clamp-3">
@@ -1788,7 +1788,7 @@ export default function App() {
                               e.preventDefault();
                               addToCart(p);
                             }}
-                            className="w-full flex items-center justify-center space-x-1.5 sm:space-x-2 border border-gray-200 sm:border-2 sm:border-gray-100 hover:border-[#5a8b3d] hover:bg-[#f9faf5] text-gray-800 font-extrabold py-1.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl text-[9px] sm:text-xs uppercase tracking-widest transition-all duration-300"
+                            className="w-full flex items-center justify-center space-x-1.5 sm:space-x-2 border border-gray-200 sm:border-2 sm:border-gray-100 hover:border-[#2D5A3F] hover:bg-[#f9faf5] text-gray-800 font-extrabold py-1.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl text-[9px] sm:text-xs uppercase tracking-widest transition-all duration-300"
                           >
                             <ShoppingCart className="w-4 h-4" strokeWidth={2.5} />
                             <span>Add to Cart</span>
@@ -1815,7 +1815,7 @@ export default function App() {
             <div className="relative w-full flex justify-center z-30" style={{ marginTop: '-28px', marginBottom: '-28px' }}>
               <a 
                 href="#products" 
-                className="group flex items-center gap-3 bg-white border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[#377355] font-extrabold uppercase tracking-[0.15em] text-xs md:text-sm transition-all duration-300 hover:scale-105 hover:bg-[#377355] hover:text-white"
+                className="group flex items-center gap-3 bg-white border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[#2D5A3F] font-extrabold uppercase tracking-[0.15em] text-xs md:text-sm transition-all duration-300 hover:scale-105 hover:bg-[#2D5A3F] hover:text-white"
               >
                 <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-[#f4f7f5] flex items-center justify-center group-hover:bg-white/20 transition-colors">
                   <Leaf className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -1828,7 +1828,7 @@ export default function App() {
             <section className="py-12 md:py-20 px-4 md:px-12 bg-white border-b border-gray-100">
               <div className="max-w-7xl mx-auto">
                 <div className="flex justify-center md:justify-start gap-3 md:gap-4 mb-8 md:mb-10">
-                  <button className="flex items-center gap-1.5 md:gap-2 bg-[#377355] text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-extrabold shadow-md">
+                  <button className="flex items-center gap-1.5 md:gap-2 bg-[#2D5A3F] text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-extrabold shadow-md">
                     <Leaf className="w-3.5 h-3.5 md:w-4 md:h-4" /> Organic Benefits
                   </button>
                   <button className="flex items-center gap-1.5 md:gap-2 bg-[#f7f6ee] border border-gray-200 text-gray-600 px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-extrabold hover:bg-gray-100 transition-colors">
@@ -1837,7 +1837,7 @@ export default function App() {
                 </div>
 
                 <div className="max-w-3xl mb-8 md:mb-12">
-                  <h2 className="text-3xl md:text-5xl font-extrabold text-[#377355] tracking-tight mb-3 md:mb-4">Why Choose Organic Farming?</h2>
+                  <h2 className="text-3xl md:text-5xl font-extrabold text-[#2D5A3F] tracking-tight mb-3 md:mb-4">Why Choose Organic Farming?</h2>
                   <p className="text-gray-600 text-sm md:text-base leading-relaxed">
                     See how organic farming nourishes your soil, strengthens your crops, and builds a sustainable future.
                   </p>
@@ -1846,17 +1846,17 @@ export default function App() {
                 {/* 4 icons row */}
                 <div className="flex flex-row overflow-x-auto md:grid md:grid-cols-4 gap-4 md:gap-6 mb-10 md:mb-14 pb-3 no-scrollbar snap-x">
                   {[
-                    { icon: <Leaf className="w-5 h-5 md:w-6 md:h-6 text-[#377355]" />, title: 'Chemical-Free', desc: 'Safe for soil, crops and your family' },
-                    { icon: <Sprout className="w-5 h-5 md:w-6 md:h-6 text-[#377355]" />, title: 'Better Soil Health', desc: 'Improves fertility and soil structure' },
-                    { icon: <Recycle className="w-5 h-5 md:w-6 md:h-6 text-[#377355]" />, title: 'Sustainable Farming', desc: 'Protects environment for future generations' },
-                    { icon: <Droplet className="w-5 h-5 md:w-6 md:h-6 text-[#377355]" />, title: 'Water Efficient', desc: 'Improves water retention in soil' }
+                    { icon: <Leaf className="w-5 h-5 md:w-6 md:h-6 text-[#2D5A3F]" />, title: 'Chemical-Free', desc: 'Safe for soil, crops and your family' },
+                    { icon: <Sprout className="w-5 h-5 md:w-6 md:h-6 text-[#2D5A3F]" />, title: 'Better Soil Health', desc: 'Improves fertility and soil structure' },
+                    { icon: <Recycle className="w-5 h-5 md:w-6 md:h-6 text-[#2D5A3F]" />, title: 'Sustainable Farming', desc: 'Protects environment for future generations' },
+                    { icon: <Droplet className="w-5 h-5 md:w-6 md:h-6 text-[#2D5A3F]" />, title: 'Water Efficient', desc: 'Improves water retention in soil' }
                   ].map((feature, i) => (
                     <div key={i} className="flex items-start gap-3 md:gap-4 min-w-[190px] md:min-w-0 snap-start">
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#f7f6ee] border border-gray-200 flex items-center justify-center shrink-0">
                         {feature.icon}
                       </div>
                       <div>
-                        <h4 className="text-[11px] md:text-sm font-extrabold text-[#377355] mb-0.5 md:mb-1">{feature.title}</h4>
+                        <h4 className="text-[11px] md:text-sm font-extrabold text-[#2D5A3F] mb-0.5 md:mb-1">{feature.title}</h4>
                         <p className="text-[9px] md:text-xs text-gray-500 leading-snug pr-2">{feature.desc}</p>
                       </div>
                     </div>
@@ -1868,7 +1868,7 @@ export default function App() {
                   {[
                     {
                       month: 'Month 1',
-                      color: '#5a8b3d',
+                      color: '#2D5A3F',
                       title: 'Soil Activation',
                       points: ['Beneficial microbes increase', 'Better nutrient availability', 'Improved soil structure'],
                       img: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=400&q=80'
@@ -1889,15 +1889,15 @@ export default function App() {
                     }
                   ].map((card, i) => (
                     <React.Fragment key={i}>
-                      <div className="min-w-[82%] sm:min-w-[55%] md:min-w-0 snap-center md:snap-align-none bg-[#fcfbf7] border border-gray-200 shadow-sm rounded-[24px] p-5 md:p-6 flex-1 flex flex-col relative overflow-hidden group hover:border-[#D2AF6E] hover:shadow-lg transition-all duration-300">
+                      <div className="min-w-[82%] sm:min-w-[55%] md:min-w-0 snap-center md:snap-align-none bg-[#fcfbf7] border border-gray-200 shadow-sm rounded-[24px] p-5 md:p-6 flex-1 flex flex-col relative overflow-hidden group hover:border-[#D4A373] hover:shadow-lg transition-all duration-300">
                         <div className="inline-block text-white text-[9px] md:text-[10px] font-black px-2.5 py-1 rounded-md w-max mb-3 md:mb-4 uppercase tracking-wider" style={{ backgroundColor: card.color }}>
                           {card.month}
                         </div>
-                        <h3 className="text-base md:text-lg font-extrabold text-[#377355] mb-3 md:mb-4 group-hover:text-[#5a8b3d] transition-colors">{card.title}</h3>
+                        <h3 className="text-base md:text-lg font-extrabold text-[#2D5A3F] mb-3 md:mb-4 group-hover:text-[#2D5A3F] transition-colors">{card.title}</h3>
                         <ul className="space-y-2 md:space-y-2.5 mb-5 md:mb-6 z-10 relative flex-grow">
                           {card.points.map((pt, j) => (
                             <li key={j} className="flex items-start gap-2 text-[10px] md:text-xs text-gray-600 font-semibold leading-snug">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#5a8b3d] mt-1.5 shrink-0"></span>
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#2D5A3F] mt-1.5 shrink-0"></span>
                               {pt}
                             </li>
                           ))}
@@ -1913,7 +1913,7 @@ export default function App() {
                       </div>
                       {i < 2 && (
                         <div className="hidden md:flex items-center justify-center shrink-0 w-8">
-                          <div className="w-6 h-6 rounded-full bg-[#377355] text-[#D2AF6E] flex items-center justify-center shadow-md border-2 border-white z-10">
+                          <div className="w-6 h-6 rounded-full bg-[#2D5A3F] text-[#D4A373] flex items-center justify-center shadow-md border-2 border-white z-10">
                             <ChevronRight className="w-3 h-3" strokeWidth={3} />
                           </div>
                         </div>
@@ -1923,7 +1923,7 @@ export default function App() {
                 </div>
 
                 {/* Green organic banner */}
-                <div className="bg-[#fcfbf7] border border-gray-200 shadow-sm rounded-[24px] p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-5 md:gap-6 group hover:border-[#D2AF6E] hover:shadow-lg transition-all duration-300">
+                <div className="bg-[#fcfbf7] border border-gray-200 shadow-sm rounded-[24px] p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-5 md:gap-6 group hover:border-[#D4A373] hover:shadow-lg transition-all duration-300">
                   <div className="flex items-center gap-3 md:gap-4 w-full md:w-auto">
                     <div className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-md">
                       <img
@@ -1933,7 +1933,7 @@ export default function App() {
                       />
                     </div>
                     <div className="flex-1 md:flex-none">
-                      <h3 className="text-base md:text-lg font-extrabold text-[#377355] mb-0.5 md:mb-1">Grow Naturally with Agriic</h3>
+                      <h3 className="text-base md:text-lg font-extrabold text-[#2D5A3F] mb-0.5 md:mb-1">Grow Naturally with Agriic</h3>
                       <p className="text-[9px] md:text-[11px] font-bold text-gray-500 uppercase tracking-wider">Healthy Soil • Healthy Crops • Healthy Future</p>
                     </div>
                   </div>
@@ -1942,7 +1942,7 @@ export default function App() {
                       <Leaf className="w-3 h-3 md:w-4 md:h-4" />
                       <span>Organic today,<br className="hidden md:block" />a better tomorrow.</span>
                     </div>
-                    <a href="#products" className="bg-[#377355] hover:bg-[#377355] text-white text-[10px] md:text-xs font-extrabold px-5 md:px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-1.5 md:gap-2 shadow-md w-full sm:w-auto tracking-widest uppercase active:scale-95">
+                    <a href="#products" className="bg-[#2D5A3F] hover:bg-[#2D5A3F] text-white text-[10px] md:text-xs font-extrabold px-5 md:px-6 py-3 rounded-xl transition-colors flex items-center justify-center gap-1.5 md:gap-2 shadow-md w-full sm:w-auto tracking-widest uppercase active:scale-95">
                       Explore Organic Solutions <ArrowRight className="w-3 h-3 md:w-4 md:h-4" strokeWidth={3} />
                     </a>
                   </div>
@@ -1952,15 +1952,15 @@ export default function App() {
 
             {/* Section 3: Who We Are */}
             <section className="bg-[#1b251f] text-white py-16 md:py-24 px-4 md:px-12 relative overflow-hidden" id="about">
-              <div className="absolute bottom-0 right-0 w-48 h-48 md:w-80 md:h-80 bg-[#D2AF6E]/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-48 h-48 md:w-80 md:h-80 bg-[#D4A373]/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
               <div className="max-w-7xl mx-auto relative z-10">
 
                 <div className="flex flex-col-reverse lg:flex-row items-center gap-8 md:gap-12">
                   <div className="w-full lg:w-1/2">
-                    <span className="text-[10px] md:text-xs font-black text-[#D2AF6E] uppercase tracking-widest block mb-2 md:mb-4">WHO WE ARE</span>
+                    <span className="text-[10px] md:text-xs font-black text-[#D4A373] uppercase tracking-widest block mb-2 md:mb-4">WHO WE ARE</span>
                     <h2 className="text-2xl md:text-5xl font-extrabold mb-4 md:mb-6 leading-tight tracking-tight">
-                      Built by farmers. <br className="hidden md:block" /><span className="text-[#D2AF6E]">Backed by science.</span>
+                      Built by farmers. <br className="hidden md:block" /><span className="text-[#D4A373]">Backed by science.</span>
                     </h2>
                     <p className="text-white/75 text-xs md:text-base leading-relaxed mb-4 md:mb-5">
                       Agriic was born from a simple frustration — watching generations of Indian farmers apply generic chemicals to unique soils, and wondering why yields kept falling. Founded in 2021 in Pune, Maharashtra, we set out to change that with one core belief: <strong className="text-white">every farm deserves a personalized solution.</strong>
@@ -1975,7 +1975,7 @@ export default function App() {
                         { num: '2021', label: 'Founded In' },
                       ].map((stat, i) => (
                         <div key={i} className="bg-white/5 border border-white/10 rounded-xl md:rounded-2xl p-2.5 md:p-4 text-center backdrop-blur-sm">
-                          <div className="text-xl md:text-3xl font-black text-[#D2AF6E] mb-0.5 md:mb-1">{stat.num}</div>
+                          <div className="text-xl md:text-3xl font-black text-[#D4A373] mb-0.5 md:mb-1">{stat.num}</div>
                           <div className="text-[9px] md:text-[11px] text-white/60 font-semibold uppercase tracking-wide leading-tight">{stat.label}</div>
                         </div>
                       ))}
@@ -1991,7 +1991,7 @@ export default function App() {
                       <div className="absolute inset-0 bg-gradient-to-t from-[#1a2a1e]/80 md:from-[#1a2a1e]/70 to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
                         <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl md:rounded-2xl px-3 py-2 md:px-5 md:py-3 inline-flex items-center space-x-2 md:space-x-3">
-                          <Award className="w-4 h-4 md:w-5 md:h-5 text-[#D2AF6E] shrink-0" />
+                          <Award className="w-4 h-4 md:w-5 md:h-5 text-[#D4A373] shrink-0" />
                           <span className="text-[10px] md:text-sm font-bold text-white">ICAR Recognized Agri-Tech Company, 2024</span>
                         </div>
                       </div>
@@ -2013,7 +2013,7 @@ export default function App() {
 
                 <div ref={bestSellersRef} className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 pb-4">
                   {liveProducts.slice(0, 4).map((p) => (
-                    <div key={p.id} className="bg-white rounded-[16px] md:rounded-[24px] overflow-hidden border border-[#e6e6e6] hover:border-[#D2AF6E] group transition-all duration-300 hover:shadow-xl md:hover:-translate-y-1 flex flex-col h-full">
+                    <div key={p.id} className="bg-white rounded-[16px] md:rounded-[24px] overflow-hidden border border-[#e6e6e6] hover:border-[#D4A373] group transition-all duration-300 hover:shadow-xl md:hover:-translate-y-1 flex flex-col h-full">
                       <div className="relative bg-[#f7f6ee] flex justify-center items-center h-28 sm:h-36 md:h-64 overflow-hidden">
                         <img
                           src={p.img}
@@ -2027,10 +2027,10 @@ export default function App() {
                         )}
                       </div>
                       <div className="p-2.5 sm:p-3.5 md:p-6 flex flex-col flex-grow bg-white">
-                        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black text-[#5a8b3d] uppercase tracking-[0.15em] mb-1 sm:mb-1.5 md:mb-2 block truncate">
+                        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black text-[#2D5A3F] uppercase tracking-[0.15em] mb-1 sm:mb-1.5 md:mb-2 block truncate">
                           {p.category.replace('-', ' ')}
                         </span>
-                        <h3 className="text-xs sm:text-sm md:text-xl font-extrabold text-gray-900 mb-1 sm:mb-2 md:mb-3 leading-tight group-hover:text-[#5a8b3d] transition-colors line-clamp-1 sm:line-clamp-2">
+                        <h3 className="text-xs sm:text-sm md:text-xl font-extrabold text-gray-900 mb-1 sm:mb-2 md:mb-3 leading-tight group-hover:text-[#2D5A3F] transition-colors line-clamp-1 sm:line-clamp-2">
                           {p.name}
                         </h3>
                         <p className="hidden sm:block text-[9px] md:text-sm text-gray-500 mb-2 sm:mb-4 flex-grow leading-relaxed line-clamp-2 md:line-clamp-3">
@@ -2050,7 +2050,7 @@ export default function App() {
                             e.preventDefault();
                             addToCart(p);
                           }}
-                          className="w-full flex items-center justify-center space-x-1.5 sm:space-x-2 border border-gray-200 sm:border-2 sm:border-gray-100 hover:border-[#5a8b3d] hover:bg-[#f9faf5] text-gray-800 font-extrabold py-1.5 sm:py-2 md:py-3.5 rounded-lg sm:rounded-xl text-[9px] sm:text-xs uppercase tracking-widest transition-all duration-300"
+                          className="w-full flex items-center justify-center space-x-1.5 sm:space-x-2 border border-gray-200 sm:border-2 sm:border-gray-100 hover:border-[#2D5A3F] hover:bg-[#f9faf5] text-gray-800 font-extrabold py-1.5 sm:py-2 md:py-3.5 rounded-lg sm:rounded-xl text-[9px] sm:text-xs uppercase tracking-widest transition-all duration-300"
                         >
                           <ShoppingCart className="w-3 h-3 md:w-4 md:h-4" strokeWidth={2.5} />
                           <span>Add to Cart</span>
@@ -2066,8 +2066,8 @@ export default function App() {
             {/* Section 6: Big Brand Science banner */}
             <section className="w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-[1440px] mx-auto bg-agri-dark text-white py-12 md:py-20 px-6 md:px-16 flex flex-col lg:flex-row items-center justify-between rounded-tl-[48px] rounded-br-[48px] rounded-tr-xl rounded-bl-xl md:rounded-tl-[120px] md:rounded-br-[120px] md:rounded-tr-2xl md:rounded-bl-2xl my-8 md:my-16 shadow-2xl relative overflow-hidden">
               {/* Decorative background blobs to enhance the premium feel */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#D2AF6E]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#D2AF6E]/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4A373]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#D4A373]/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
 
               <div className="w-full lg:w-1/2 mb-8 lg:mb-0 max-w-xl z-10">
                 <span className="text-xs font-bold text-agri-lime tracking-widest uppercase block mb-2 font-mono">SOIL DISCIPLINE</span>
@@ -2102,7 +2102,7 @@ export default function App() {
                     <p className="text-gray-700 text-sm md:text-lg leading-relaxed mb-10 max-w-lg font-medium">
                       We move farmers to organic the right way — with complete support, end-to-end care, and a promise to buy, process, and sell their harvest.
                     </p>
-                    <button className="bg-[#377355] hover:bg-[#377355] text-white font-extrabold px-8 py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1">
+                    <button className="bg-[#2D5A3F] hover:bg-[#2D5A3F] text-white font-extrabold px-8 py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1">
                       Our Journey Together
                     </button>
                   </div>
@@ -2134,14 +2134,14 @@ export default function App() {
                         { num: 6, icon: <Factory />, title: 'We Process\nwith Care', desc: 'We clean, grade and process your produce while maintaining its quality.' },
                         { num: 7, icon: <ShoppingCart />, title: 'We Sell on Our\nOnline Platform', desc: 'Your crops reach thousands of customers through our online store - fresh and trusted.' }
                       ].map((step, i) => (
-                        <div key={i} className="snap-start flex-none flex flex-col items-center text-center relative group bg-gradient-to-b from-white to-[#f9faf5] md:bg-transparent rounded-2xl md:rounded-none p-4 md:p-0 border border-gray-150 md:border-0 shadow-sm hover:shadow-md hover:border-[#D2AF6E] md:shadow-none transition-all duration-300" style={{ width: 'calc(50% - 6px)' }}>
+                        <div key={i} className="snap-start flex-none flex flex-col items-center text-center relative group bg-gradient-to-b from-white to-[#f9faf5] md:bg-transparent rounded-2xl md:rounded-none p-4 md:p-0 border border-gray-150 md:border-0 shadow-sm hover:shadow-md hover:border-[#D4A373] md:shadow-none transition-all duration-300" style={{ width: 'calc(50% - 6px)' }}>
                           {/* Number badge */}
                           <div className="absolute top-2 left-2 md:-top-2 md:-left-2 w-5 h-5 md:w-6 md:h-6 rounded-full bg-[#365922] text-white flex items-center justify-center text-[9px] md:text-[10px] font-black z-20 shadow-md transition-transform group-hover:scale-110">
                             {step.num}
                           </div>
 
                           {/* Icon container */}
-                          <div className="w-14 h-14 md:w-24 md:h-24 bg-white md:bg-[#fcfbf7] rounded-[16px] md:rounded-[24px] shadow-sm border border-gray-100 flex items-center justify-center text-[#365922] mb-3 md:mb-6 mt-2 md:mt-0 relative z-10 transition-all duration-300 group-hover:shadow-md group-hover:border-[#D2AF6E] group-hover:-translate-y-1">
+                          <div className="w-14 h-14 md:w-24 md:h-24 bg-white md:bg-[#fcfbf7] rounded-[16px] md:rounded-[24px] shadow-sm border border-gray-100 flex items-center justify-center text-[#365922] mb-3 md:mb-6 mt-2 md:mt-0 relative z-10 transition-all duration-300 group-hover:shadow-md group-hover:border-[#D4A373] group-hover:-translate-y-1">
                             <div className="[&>svg]:w-6 [&>svg]:h-6 md:[&>svg]:w-10 md:[&>svg]:h-10 [&>svg]:stroke-[1.5]">{step.icon}</div>
                           </div>
 
@@ -2210,7 +2210,7 @@ export default function App() {
                   </div>
 
                   <div className="flex flex-col items-center md:items-end gap-2 z-10 w-full md:w-auto mt-4 md:mt-0">
-                    <button className="bg-[#D2AF6E] hover:bg-white text-[#1a2a1e] font-extrabold px-6 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-lg w-full md:w-auto group">
+                    <button className="bg-[#D4A373] hover:bg-white text-[#1a2a1e] font-extrabold px-6 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-lg w-full md:w-auto group">
                       Join Agriic Today <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={3} />
                     </button>
                     <p className="text-[9px] text-white/60 font-semibold tracking-wide">
@@ -2231,7 +2231,7 @@ export default function App() {
                   <img src="https://images.unsplash.com/photo-1628183185360-1e5b15b6d9be?auto=format&fit=crop&w=1920&q=80" alt="Farm Background" className="w-full h-full object-cover mix-blend-overlay" />
                 </div>
                 <div className="max-w-4xl mx-auto relative z-10">
-                  <span className="text-xs md:text-sm font-black text-[#D2AF6E] tracking-widest block mb-4 uppercase">AGRIIC PREMIUM MEMBERSHIP</span>
+                  <span className="text-xs md:text-sm font-black text-[#D4A373] tracking-widest block mb-4 uppercase">AGRIIC PREMIUM MEMBERSHIP</span>
                   <h2 className="text-4xl md:text-7xl font-extrabold mb-6 leading-tight tracking-tight">
                     Own The Harvest,<br />Not The Hassle.
                   </h2>
@@ -2239,7 +2239,7 @@ export default function App() {
                     Become a member of India's most transparent organic farming ecosystem. Track your crops, visit your farm, and receive fresh harvests directly from your dedicated farmland.
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button className="w-full sm:w-auto px-8 py-4 bg-[#D2AF6E] text-[#1a2a1e] rounded-full font-extrabold text-sm hover:bg-white transition shadow-xl">
+                    <button className="w-full sm:w-auto px-8 py-4 bg-[#D4A373] text-[#1a2a1e] rounded-full font-extrabold text-sm hover:bg-white transition shadow-xl">
                       Join Membership
                     </button>
                     <button className="w-full sm:w-auto px-8 py-4 bg-white/10 text-white rounded-full font-extrabold text-sm border border-white/20 hover:bg-white/20 transition backdrop-blur-md">
@@ -2268,7 +2268,7 @@ export default function App() {
                         { step: '06', title: 'Harvest Delivery' },
                       ].map((item, i) => (
                         <div key={i} className="relative z-10 flex flex-col items-center min-w-[140px] md:min-w-0 flex-shrink-0 snap-center">
-                          <div className="w-16 h-16 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-xl font-black text-[#D2AF6E] mb-4">
+                          <div className="w-16 h-16 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-xl font-black text-[#D4A373] mb-4">
                             {item.step}
                           </div>
                           <h4 className="font-bold text-gray-900 text-sm md:text-base whitespace-nowrap">{item.title}</h4>
@@ -2318,10 +2318,10 @@ export default function App() {
                       return (
                         <div
                           key={i}
-                          className={`relative rounded-3xl p-8 border transition-all duration-500 ease-out ${isPopular ? 'border-[#D2AF6E] shadow-2xl md:scale-105 z-10' : 'border-gray-200 shadow-lg'} ${planColor} flex flex-col w-[85vw] max-w-[85vw] flex-shrink-0 snap-center cursor-pointer md:w-auto md:max-w-none md:min-w-0`}
+                          className={`relative rounded-3xl p-8 border transition-all duration-500 ease-out ${isPopular ? 'border-[#D4A373] shadow-2xl md:scale-105 z-10' : 'border-gray-200 shadow-lg'} ${planColor} flex flex-col w-[85vw] max-w-[85vw] flex-shrink-0 snap-center cursor-pointer md:w-auto md:max-w-none md:min-w-0`}
                           onMouseEnter={() => window.innerWidth >= 768 && setActivePlanIndex(i)}
                         >
-                          {isPopular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#D2AF6E] text-[#1a2a1e] font-black text-[10px] px-4 py-1 rounded-full tracking-widest uppercase shadow-md whitespace-nowrap transition-opacity duration-300">Selected</span>}
+                          {isPopular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#D4A373] text-[#1a2a1e] font-black text-[10px] px-4 py-1 rounded-full tracking-widest uppercase shadow-md whitespace-nowrap transition-opacity duration-300">Selected</span>}
                           <h4 className={`text-xl font-black mb-2 transition-colors duration-300 ${planText}`}>{plan.name} Plan</h4>
                           <div className={`text-4xl font-extrabold mb-1 transition-colors duration-300 ${planText}`}>{plan.price}</div>
                           <p className={`text-sm mb-6 transition-colors duration-300 ${isPopular ? 'text-white/70' : 'text-gray-500'}`}>Farm Allocation: {plan.area}</p>
@@ -2338,7 +2338,7 @@ export default function App() {
                             ].map((feat, j) => (
                               <div key={j} className="flex items-center text-sm font-semibold">
                                 {feat.active ? (
-                                  <div className="w-5 h-5 rounded-full bg-[#D2AF6E] flex justify-center items-center mr-3 shrink-0 text-[#1a2a1e] text-[10px] font-black transition-colors duration-300">✓</div>
+                                  <div className="w-5 h-5 rounded-full bg-[#D4A373] flex justify-center items-center mr-3 shrink-0 text-[#1a2a1e] text-[10px] font-black transition-colors duration-300">✓</div>
                                 ) : (
                                   <div className={`w-5 h-5 rounded-full border transition-colors duration-300 ${isPopular ? 'border-white/20' : 'border-gray-300'} flex justify-center items-center mr-3 shrink-0 ${isPopular ? 'text-white/30' : 'text-gray-400'} text-[10px] font-black`}>✕</div>
                                 )}
@@ -2346,7 +2346,7 @@ export default function App() {
                               </div>
                             ))}
                           </div>
-                          <button className={`w-full py-4 rounded-xl font-extrabold text-sm transition-all duration-300 ${isPopular ? 'bg-[#D2AF6E] text-[#1a2a1e] hover:bg-white' : 'bg-gray-100 text-gray-900 hover:bg-[#D2AF6E]'}`}>
+                          <button className={`w-full py-4 rounded-xl font-extrabold text-sm transition-all duration-300 ${isPopular ? 'bg-[#D4A373] text-[#1a2a1e] hover:bg-white' : 'bg-gray-100 text-gray-900 hover:bg-[#D4A373]'}`}>
                             Become a Member
                           </button>
                         </div>
@@ -2371,14 +2371,14 @@ export default function App() {
                       <ul className="space-y-3">
                         {['Live Crop Status & Photos', 'Video Updates', 'Harvest Calendar', 'Delivery Tracking'].map((li, i) => (
                           <li key={i} className="flex items-center text-gray-800 font-bold text-sm">
-                            <div className="w-5 h-5 rounded-full bg-[#D2AF6E] flex justify-center items-center mr-3 text-[#1a2a1e] text-[10px]">✓</div>
+                            <div className="w-5 h-5 rounded-full bg-[#D4A373] flex justify-center items-center mr-3 text-[#1a2a1e] text-[10px]">✓</div>
                             {li}
                           </li>
                         ))}
                       </ul>
                     </div>
                     <div className="w-full lg:w-1/2 relative pr-2 md:pr-0">
-                      <div className="absolute inset-0 bg-[#D2AF6E]/20 rounded-[32px] transform translate-x-2 translate-y-2 md:translate-x-4 md:translate-y-4"></div>
+                      <div className="absolute inset-0 bg-[#D4A373]/20 rounded-[32px] transform translate-x-2 translate-y-2 md:translate-x-4 md:translate-y-4"></div>
                       <img src="dashboard.jpeg" alt="Dashboard App Mockup" className="relative rounded-[32px] shadow-2xl w-full border border-gray-100 object-cover" />
                     </div>
                   </div>
@@ -2442,7 +2442,7 @@ export default function App() {
 
                     {/* Organic Side */}
                     <div className="bg-[#f7fada] border border-[#d6e8a0] p-4 md:p-12 rounded-[20px] md:rounded-[32px] shadow-lg relative overflow-hidden group transition-all duration-500 hover:shadow-2xl">
-                      <div className="absolute top-0 right-0 w-32 h-32 md:w-64 md:h-64 bg-[#D2AF6E] opacity-20 rounded-full blur-2xl md:blur-3xl -mr-8 -mt-8 md:-mr-16 md:-mt-16 transition duration-700 group-hover:scale-150"></div>
+                      <div className="absolute top-0 right-0 w-32 h-32 md:w-64 md:h-64 bg-[#D4A373] opacity-20 rounded-full blur-2xl md:blur-3xl -mr-8 -mt-8 md:-mr-16 md:-mt-16 transition duration-700 group-hover:scale-150"></div>
                       <div className="relative z-10">
                         <div className="w-8 h-8 md:w-14 md:h-14 bg-white text-[#5b7a2d] shadow-sm rounded-full flex items-center justify-center text-sm md:text-2xl mb-4 md:mb-8">🌿</div>
                         <h3 className="text-sm md:text-2xl font-extrabold text-gray-900 mb-2 md:mb-4">The Healing Power of True Organic</h3>
@@ -2456,7 +2456,7 @@ export default function App() {
                             { title: 'Superior Nutrient Density', desc: 'Our traditional, unhurried farming methods ensure every single vegetable is densely packed with highly bioavailable vitamins, iron, and crucial earth minerals.' }
                           ].map((item, i) => (
                             <li key={i} className="flex items-start">
-                              <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-[#D2AF6E] flex items-center justify-center mr-2 md:mr-4 mt-0.5 shrink-0">
+                              <div className="w-4 h-4 md:w-6 md:h-6 rounded-full bg-[#D4A373] flex items-center justify-center mr-2 md:mr-4 mt-0.5 shrink-0">
                                 <span className="text-[#1a2a1e] text-[7px] md:text-[10px] font-black">✓</span>
                               </div>
                               <div>
@@ -2516,7 +2516,7 @@ export default function App() {
                           onClick={() => setFaqOpen(faqOpen === i ? null : i)}
                         >
                           {faq.q}
-                          <span className={`text-[#D2AF6E] text-xl font-black transition-transform ${faqOpen === i ? 'rotate-45' : ''}`}>+</span>
+                          <span className={`text-[#D4A373] text-xl font-black transition-transform ${faqOpen === i ? 'rotate-45' : ''}`}>+</span>
                         </button>
                         {faqOpen === i && (
                           <div className="p-6 pt-0 text-sm text-gray-600 leading-relaxed bg-gray-50 border-t border-gray-100">
@@ -2537,7 +2537,7 @@ export default function App() {
                     Join thousands of families who know exactly where their food comes from. Transparent, organic, and delivered fresh.
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <button className="w-full sm:w-auto px-8 py-4 bg-[#D2AF6E] text-[#1a2a1e] rounded-full font-extrabold text-sm hover:bg-white transition shadow-xl">
+                    <button className="w-full sm:w-auto px-8 py-4 bg-[#D4A373] text-[#1a2a1e] rounded-full font-extrabold text-sm hover:bg-white transition shadow-xl">
                       Become a Member
                     </button>
                     <button className="w-full sm:w-auto px-8 py-4 bg-transparent text-white rounded-full font-extrabold text-sm border border-white hover:bg-white/10 transition">
@@ -2623,7 +2623,7 @@ export default function App() {
             <div className="bg-gradient-to-r from-agri-dark to-agri-green-mid text-white p-6 md:p-12 rounded-2xl md:rounded-3xl text-center">
               <h3 className="text-xl md:text-2xl font-extrabold mb-3">Ready to test your soil baseline?</h3>
               <p className="text-white/80 max-w-sm mx-auto text-[11px] md:text-xs leading-relaxed mb-5">Receive a custom mineral and composition breakdown analysis through our direct digital Soil Test™ quiz.</p>
-              <a href="#soil-test" className="bg-agri-lime text-[#377355] font-black text-xs md:text-sm px-6 py-3.5 rounded-xl shadow-md hover:scale-105 active:scale-95 transition-transform inline-block uppercase">Start diagnostic free</a>
+              <a href="#soil-test" className="bg-agri-lime text-[#2D5A3F] font-black text-xs md:text-sm px-6 py-3.5 rounded-xl shadow-md hover:scale-105 active:scale-95 transition-transform inline-block uppercase">Start diagnostic free</a>
             </div>
           </div>
         )}
@@ -2705,7 +2705,7 @@ export default function App() {
                     <HelpCircle className="w-16 h-16 text-slate-300 mx-auto mb-4 animate-bounce" />
                     <h2 className="text-2xl font-black text-slate-800 mb-2">Product Not Found</h2>
                     <p className="text-sm text-gray-500 mb-6">The item you searched for could not be traced.</p>
-                    <a href="#products" className="inline-block bg-[#377355] text-white font-black text-xs px-6 py-3 rounded-full hover:bg-[#2d5a3d] transition-all uppercase tracking-wider shadow">Browse All Products</a>
+                    <a href="#products" className="inline-block bg-[#2D5A3F] text-white font-black text-xs px-6 py-3 rounded-full hover:bg-[#2d5a3d] transition-all uppercase tracking-wider shadow">Browse All Products</a>
                   </div>
                 );
               }
@@ -2720,9 +2720,9 @@ export default function App() {
                 <div className="max-w-6xl mx-auto">
                   {/* Breadcrumb Trail */}
                   <nav className="flex items-center space-x-2 text-xs font-bold text-slate-400 mb-8 overflow-x-auto no-scrollbar py-1">
-                    <a href="#home" className="hover:text-[#377355] transition-colors">Home</a>
+                    <a href="#home" className="hover:text-[#2D5A3F] transition-colors">Home</a>
                     <ChevronRight className="w-3.5 h-3.5" />
-                    <a href="#products" className="hover:text-[#377355] transition-colors">Shop</a>
+                    <a href="#products" className="hover:text-[#2D5A3F] transition-colors">Shop</a>
                     <ChevronRight className="w-3.5 h-3.5" />
                     <span className="capitalize">{product.category.replace('-', ' ')}</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -2731,13 +2731,13 @@ export default function App() {
 
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-14 mb-16 bg-white p-6 md:p-10 rounded-[32px] border border-gray-100 shadow-[0px_8px_30px_0px_rgba(55,115,85,0.06)] relative overflow-hidden">
                     {/* Floating ambient glow in container */}
-                    <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#377355]/5 blur-3xl pointer-events-none" />
+                    <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#2D5A3F]/5 blur-3xl pointer-events-none" />
 
                     {/* Left side Image container (5 cols) */}
                     <div className="md:col-span-5 flex flex-col gap-6">
                       <div className="relative bg-gradient-to-br from-[#fbfbf9] to-[#e8f5ee]/40 rounded-[28px] p-8 flex items-center justify-center min-h-[300px] md:min-h-[380px] border border-emerald-100/50 shadow-inner group overflow-hidden">
                         {/* Radial light behind image */}
-                        <div className="absolute w-48 h-48 rounded-full bg-[#377355]/8 blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
+                        <div className="absolute w-48 h-48 rounded-full bg-[#2D5A3F]/8 blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
                         
                         <img
                           src={product.img}
@@ -2746,8 +2746,8 @@ export default function App() {
                         />
 
                         {/* Floating organic badge */}
-                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm border border-emerald-100 text-[#377355] text-[9px] font-black px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
-                          <Leaf className="w-3 h-3 text-[#377355]" /> 100% ORGANIC
+                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm border border-emerald-100 text-[#2D5A3F] text-[9px] font-black px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                          <Leaf className="w-3 h-3 text-[#2D5A3F]" /> 100% ORGANIC
                         </div>
                       </div>
 
@@ -2776,7 +2776,7 @@ export default function App() {
                     <div className="md:col-span-7 flex flex-col justify-between">
                       <div>
                         {/* Category badge */}
-                        <span className="bg-[#e8f5ee] text-[#377355] text-[10px] font-black px-3 py-1 rounded-full w-max block uppercase mb-4 tracking-wider">
+                        <span className="bg-[#e8f5ee] text-[#2D5A3F] text-[10px] font-black px-3 py-1 rounded-full w-max block uppercase mb-4 tracking-wider">
                           🌿 {product.category.replace('-', ' & ')}
                         </span>
                         
@@ -2797,17 +2797,19 @@ export default function App() {
                         </div>
 
                         {/* Price box */}
-                        <div className="flex items-baseline space-x-3 mb-6 bg-[#fbfbfa] p-4 rounded-2xl border border-gray-100 w-max">
-                          <span className="text-2xl md:text-3xl font-black text-slate-900">₹{product.price}</span>
-                          {product.originalPrice && (
-                            <span className="text-sm text-gray-400 line-through font-semibold">₹{product.originalPrice}</span>
-                          )}
-                          {product.originalPrice && (
-                            <span className="text-xs font-black text-[#377355] bg-[#e8f5ee] px-2.5 py-1 rounded-lg">
-                              Save ₹{product.originalPrice - product.price} ({Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% off)
-                            </span>
-                          )}
-                        </div>
+                        {(() => {
+                          const displayOriginalPrice = product.originalPrice || Math.round(product.price / 0.9);
+                          const discountPercent = Math.round(((displayOriginalPrice - product.price) / displayOriginalPrice) * 100);
+                          return (
+                            <div className="flex items-baseline space-x-3 mb-6 bg-[#fbfbfa] p-4 rounded-2xl border border-gray-100 w-max">
+                              <span className="text-2xl md:text-3xl font-black text-slate-900">₹{product.price}</span>
+                              <span className="text-sm text-gray-400 line-through font-semibold">₹{displayOriginalPrice}</span>
+                              <span className="text-xs font-black text-[#2D5A3F] bg-[#e8f5ee] px-2.5 py-1 rounded-lg">
+                                Save ₹{displayOriginalPrice - product.price} ({discountPercent}% off)
+                              </span>
+                            </div>
+                          );
+                        })()}
 
                         {/* Product Description */}
                         <p className="text-sm text-slate-600 leading-relaxed mb-8">
@@ -2827,8 +2829,8 @@ export default function App() {
                                     onClick={() => setSelectedSizes({ ...selectedSizes, [product.id]: size })}
                                     className={`px-5 py-2.5 text-xs font-extrabold rounded-xl border transition-all ${
                                       isSelected
-                                        ? 'bg-[#377355] text-white border-[#377355] shadow-md shadow-[#377355]/15'
-                                        : 'bg-white text-slate-700 border-slate-200 hover:border-[#377355] hover:text-[#377355]'
+                                        ? 'bg-[#2D5A3F] text-white border-[#2D5A3F] shadow-md shadow-[#2D5A3F]/15'
+                                        : 'bg-white text-slate-700 border-slate-200 hover:border-[#2D5A3F] hover:text-[#2D5A3F]'
                                     }`}
                                   >
                                     {size}
@@ -2845,14 +2847,14 @@ export default function App() {
                         {cartQty === 0 ? (
                           <button
                             onClick={() => addToCart(product, 1)}
-                            className="w-full bg-[#377355] hover:bg-[#2d5a3d] text-white font-black py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all text-sm tracking-widest uppercase flex items-center justify-center gap-2"
+                            className="w-full bg-[#2D5A3F] hover:bg-[#2d5a3d] text-white font-black py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all text-sm tracking-widest uppercase flex items-center justify-center gap-2"
                           >
                             <ShoppingCart className="w-4 h-4" /> ADD TO CART • ₹{product.price}
                           </button>
                         ) : (
                           <div className="flex items-center gap-4">
                             {/* Stepper container */}
-                            <div className="flex items-center bg-[#377355] text-white rounded-2xl overflow-hidden h-[52px] shadow-md border border-[#377355]">
+                            <div className="flex items-center bg-[#2D5A3F] text-white rounded-2xl overflow-hidden h-[52px] shadow-md border border-[#2D5A3F]">
                               <button
                                 onClick={() => updateCartQty(product.id, cartQty - 1)}
                                 className="w-14 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors text-white/80 hover:text-white"
@@ -2870,7 +2872,7 @@ export default function App() {
                             {/* Secondary view cart link */}
                             <a
                               href="#cart"
-                              className="flex-1 bg-[#e8f5ee] hover:bg-[#377355] text-[#377355] hover:text-white font-black py-4 rounded-2xl text-center text-xs tracking-wider uppercase transition-colors"
+                              className="flex-1 bg-[#e8f5ee] hover:bg-[#2D5A3F] text-[#2D5A3F] hover:text-white font-black py-4 rounded-2xl text-center text-xs tracking-wider uppercase transition-colors"
                             >
                               Go to cart 🛒
                             </a>
@@ -2909,12 +2911,12 @@ export default function App() {
 
                   {/* ── LUXURY ADDITION 1: ACTIVE BOTANICAL INGREDIENTS SHOWCASE ── */}
                   <div className="bg-white border border-gray-100 rounded-[32px] p-6 md:p-10 mb-16 shadow-[0px_8px_30px_0px_rgba(55,115,85,0.04)] relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-64 h-64 rounded-full bg-[#D2AF6E]/5 blur-3xl pointer-events-none" />
+                    <div className="absolute top-0 left-0 w-64 h-64 rounded-full bg-[#D4A373]/5 blur-3xl pointer-events-none" />
                     
                     <div className="mb-8">
-                      <p className="text-[10px] font-black text-[#D2AF6E] uppercase tracking-[0.25em] mb-1">🔬 Science-Led Nutrition</p>
+                      <p className="text-[10px] font-black text-[#D4A373] uppercase tracking-[0.25em] mb-1">🔬 Science-Led Nutrition</p>
                       <h3 className="text-xl md:text-2xl font-black text-slate-800">Active Bio-Ingredients</h3>
-                      <div className="mt-2 w-10 h-[3px] rounded-full bg-[#D2AF6E]" />
+                      <div className="mt-2 w-10 h-[3px] rounded-full bg-[#D4A373]" />
                     </div>
 
                     <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6">
@@ -2939,11 +2941,11 @@ export default function App() {
                   <div className="relative overflow-hidden rounded-[32px] p-6 md:p-8 mb-16 bg-[#122e1f] text-white shadow-[0_12px_40px_rgba(18,46,31,0.25)]">
                     {/* Subtle dot pattern background */}
                     <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,_#fff_1px,_transparent_1px)] bg-[size:16px_16px]" />
-                    <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-[#D2AF6E]/10 blur-2xl pointer-events-none" />
+                    <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-[#D4A373]/10 blur-2xl pointer-events-none" />
 
                     <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
                       <div className="text-center md:text-left">
-                        <span className="text-[9px] font-black text-[#D2AF6E] uppercase tracking-[0.2em] block mb-1">🌿 Conscious Living</span>
+                        <span className="text-[9px] font-black text-[#D4A373] uppercase tracking-[0.2em] block mb-1">🌿 Conscious Living</span>
                         <h4 className="text-lg font-black tracking-tight">Our Collective Ecological Footprint</h4>
                         <p className="text-xs text-white/50 font-semibold mt-1">Every purchase supports sustainable chemical-free soil restoration.</p>
                       </div>
@@ -2969,7 +2971,7 @@ export default function App() {
                       <div className="flex items-center justify-between mb-8">
                         <div>
                           <h3 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">Other Organic Products</h3>
-                          <div className="mt-1.5 w-8 h-[3px] rounded-full bg-[#D2AF6E]" />
+                          <div className="mt-1.5 w-8 h-[3px] rounded-full bg-[#D4A373]" />
                         </div>
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6">
@@ -2981,12 +2983,12 @@ export default function App() {
                               <div className="relative h-28 md:h-36 bg-[#f7f7f5] flex items-center justify-center p-2 cursor-pointer rounded-xl mb-3" onClick={() => window.location.hash = `#product?id=${rp.id}`}>
                                 <img src={rp.img} className="max-h-full object-contain group-hover:scale-105 transition-transform duration-500" alt={rp.name} />
                                 {rp.badge && (
-                                  <span className="absolute top-1.5 left-1.5 bg-[#377355] text-white text-[8px] font-black px-1.5 py-0.5 rounded tracking-wide uppercase">{rp.badge}</span>
+                                  <span className="absolute top-1.5 left-1.5 bg-[#2D5A3F] text-white text-[8px] font-black px-1.5 py-0.5 rounded tracking-wide uppercase">{rp.badge}</span>
                                 )}
                               </div>
                               {/* Info */}
                               <div className="flex flex-col flex-1">
-                                <h4 className="font-extrabold text-[11px] md:text-xs text-slate-800 hover:text-[#377355] transition-colors leading-tight line-clamp-2 mb-2 cursor-pointer" onClick={() => window.location.hash = `#product?id=${rp.id}`}>
+                                <h4 className="font-extrabold text-[11px] md:text-xs text-slate-800 hover:text-[#2D5A3F] transition-colors leading-tight line-clamp-2 mb-2 cursor-pointer" onClick={() => window.location.hash = `#product?id=${rp.id}`}>
                                   {rp.name}
                                 </h4>
                                 <div className="mt-auto flex items-center justify-between pt-1 border-t border-gray-50">
@@ -2994,12 +2996,12 @@ export default function App() {
                                   {rpQty === 0 ? (
                                     <button
                                       onClick={() => addToCart(rp, 1)}
-                                      className="bg-[#e8f5ee] text-[#377355] hover:bg-[#377355] hover:text-white px-2.5 py-1.5 rounded-lg text-[9px] font-black shadow-sm transition-colors uppercase tracking-wide"
+                                      className="bg-[#e8f5ee] text-[#2D5A3F] hover:bg-[#2D5A3F] hover:text-white px-2.5 py-1.5 rounded-lg text-[9px] font-black shadow-sm transition-colors uppercase tracking-wide"
                                     >
                                       ADD
                                     </button>
                                   ) : (
-                                    <div className="flex items-center bg-[#377355] text-white rounded-lg overflow-hidden h-[24px] border border-[#377355]">
+                                    <div className="flex items-center bg-[#2D5A3F] text-white rounded-lg overflow-hidden h-[24px] border border-[#2D5A3F]">
                                       <button onClick={() => updateCartQty(rp.id, rpQty - 1)} className="px-2 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors text-white"><Minus className="w-2.5 h-2.5" /></button>
                                       <span className="px-1 text-center font-black text-[10px]">{rpQty}</span>
                                       <button onClick={() => updateCartQty(rp.id, rpQty + 1)} className="px-2 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors text-white"><Plus className="w-2.5 h-2.5" /></button>
@@ -3062,7 +3064,7 @@ export default function App() {
                         >
                           <span>{opt}</span>
                           <span className={`w-4.5 h-4.5 rounded-full border flex items-center justify-center ${isSelected ? 'border-agri-lime bg-agri-lime' : 'border-gray-300'}`}>
-                            {isSelected && <span className="w-2 h-2 rounded-full bg-[#377355]"></span>}
+                            {isSelected && <span className="w-2 h-2 rounded-full bg-[#2D5A3F]"></span>}
                           </span>
                         </button>
                       );
@@ -3285,7 +3287,7 @@ export default function App() {
                 </div>
                 <button
                   type="submit"
-                  className="bg-agri-dark text-[#D2AF6E] font-black tracking-wider text-xs px-6 py-4.5 rounded-xl hover:bg-black transition-colors"
+                  className="bg-agri-dark text-[#D4A373] font-black tracking-wider text-xs px-6 py-4.5 rounded-xl hover:bg-black transition-colors"
                 >
                   SEND ADVICE ENQUIRY
                 </button>
@@ -3446,14 +3448,14 @@ export default function App() {
             {!currentUser ? (
               <div className="text-center py-16 bg-[#f7f6ee] border border-gray-200 rounded-3xl p-6 max-w-md mx-auto">
                 <User className="w-12 h-12 text-[#2b3a30] mx-auto mb-4" />
-                <h3 className="text-lg font-black text-[#377355] mb-1">Authentication Required</h3>
+                <h3 className="text-lg font-black text-[#2D5A3F] mb-1">Authentication Required</h3>
                 <p className="text-xs text-gray-500 mb-6">You must be logged in to securely place an order and track its delivery.</p>
                 <a href="#auth" className="btn-primary inline-block">Sign In / Register</a>
               </div>
             ) : cart.length === 0 ? (
               <div className="text-center py-16 bg-[#f7f6ee] border border-gray-200 rounded-3xl p-6 max-w-md mx-auto">
                 <ShoppingCart className="w-12 h-12 text-[#2b3a30] mx-auto mb-4" />
-                <h3 className="text-lg font-black text-[#377355] mb-1">Cart is empty</h3>
+                <h3 className="text-lg font-black text-[#2D5A3F] mb-1">Cart is empty</h3>
                 <p className="text-xs text-gray-500 mb-6">Explore our diagnostic mixtures to start crop recovery.</p>
                 <a href="#products" className="btn-primary inline-block">Browse Shop Products</a>
               </div>
@@ -3463,11 +3465,11 @@ export default function App() {
                 <p className="text-xs text-gray-400 mb-6 font-normal">Complete your organic soil biome restoration order parameters.</p>
 
                 {/* AUTOFILL HELPER BANNER */}
-                <div className="bg-[#f7f6ee] border border-dashed border-[#377355]/30 p-4 rounded-2xl mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="bg-[#f7f6ee] border border-dashed border-[#2D5A3F]/30 p-4 rounded-2xl mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-start space-x-3">
                     <span className="text-xl">⚡</span>
                     <div>
-                      <h4 className="text-xs font-black text-[#377355] uppercase tracking-wide">Grower Profile Auto-fill</h4>
+                      <h4 className="text-xs font-black text-[#2D5A3F] uppercase tracking-wide">Grower Profile Auto-fill</h4>
                       <p className="text-[11px] text-gray-500 leading-normal mt-0.5 font-normal">
                         {currentUser ? `Speed up dispatch with registered profile details: Name: "${currentUser.name || 'Alok'}", Phone: "${currentUser.phone || 'N/A'}", State: "${currentUser.location || 'N/A'}"` : 'Please register or log in to automatically load your location and phone metrics!'}
                       </p>
@@ -3483,7 +3485,7 @@ export default function App() {
                         setCheckoutState(currentUser.location || '');
                         showToastMsg('⚡ Successfully pre-loaded Address and Phone from Grower Profile!');
                       }}
-                      className="bg-[#377355] hover:bg-black text-[#D2AF6E] hover:text-white px-4 py-2 rounded-xl text-xs font-extrabold uppercase transition whitespace-nowrap cursor-pointer shadow-sm"
+                      className="bg-[#2D5A3F] hover:bg-black text-[#D4A373] hover:text-white px-4 py-2 rounded-xl text-xs font-extrabold uppercase transition whitespace-nowrap cursor-pointer shadow-sm"
                     >
                       Fill Profile Details
                     </button>
@@ -3709,7 +3711,7 @@ export default function App() {
 
                     <button
                       type="submit"
-                      className="w-full bg-[#377355] hover:bg-black text-white py-4 rounded-xl font-extrabold text-sm tracking-wide transition-all shadow-md"
+                      className="w-full bg-[#2D5A3F] hover:bg-black text-white py-4 rounded-xl font-extrabold text-sm tracking-wide transition-all shadow-md"
                     >
                       PLACE SECURED ORDER • ₹ {getSubtotal() + (getSubtotal() >= 499 ? 0 : 49)}
                     </button>
@@ -3776,7 +3778,7 @@ export default function App() {
                     <div className="flex justify-end">
                       <button type="button" onClick={() => setAuthMode('forgot_password')} className="text-[10px] text-agri-green-mid font-bold hover:underline">Forgot Password?</button>
                     </div>
-                    <button type="submit" className="w-full bg-[#377355] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">LOGIN USER</button>
+                    <button type="submit" className="w-full bg-[#2D5A3F] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">LOGIN USER</button>
                   </form>
                   <div className="mt-4">
                     <button onClick={handleGoogleSignIn} className="w-full bg-white border border-gray-200 text-slate-800 font-bold text-xs py-3 rounded-xl flex items-center justify-center space-x-2 hover:bg-gray-50 shadow-sm transition-all"><img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="G" /><span>Sign in with Google</span></button>
@@ -3817,7 +3819,7 @@ export default function App() {
                         <label className="text-[11px] font-bold text-gray-750 block mb-1">Phone Number (with +91)</label>
                         <input type="tel" value={authPhone} onChange={e => setAuthPhone(e.target.value)} placeholder="+91 9876543210" className="w-full border bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none" required />
                       </div>
-                      <button type="submit" className="w-full bg-[#377355] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">SEND OTP</button>
+                      <button type="submit" className="w-full bg-[#2D5A3F] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">SEND OTP</button>
                     </form>
                   ) : (
                     <form onSubmit={handleVerifyPhoneOTP} className="space-y-4">
@@ -3825,7 +3827,7 @@ export default function App() {
                         <label className="text-[11px] font-bold text-gray-750 block mb-1">Enter 6-digit OTP</label>
                         <input type="text" value={otpCode} onChange={e => setOtpCode(e.target.value)} placeholder="123456" className="w-full border bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none" required />
                       </div>
-                      <button type="submit" className="w-full bg-[#377355] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">VERIFY & CREATE ACCOUNT</button>
+                      <button type="submit" className="w-full bg-[#2D5A3F] hover:bg-black text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow">VERIFY & CREATE ACCOUNT</button>
                     </form>
                   )}
                   <div className="mt-6 border-t pt-4 text-center">
@@ -3853,7 +3855,7 @@ export default function App() {
                         <>
                           <label className="text-[11px] font-bold text-gray-750 block">Phone Number (with +91)</label>
                           <input type="tel" value={authPhone} onChange={e => setAuthPhone(e.target.value)} placeholder="+91 9876543210" className="w-full border p-2 text-xs font-semibold rounded focus:outline-none" />
-                          <button type="button" onClick={handleSendPhoneOTP} className="w-full bg-[#377355] text-white font-bold text-[10px] py-2 rounded">SEND OTP TO LOGIN</button>
+                          <button type="button" onClick={handleSendPhoneOTP} className="w-full bg-[#2D5A3F] text-white font-bold text-[10px] py-2 rounded">SEND OTP TO LOGIN</button>
                         </>
                       ) : (
                         <form onSubmit={handleVerifyPhoneOTP}>
@@ -3882,7 +3884,7 @@ export default function App() {
               <div className="flex-1 flex items-center justify-center py-20 px-4">
                 <div className="bg-white rounded-3xl p-8 border border-emerald-100 shadow-xl max-w-md w-full text-center space-y-6">
                   <div>
-                    <span className="inline-flex p-3 rounded-2xl bg-emerald-50 text-[#377355] mb-3">
+                    <span className="inline-flex p-3 rounded-2xl bg-emerald-50 text-[#2D5A3F] mb-3">
                       <Leaf className="w-8 h-8 animate-pulse" />
                     </span>
                     <h2 className="text-2xl font-black text-slate-900 tracking-tight">Agriic Staff Hub</h2>
@@ -3912,7 +3914,7 @@ export default function App() {
                     </div>
                     <button
                       type="submit"
-                      className="w-full bg-[#377355] hover:bg-[#2c520c] text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow"
+                      className="w-full bg-[#2D5A3F] hover:bg-[#2c520c] text-white font-extrabold text-xs py-3.5 rounded-xl transition-all shadow"
                     >
                       LOGIN TO ADMIN HUB
                     </button>
@@ -4077,7 +4079,7 @@ export default function App() {
                         <div className="bg-white border rounded-2xl p-12 text-center text-slate-500 max-w-lg mx-auto mt-10 shadow-sm animate-fade-in">
                           <span className="text-4xl block mb-4">🔒</span>
                           <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">Analytics Restricted</h3>
-                          <p className="text-[10px] mt-1.5 leading-relaxed text-gray-500">Only users logged in with the <strong className="text-[#377355]">Super Admin</strong> privilege are autorun to query business and gross revenues. Please use the sidebar's role toggle to elevate privilege levels.</p>
+                          <p className="text-[10px] mt-1.5 leading-relaxed text-gray-500">Only users logged in with the <strong className="text-[#2D5A3F]">Super Admin</strong> privilege are autorun to query business and gross revenues. Please use the sidebar's role toggle to elevate privilege levels.</p>
                         </div>
                       )
                     )}
@@ -4143,7 +4145,7 @@ export default function App() {
                             try {
                               const defaultSetts = {
                                 primaryBrandName: newTitle,
-                                primaryColor: "#377355",
+                                primaryColor: "#2D5A3F",
                                 secondaryColor: "#0F6E56",
                                 enableSMS: true,
                                 enablePayments: true,
@@ -4161,7 +4163,7 @@ export default function App() {
                         <div className="bg-white border rounded-2xl p-12 text-center text-slate-500 max-w-lg mx-auto mt-10 shadow-sm animate-fade-in">
                           <span className="text-4xl block mb-4">🔒</span>
                           <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">Workspace Settings Restricted</h3>
-                          <p className="text-[10px] mt-1.5 leading-relaxed text-gray-500">Workspace settings and core system switches are restricted with ABAC permissions to <strong className="text-[#377355]">Super Admin</strong>. Elevate role below to view or manage setting profiles.</p>
+                          <p className="text-[10px] mt-1.5 leading-relaxed text-gray-500">Workspace settings and core system switches are restricted with ABAC permissions to <strong className="text-[#2D5A3F]">Super Admin</strong>. Elevate role below to view or manage setting profiles.</p>
                         </div>
                       )
                     )}
@@ -4189,14 +4191,14 @@ export default function App() {
                       alt="Grower Profile"
                     />
                   ) : (
-                    <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full bg-[#D2AF6E] text-[#377355] flex items-center justify-center font-black text-xl sm:text-2.5xl border-4 border-white/20 shadow-md uppercase">
+                    <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full bg-[#D4A373] text-[#2D5A3F] flex items-center justify-center font-black text-xl sm:text-2.5xl border-4 border-white/20 shadow-md uppercase">
                       {(currentUser?.name || editName || 'Alok')[0]}
                     </div>
                   )}
                   {/* Small trigger Camera Badge */}
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="absolute -right-0.5 -bottom-0.5 w-5 h-5 sm:w-6.5 sm:h-6.5 rounded-full bg-[#377355] border-2 border-white text-[#D2AF6E] flex items-center justify-center hover:bg-[#D2AF6E] hover:text-[#377355] transition-colors shadow-md cursor-pointer text-[10px] sm:text-xs"
+                    className="absolute -right-0.5 -bottom-0.5 w-5 h-5 sm:w-6.5 sm:h-6.5 rounded-full bg-[#2D5A3F] border-2 border-white text-[#D4A373] flex items-center justify-center hover:bg-[#D4A373] hover:text-[#2D5A3F] transition-colors shadow-md cursor-pointer text-[10px] sm:text-xs"
                     title="Change Profile Photo"
                     type="button"
                   >
@@ -4226,7 +4228,7 @@ export default function App() {
                   </p>
                   <div className="text-[9.5px] sm:text-[11px] text-white/95 font-medium mt-2 flex flex-wrap gap-1.5 sm:gap-2">
                     <span className="bg-white/10 px-2 py-0.5 rounded-md flex items-center gap-1">
-                      <MapPin className="w-2.5 h-2.5 text-[#D2AF6E]" />
+                      <MapPin className="w-2.5 h-2.5 text-[#D4A373]" />
                       <span>State: <strong className="font-bold text-white">{currentUser?.location || editLocation || 'Maharashtra'}</strong></span>
                     </span>
                     <span className="bg-white/10 px-2 py-0.5 rounded-md flex items-center gap-1">
@@ -4241,7 +4243,7 @@ export default function App() {
 
               <div className="flex items-center gap-3 relative z-10">
                 {!currentUser ? (
-                  <a href="#auth" className="bg-[#D2AF6E] text-[#377355] text-xs font-black px-4.5 py-3 rounded-xl hover:bg-white transition-all shadow-md uppercase tracking-wider">
+                  <a href="#auth" className="bg-[#D4A373] text-[#2D5A3F] text-xs font-black px-4.5 py-3 rounded-xl hover:bg-white transition-all shadow-md uppercase tracking-wider">
                     Sign in to Account
                   </a>
                 ) : (
@@ -4267,7 +4269,7 @@ export default function App() {
                   {orders.filter(o => o.status !== 'Delivered').length}
                 </span>
               </div>
-              <div className="bg-[#D2AF6E]/10 border border-[#D2AF6E]/30 p-5 rounded-2xl">
+              <div className="bg-[#D4A373]/10 border border-[#D4A373]/30 p-5 rounded-2xl">
                 <span className="text-[10px] text-[#2b3a30] font-extrabold block uppercase tracking-wider">Arrived Safely</span>
                 <span className="text-2xl font-extrabold text-[#2b3a30] block mt-1">
                   {orders.filter(o => o.status === 'Delivered').length}
@@ -4285,11 +4287,11 @@ export default function App() {
               {/* EDITABLE FORM SIDEBAR */}
               <div className="lg:col-span-5 bg-[#fcfbf7] border border-[#e2e1d7] rounded-3xl p-5 md:p-6 shadow-sm">
                 <div className="flex items-center space-x-2.5 mb-5 border-b pb-4 border-[#e2e1d7]">
-                  <div className="w-8 h-8 rounded-full bg-[#377355] flex items-center justify-center text-white shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-[#2D5A3F] flex items-center justify-center text-white shrink-0">
                     <User className="w-4 h-4 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-sm text-[#377355] tracking-tight">Grower Profile Settings</h3>
+                    <h3 className="font-extrabold text-sm text-[#2D5A3F] tracking-tight">Grower Profile Settings</h3>
                     <p className="text-[10px] text-gray-400">Modify information metrics displayed in your agricultural logs.</p>
                   </div>
                 </div>
@@ -4338,7 +4340,7 @@ export default function App() {
                       value={editLocation}
                       onChange={e => setEditLocation(e.target.value)}
                       placeholder="e.g. Maharashtra"
-                      className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none focus:ring-1 focus:ring-[#377355]"
+                      className="w-full border border-gray-200 bg-white p-3 text-xs font-semibold rounded-xl focus:outline-none focus:ring-1 focus:ring-[#2D5A3F]"
                       required
                     />
                   </div>
@@ -4377,14 +4379,14 @@ export default function App() {
 
                   <button
                     type="submit"
-                    className="w-full bg-[#377355] hover:bg-black text-white hover:text-agri-lime font-extrabold text-xs py-3.5 rounded-xl transition-all shadow-md uppercase tracking-wider mt-2 flex items-center justify-center space-x-2 cursor-pointer"
+                    className="w-full bg-[#2D5A3F] hover:bg-black text-white hover:text-agri-lime font-extrabold text-xs py-3.5 rounded-xl transition-all shadow-md uppercase tracking-wider mt-2 flex items-center justify-center space-x-2 cursor-pointer"
                   >
                     <span>Save grower settings</span>
                   </button>
                 </form>
 
-                <div className="mt-5 bg-[#D2AF6E]/15 border border-[#D2AF6E]/30 rounded-2xl p-4 text-[10px] text-gray-600 leading-normal">
-                  <span className="font-extrabold text-[#377355] block mb-1">🌱 Verified Diagnostics</span>
+                <div className="mt-5 bg-[#D4A373]/15 border border-[#D4A373]/30 rounded-2xl p-4 text-[10px] text-gray-600 leading-normal">
+                  <span className="font-extrabold text-[#2D5A3F] block mb-1">🌱 Verified Diagnostics</span>
                   All mineral evaluations, diagnostic Soil Test™ logs, and temperature-controlled crop dispatch routes are protected under soil cybersecurity protocols.
                 </div>
               </div>
@@ -4400,7 +4402,7 @@ export default function App() {
                     </h2>
                     <p className="text-xs text-gray-400 mt-1 font-normal">Real-time dynamic transit checkpoints for formulation dispatch logs.</p>
                   </div>
-                  <span className="text-[10px] font-bold text-[#D2AF6E] bg-[#2b3a30] px-3 py-1.5 rounded-full uppercase tracking-wider">
+                  <span className="text-[10px] font-bold text-[#D4A373] bg-[#2b3a30] px-3 py-1.5 rounded-full uppercase tracking-wider">
                     Live Feed
                   </span>
                 </div>
@@ -4514,7 +4516,7 @@ export default function App() {
                                       <div
                                         className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${order.status === 'Processing'
                                           ? 'bg-amber-50 border-amber-600 text-amber-700 font-bold ring-4 ring-amber-100 scale-105 shadow-md'
-                                          : 'bg-[#2b3a30] border-[#2b3a30] text-[#D2AF6E]'
+                                          : 'bg-[#2b3a30] border-[#2b3a30] text-[#D4A373]'
                                           }`}
                                       >
                                         <Clock className="w-4 h-4" />
@@ -4529,7 +4531,7 @@ export default function App() {
                                         className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${order.status === 'In-Transit'
                                           ? 'bg-amber-50 border-amber-600 text-amber-700 ring-4 ring-amber-100 scale-105 shadow-md'
                                           : order.status === 'Delivered'
-                                            ? 'bg-[#2b3a30] border-[#2b3a30] text-[#D2AF6E]'
+                                            ? 'bg-[#2b3a30] border-[#2b3a30] text-[#D4A373]'
                                             : 'bg-white border-gray-200 text-gray-350'
                                           }`}
                                       >
@@ -4566,7 +4568,7 @@ export default function App() {
                                     {order.status === 'Processing' ? '⚙️' : order.status === 'In-Transit' ? '🚚' : '📦'}
                                   </span>
                                   <div>
-                                    <p className="font-extrabold text-[#377355]">
+                                    <p className="font-extrabold text-[#2D5A3F]">
                                       {order.status === 'Processing' && 'Formulation and raw-ingredient testing checks are active. Bagged and sealed.'}
                                       {order.status === 'In-Transit' && 'En-route past central transport corridors. Expected delivery in 32 Hours.'}
                                       {order.status === 'Delivered' && 'Checkpoints clear. Delivery verified successfully.'}
@@ -4592,7 +4594,7 @@ export default function App() {
                                           <span className="text-xs font-black text-slate-800 block truncate leading-snug">{item.name}</span>
                                           <p className="text-[9px] text-gray-400 mt-0.5 font-mono">ID: {item.productId}</p>
                                           <div className="flex flex-wrap gap-1.5 mt-1.5">
-                                            <span className="bg-[#377355]/10 text-[#377355] text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase font-sans">
+                                            <span className="bg-[#2D5A3F]/10 text-[#2D5A3F] text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase font-sans">
                                               ₹{item.price}/bag
                                             </span>
                                             <span className="bg-amber-100 text-amber-900 text-[9px] font-black px-1.5 py-0.5 rounded uppercase font-sans">
@@ -4636,10 +4638,10 @@ export default function App() {
             {/* Quick reference block */}
             <div className="mt-12 bg-[#2b3a30] text-white p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1">
-                <h4 className="text-sm font-black text-[#D2AF6E] uppercase tracking-wide">Need Delivery Interventions?</h4>
+                <h4 className="text-sm font-black text-[#D4A373] uppercase tracking-wide">Need Delivery Interventions?</h4>
                 <p className="text-xs text-white/70 leading-normal">Our organic dispatches are temperature-controlled. Contact regional helpline for reroutes.</p>
               </div>
-              <a href="#contact" className="bg-[#D2AF6E] text-[#377355] hover:bg-white text-xs font-black uppercase px-4 py-2.5 rounded-xl transition-all whitespace-nowrap shadow-sm text-center">
+              <a href="#contact" className="bg-[#D4A373] text-[#2D5A3F] hover:bg-white text-xs font-black uppercase px-4 py-2.5 rounded-xl transition-all whitespace-nowrap shadow-sm text-center">
                 Contact Desk
               </a>
             </div>
@@ -4740,7 +4742,7 @@ export default function App() {
               <div className="flex items-center space-x-2.5">
                 <span className="text-xl">🧾</span>
                 <div>
-                  <h3 className="font-black text-sm uppercase tracking-wider text-[#D2AF6E]">Grower Order Invoice Dispatch</h3>
+                  <h3 className="font-black text-sm uppercase tracking-wider text-[#D4A373]">Grower Order Invoice Dispatch</h3>
                   <p className="text-[10px] text-white/70">Secure PDF Summary & Automation Template Panel</p>
                 </div>
               </div>
@@ -4760,7 +4762,7 @@ export default function App() {
                 type="button"
                 onClick={() => setInvoiceEmailType('visual')}
                 className={`flex-1 py-2 px-3 text-xs font-bold rounded-xl transition-all cursor-pointer text-center ${invoiceEmailType === 'visual'
-                  ? 'bg-white text-[#377355] shadow-sm ring-1 ring-black/5'
+                  ? 'bg-white text-[#2D5A3F] shadow-sm ring-1 ring-black/5'
                   : 'text-gray-500 hover:text-slate-800'
                   }`}
               >
@@ -4770,7 +4772,7 @@ export default function App() {
                 type="button"
                 onClick={() => setInvoiceEmailType('code')}
                 className={`flex-1 py-2 px-3 text-xs font-bold rounded-xl transition-all cursor-pointer text-center ${invoiceEmailType === 'code'
-                  ? 'bg-white text-[#377355] shadow-sm ring-1 ring-black/5'
+                  ? 'bg-white text-[#2D5A3F] shadow-sm ring-1 ring-black/5'
                   : 'text-gray-500 hover:text-slate-800'
                   }`}
               >
@@ -4846,7 +4848,7 @@ export default function App() {
                       <span>Itemized Subtotal:</span>
                       <span className="font-mono">₹{invoiceModalOrder.total}</span>
                     </div>
-                    <div className="flex justify-between w-48 text-[#377355] font-black text-sm border-t border-dashed border-gray-200 pt-1.5">
+                    <div className="flex justify-between w-48 text-[#2D5A3F] font-black text-sm border-t border-dashed border-gray-200 pt-1.5">
                       <span>Grand Total:</span>
                       <span className="font-mono text-slate-900">₹{invoiceModalOrder.total}</span>
                     </div>
@@ -4903,7 +4905,7 @@ export default function App() {
                     showToastMsg(`Email summary generated and successfully dispatched payload via simulated SMTP gateway to ${currentUser?.email || 'registered grower'}!`);
                     setInvoiceModalOrder(null);
                   }}
-                  className="bg-[#377355] hover:bg-[#2b3a30] text-[#D2AF6E] text-[11px] font-black py-2 md:py-2.5 px-4 rounded-xl transition-all shadow-md cursor-pointer flex items-center space-x-1"
+                  className="bg-[#2D5A3F] hover:bg-[#2b3a30] text-[#D4A373] text-[11px] font-black py-2 md:py-2.5 px-4 rounded-xl transition-all shadow-md cursor-pointer flex items-center space-x-1"
                 >
                   <Mail className="w-3.5 h-3.5 mr-0.5 text-agri-lime" />
                   <span>📬 Dispatch via Simulated SMTP</span>
@@ -4931,7 +4933,7 @@ export default function App() {
               <div className="px-5 py-6 bg-[#fbfbfa] border-b border-gray-100 flex items-center justify-between">
                 <div>
                   <h3 className="text-base font-black text-slate-800 flex items-center gap-2">
-                    🛒 Shopping Cart <span className="bg-[#377355] text-white text-[10px] font-black px-2 py-0.5 rounded-full">{getCartCount()}</span>
+                    🛒 Shopping Cart <span className="bg-[#2D5A3F] text-white text-[10px] font-black px-2 py-0.5 rounded-full">{getCartCount()}</span>
                   </h3>
                   <p className="text-[10px] text-slate-455 font-semibold uppercase tracking-wider mt-0.5">Your Selected Organic Nutrition</p>
                 </div>
@@ -4947,14 +4949,14 @@ export default function App() {
               <div className="flex-1 overflow-y-auto px-5 py-4 no-scrollbar">
                 {cart.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center p-6">
-                    <div className="w-16 h-16 bg-[#e8f5ee] text-[#377355] rounded-full flex items-center justify-center mb-4">
+                    <div className="w-16 h-16 bg-[#e8f5ee] text-[#2D5A3F] rounded-full flex items-center justify-center mb-4">
                       <ShoppingCart className="w-8 h-8" />
                     </div>
                     <h4 className="font-extrabold text-sm text-slate-800">Your cart is empty</h4>
                     <p className="text-xs text-slate-400 mt-1 max-w-[220px] font-semibold leading-relaxed">Add bio-nutrition solutions or seeds to start growing organic.</p>
                     <button
                       onClick={() => { setIsCartDrawerOpen(false); window.location.hash = '#products'; }}
-                      className="mt-6 bg-[#377355] hover:bg-[#2d5a3d] text-white text-xs font-black px-6 py-3 rounded-xl transition-all shadow"
+                      className="mt-6 bg-[#2D5A3F] hover:bg-[#2d5a3d] text-white text-xs font-black px-6 py-3 rounded-xl transition-all shadow"
                     >
                       BROWSE CATALOG
                     </button>
@@ -4974,21 +4976,24 @@ export default function App() {
                           <div className="flex-1 flex flex-col justify-between">
                             <div>
                               <h4 className="font-extrabold text-xs text-slate-800 leading-tight line-clamp-2">{item.product.name}</h4>
-                              <p className="text-[9px] font-bold text-[#377355] uppercase tracking-wider mt-0.5">{item.product.category}</p>
+                              <p className="text-[9px] font-bold text-[#2D5A3F] uppercase tracking-wider mt-0.5">{item.product.category}</p>
                               <span className="text-[10px] text-slate-450 font-bold bg-white px-2 py-0.5 rounded border border-gray-100 w-max block mt-1">{selectedSize}</span>
                             </div>
 
                             <div className="flex items-center justify-between mt-3">
                               {/* Price */}
-                              <div>
-                                <span className="font-black text-slate-900 text-sm">₹{item.product.price * item.qty}</span>
-                                {item.product.originalPrice && (
-                                  <span className="text-[10px] text-gray-400 line-through ml-1.5 font-semibold">₹{item.product.originalPrice * item.qty}</span>
-                                )}
-                              </div>
+                              {(() => {
+                                const displayOriginalPrice = item.product.originalPrice || Math.round(item.product.price / 0.9);
+                                return (
+                                  <div>
+                                    <span className="font-black text-slate-900 text-sm">₹{item.product.price * item.qty}</span>
+                                    <span className="text-[10px] text-gray-400 line-through ml-1.5 font-semibold">₹{displayOriginalPrice * item.qty}</span>
+                                  </div>
+                                );
+                              })()}
 
                               {/* Stepper */}
-                              <div className="flex items-center bg-[#377355] text-white rounded-lg overflow-hidden h-[26px] border border-[#377355]">
+                              <div className="flex items-center bg-[#2D5A3F] text-white rounded-lg overflow-hidden h-[26px] border border-[#2D5A3F]">
                                 <button onClick={() => updateCartQty(item.product.id, item.qty - 1)} className="px-2 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors"><Minus className="w-2.5 h-2.5" /></button>
                                 <span className="px-1.5 text-center font-black text-xs min-w-[16px]">{item.qty}</span>
                                 <button onClick={() => updateCartQty(item.product.id, item.qty + 1)} className="px-2 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors"><Plus className="w-2.5 h-2.5" /></button>
@@ -5033,14 +5038,14 @@ export default function App() {
                     <a
                       href="#checkout"
                       onClick={() => setIsCartDrawerOpen(false)}
-                      className="w-full bg-[#377355] hover:bg-[#2d5a3d] text-white font-black py-4.5 rounded-2xl shadow-lg hover:shadow-xl transition-all text-xs tracking-wider uppercase text-center block"
+                      className="w-full bg-[#2D5A3F] hover:bg-[#2d5a3d] text-white font-black py-4.5 rounded-2xl shadow-lg hover:shadow-xl transition-all text-xs tracking-wider uppercase text-center block"
                     >
                       PROCEED TO CHECKOUT ⚡
                     </a>
                     <a
                       href="#cart"
                       onClick={() => setIsCartDrawerOpen(false)}
-                      className="w-full bg-white hover:bg-slate-50 text-[#377355] border-2 border-[#377355]/20 font-black py-3.5 rounded-2xl transition-colors text-xs tracking-wider uppercase text-center block"
+                      className="w-full bg-white hover:bg-slate-50 text-[#2D5A3F] border-2 border-[#2D5A3F]/20 font-black py-3.5 rounded-2xl transition-colors text-xs tracking-wider uppercase text-center block"
                     >
                       View Detailed Cart
                     </a>

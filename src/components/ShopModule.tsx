@@ -22,6 +22,48 @@ import {
   User
 } from 'lucide-react';
 
+const getCategoryIcon = (iconName: string) => {
+  switch (iconName) {
+    case 'layout-grid':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="w-5 h-5">
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+        </svg>
+      );
+    case 'fertilizer':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z" />
+          <path d="M12 10v8M9 14h6" />
+        </svg>
+      );
+    case 'sprout':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M7 20h10M12 20V10M12 10a4 4 0 0 1 4-4h2M12 10a4 4 0 0 0-4-4H6" />
+        </svg>
+      );
+    case 'gardening':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M10 10l4 4m2-6l-8 8M14 6l4 4-2 2-4-4 2-2zM4 16l-2 6 6-2-4-4z" />
+        </svg>
+      );
+    case 'foods':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M12 22c4.97 0 9-3.582 9-8 0-4.08-3.033-7.4-7-7.93a3 3 0 0 0-3-2.07H9a3 3 0 0 0-3 3.07C2.033 7.6 2 10.92 2 14c0 4.418 4.03 8 9 8h1z" />
+          <path d="M12 6c1.5-2 3-2 3-2" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+};
+
 interface ShopModuleProps {
   liveProducts: Product[];
   productFilter: string;
@@ -76,7 +118,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
       sub: 'Up to 30% off on premium organic fertilizers and desi seeds. Free delivery today.',
       cta: 'Shop Now',
       ctaHref: '#shop',
-      accent: '#D2AF6E',
+      accent: '#D4A373',
       overlay: 'from-[#1a3a28]/90 via-[#1a3a28]/60 to-transparent',
     },
     {
@@ -96,7 +138,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
       sub: 'Every product is lab-tested for purity, potency and soil compatibility.',
       cta: 'Explore Products',
       ctaHref: '#shop',
-      accent: '#D2AF6E',
+      accent: '#D4A373',
       overlay: 'from-[#1c3a2a]/90 via-[#1c3a2a]/55 to-transparent',
     },
     {
@@ -116,7 +158,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
       sub: 'Restore your soil microbiome with our certified bio-stimulant range.',
       cta: 'Take Soil Test',
       ctaHref: '#soiltest',
-      accent: '#D2AF6E',
+      accent: '#D4A373',
       overlay: 'from-[#1a3820]/90 via-[#1a3820]/55 to-transparent',
     },
   ];
@@ -157,12 +199,12 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
   };
 
   const blinkitCategories = [
-    { id: 'fertilizer', label: 'Fertilizers', icon: '🌱', color: 'bg-[#3773551F]' },
-    { id: 'seeds', label: 'Seeds', icon: '🌰', color: 'bg-[#3773551F]' },
-    { id: 'tools', label: 'Tools', icon: '✂️', color: 'bg-[#3773551F]' },
-    { id: 'grains-millet', label: 'Organic Food', icon: '🌾', color: 'bg-[#3773551F]' },
-    { id: 'combos', label: 'Combos', icon: '🎁', color: 'bg-[#3773551F]' },
-    { id: 'bestsellers', label: 'Best Sellers', icon: '⭐', color: 'bg-[#3773551F]' }
+    { id: 'fertilizer', label: 'Fertilizers', icon: '🌱', color: 'bg-[#2D5A3F1F]' },
+    { id: 'seeds', label: 'Seeds', icon: '🌰', color: 'bg-[#2D5A3F1F]' },
+    { id: 'tools', label: 'Tools', icon: '✂️', color: 'bg-[#2D5A3F1F]' },
+    { id: 'grains-millet', label: 'Organic Food', icon: '🌾', color: 'bg-[#2D5A3F1F]' },
+    { id: 'combos', label: 'Combos', icon: '🎁', color: 'bg-[#2D5A3F1F]' },
+    { id: 'bestsellers', label: 'Best Sellers', icon: '⭐', color: 'bg-[#2D5A3F1F]' }
   ];
 
   // ── Parallax scroll refs ──────────────────────────────────────────────
@@ -231,9 +273,22 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
 
   const filteredProducts = liveProducts.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(allProductsSearch.toLowerCase());
-    const matchesCategory = productFilter === 'all' || p.category === productFilter || 
-                           (productFilter === 'bestsellers' && p.rating && p.rating > 4.7) ||
-                           (productFilter === 'new' && p.price < 500);
+    let matchesCategory = false;
+    if (productFilter === 'all') {
+      matchesCategory = true;
+    } else if (productFilter === 'fertilizer') {
+      matchesCategory = p.category === 'fertilizer' || p.category === 'nutrition' || p.category === 'soil-health';
+    } else if (productFilter === 'seeds') {
+      matchesCategory = p.category === 'seeds';
+    } else if (productFilter === 'gardening') {
+      matchesCategory = p.category === 'tools' || p.category === 'pest-control' || p.category === 'gardening';
+    } else if (productFilter === 'foods') {
+      matchesCategory = p.category === 'grains-millet' || p.category === 'rice-poha' || p.category === 'dals-pulses' || p.category === 'salt-spices' || p.category === 'flours-sooji' || p.category === 'foods';
+    } else {
+      matchesCategory = p.category === productFilter || 
+                       (productFilter === 'bestsellers' && p.rating && p.rating > 4.7) ||
+                       (productFilter === 'new' && p.price < 500);
+    }
     const matchesPrice = p.price <= priceRange;
     
     let matchesConcern = true;
@@ -258,11 +313,234 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
   const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+  const mobileCategories = [
+    { id: 'all', label: 'All Products', icon: 'layout-grid' },
+    { id: 'fertilizer', label: 'Fertilizer', icon: 'fertilizer' },
+    { id: 'seeds', label: 'Seeds', icon: 'sprout' },
+    { id: 'gardening', label: 'Gardening', icon: 'gardening' },
+    { id: 'foods', label: 'Foods', icon: 'foods' }
+  ];
+
   return (
-    <div
-      className="min-h-screen pb-24 md:pb-12 relative"
-      style={{ backgroundColor: '#EEF6F1' }}
-    >
+    <>
+      {/* MOBILE SCREEN LAYOUT */}
+      <div className="block md:hidden h-screen overflow-hidden bg-[#F4F7F5] flex flex-col relative font-sans">
+        {/* Mobile Header */}
+        <header className="sticky top-0 z-40 bg-white border-b border-gray-150 px-4 py-3 flex items-center justify-between">
+          <button className="text-gray-700 hover:text-[#2D5A3F] focus:outline-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="w-6 h-6"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <a href="#home" className="flex items-center">
+            <img src="/logo2.jpeg" alt="Cowberry Organics Logo" className="h-8 w-auto object-contain" />
+          </a>
+          <div className="flex items-center gap-4 text-gray-700">
+            <button className="hover:text-[#2D5A3F]">
+              <MapPin className="w-5 h-5" />
+            </button>
+            <button className="hover:text-[#2D5A3F]">
+              <User className="w-5 h-5" />
+            </button>
+          </div>
+        </header>
+
+        {/* Search & Category Dropdown Container */}
+        <div className="px-4 py-2.5 bg-white border-b border-gray-100">
+          <div className="flex items-center bg-white border border-gray-300 rounded-full px-4 py-1.5 shadow-sm">
+            <div className="flex items-center flex-1 gap-2">
+              <Search className="w-4 h-4 text-gray-400 shrink-0" />
+              <input
+                type="text"
+                placeholder="Search Spi"
+                value={allProductsSearch}
+                onChange={(e) => setAllProductsSearch(e.target.value)}
+                className="w-full bg-transparent border-none text-xs focus:outline-none text-gray-800 placeholder-gray-400"
+              />
+            </div>
+            <div className="h-4 w-px bg-gray-300 mx-2"></div>
+            <button className="flex items-center gap-1 text-[11px] font-bold text-slate-800 shrink-0">
+              All Categories
+              <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+            </button>
+          </div>
+        </div>
+
+        {/* Two-Column Sidebar + Product Grid Layout */}
+        <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 108px)' }}>
+          {/* Sidebar Tabs */}
+          <aside className="w-24 bg-[#F4F7F5] flex flex-col border-r border-gray-150 overflow-y-auto no-scrollbar shrink-0">
+            {mobileCategories.map((cat) => {
+              const isActive = productFilter === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    setProductFilter(cat.id);
+                    setCurrentPage(1);
+                  }}
+                  className={`relative py-4 px-1.5 flex flex-col items-center justify-center gap-1.5 text-center transition-all ${
+                    isActive ? 'bg-white text-[#2D5A3F]' : 'bg-[#F4F7F5] text-slate-550 hover:bg-slate-100/50'
+                  }`}
+                >
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isActive ? 'text-[#2D5A3F]' : 'text-slate-400'}`}>
+                    {getCategoryIcon(cat.icon)}
+                  </div>
+                  <span className={`text-[10px] font-bold leading-tight select-none px-1`}>
+                    {cat.label}
+                  </span>
+                  {isActive && (
+                    <div className="absolute right-0 top-0 bottom-0 w-[3px] bg-[#2D5A3F]" />
+                  )}
+                </button>
+              );
+            })}
+          </aside>
+
+          {/* Product Grid */}
+          <main className="flex-1 bg-white overflow-y-auto p-3 no-scrollbar relative flex flex-col pb-24">
+            <div className="flex justify-between items-center mb-3">
+              <div className="text-[11px] text-slate-400 font-bold">
+                {filteredProducts.length} Items
+              </div>
+              <div className="flex items-center gap-3 text-slate-700">
+                <button className="p-1 hover:text-[#2D5A3F]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="w-4.5 h-4.5"><path d="M11 5L8 2 5 5M8 2v14M13 19l3 3 3-3M16 22V8"/></svg>
+                </button>
+                <button className="p-1 hover:text-[#2D5A3F]" onClick={() => setIsFilterDrawerOpen(true)}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="w-4.5 h-4.5"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            {filteredProducts.length === 0 ? (
+              <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
+                <p className="text-xs text-slate-450 font-semibold">No products found in this category.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-3.5 pb-20">
+                {filteredProducts.map((p) => {
+                  const qty = getProductCartQty(p.id);
+                  const selectedSize = selectedSizes[p.id] || (p.sizes && p.sizes[0]) || '1 kg';
+                  return (
+                    <div
+                      key={p.id}
+                      className="bg-white rounded-3xl border border-gray-150 p-3.5 flex flex-col relative overflow-hidden transition-all duration-300 hover:shadow-lg"
+                      style={{ boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}
+                    >
+                      {/* Image Area */}
+                      <div
+                        className="relative h-28 bg-[#fbfbfa] rounded-2xl flex items-center justify-center p-2 mb-3 cursor-pointer overflow-hidden"
+                        onClick={() => window.location.hash = `#product?id=${p.id}`}
+                      >
+                        <img
+                          src={p.img}
+                          alt={p.name}
+                          className="max-h-full max-w-full object-contain"
+                        />
+                        <div className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-xs text-white text-[8px] font-black px-1.5 py-0.5 rounded-full flex items-center gap-0.5 select-none">
+                          <Star className="w-2.5 h-2.5 text-yellow-450 fill-current" />
+                          {p.rating || '4.5'}
+                        </div>
+                      </div>
+
+                      {/* Info */}
+                      <div className="flex flex-col flex-1">
+                        <span className="text-[8px] font-black text-[#2D5A3F] uppercase tracking-wider block mb-0.5">
+                          {p.category.replace(/-/g, ' ')}
+                        </span>
+                        
+                        <h3
+                          className="text-[11px] font-black text-[#1F3325] leading-snug mb-1 line-clamp-2 cursor-pointer hover:text-[#2D5A3F]"
+                          onClick={() => window.location.hash = `#product?id=${p.id}`}
+                        >
+                          {p.name}
+                        </h3>
+
+                        <p className="text-[9px] text-slate-500 leading-normal line-clamp-2 mb-2">
+                          {p.desc}
+                        </p>
+
+                        {/* Size selector dropdown (if sizes exist) */}
+                        {p.sizes && p.sizes.length > 0 && (
+                          <div className="relative mb-2 w-full mt-auto">
+                            <select
+                              value={selectedSize}
+                              onChange={e => setSelectedSizes({...selectedSizes, [p.id]: e.target.value})}
+                              className="w-full bg-[#F4F7F5] border border-gray-250 text-slate-700 text-[9px] font-bold rounded-lg pl-2 pr-5 py-1 appearance-none focus:outline-none focus:border-[#2D5A3F]"
+                            >
+                              {p.sizes.map(s => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                            <ChevronDown className="w-3 h-3 text-gray-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          </div>
+                        )}
+
+                        {/* Faint Divider line */}
+                        <div className="border-t border-gray-100 my-2" />
+
+                        {/* Price Section */}
+                        {(() => {
+                          const displayOriginalPrice = p.originalPrice || Math.round(p.price / 0.9);
+                          const discountPercent = Math.round(((displayOriginalPrice - p.price) / displayOriginalPrice) * 100);
+                          return (
+                            <div className="flex flex-col gap-0.5 mb-2.5 mt-auto">
+                              <span className="text-[9px] text-slate-450 line-through font-bold">₹{displayOriginalPrice}</span>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-xs font-black text-slate-900">₹{p.price}</span>
+                                <span className="bg-[#fee2e2] text-[#dc2626] text-[7px] font-black px-1.5 py-0.5 rounded tracking-wide uppercase">
+                                  {discountPercent}% OFF
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })()}
+
+                        {/* Add / Stepper */}
+                        <div className="mt-auto pt-0.5">
+                          {qty === 0 ? (
+                            <button
+                              onClick={() => handleStepper(p, 1)}
+                              className="w-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 font-bold text-[10px] py-1.5 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-98"
+                            >
+                              <ShoppingCart className="w-3 h-3 text-slate-650" />
+                              <span>ADD TO CART</span>
+                            </button>
+                          ) : (
+                            <div className="flex items-center bg-[#2D5A3F] text-white rounded-xl overflow-hidden h-[28px] shadow-xs">
+                              <button onClick={() => handleStepper(p, -1)} className="w-7 h-full flex items-center justify-center hover:bg-[#22442F] transition-colors cursor-pointer text-white"><Minus className="w-2.5 h-2.5" /></button>
+                              <span className="flex-1 text-center font-black text-[10px]">{qty}</span>
+                              <button onClick={() => handleStepper(p, 1)} className="w-7 h-full flex items-center justify-center hover:bg-[#22442F] transition-colors cursor-pointer text-white"><Plus className="w-2.5 h-2.5" /></button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </main>
+        </div>
+
+        {/* Floating Cart Button */}
+        <button
+          onClick={() => setIsCartDrawerOpen && setIsCartDrawerOpen(true)}
+          className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#2D5A3F] text-white rounded-full flex items-center justify-center shadow-xl border-[2px] border-[#D4A373] hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+        >
+          <div className="relative">
+            <ShoppingCart className="w-6 h-6 text-white" />
+            {getCartCount() > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
+                {getCartCount()}
+              </span>
+            )}
+          </div>
+        </button>
+      </div>
+
+      {/* DESKTOP SCREEN LAYOUT */}
+      <div
+        className="hidden md:block min-h-screen pb-24 md:pb-12 relative"
+        style={{ backgroundColor: '#F4F7F5' }}
+      >
       {/* ============================================================
           PARALLAX PRODUCE BACKGROUND
       ============================================================ */}
@@ -477,17 +755,17 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
       </div>
 
       {/* ── TOP ANNOUNCEMENT TICKER ── */}
-      <div className="w-full bg-[#122e1f] text-[#5ecb8e] py-2.5 overflow-hidden relative z-50 text-[10px] font-black tracking-widest uppercase border-b border-[#377355]/20 select-none">
+      <div className="w-full bg-[#122e1f] text-[#5ecb8e] py-2.5 overflow-hidden relative z-50 text-[10px] font-black tracking-widest uppercase border-b border-[#2D5A3F]/20 select-none">
         <div className="flex animate-marquee whitespace-nowrap gap-12">
           <span>🌿 Free shipping on all organic orders above ₹499</span>
-          <span className="text-[#D2AF6E]">⚡ Monsoon Sale: Use code GROW20 to get extra 20% off</span>
+          <span className="text-[#D4A373]">⚡ Monsoon Sale: Use code GROW20 to get extra 20% off</span>
           <span>🔬 Science-Led Nutrition for 100% plant absorption</span>
-          <span className="text-[#D2AF6E]">📦 Zero plastic biodegradable zip-lock packaging</span>
+          <span className="text-[#D4A373]">📦 Zero plastic biodegradable zip-lock packaging</span>
           {/* Duplicate for infinite loop */}
           <span>🌿 Free shipping on all organic orders above ₹499</span>
-          <span className="text-[#D2AF6E]">⚡ Monsoon Sale: Use code GROW20 to get extra 20% off</span>
+          <span className="text-[#D4A373]">⚡ Monsoon Sale: Use code GROW20 to get extra 20% off</span>
           <span>🔬 Science-Led Nutrition for 100% plant absorption</span>
-          <span className="text-[#D2AF6E]">📦 Zero plastic biodegradable zip-lock packaging</span>
+          <span className="text-[#D4A373]">📦 Zero plastic biodegradable zip-lock packaging</span>
         </div>
       </div>
 
@@ -503,16 +781,16 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
 
           {/* Location */}
           <div className="hidden lg:flex items-center gap-2.5 shrink-0 cursor-pointer group px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-            <MapPin className="w-4 h-4 text-[#377355] shrink-0" />
+            <MapPin className="w-4 h-4 text-[#2D5A3F] shrink-0" />
             <div className="flex flex-col leading-tight">
               <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">Deliver to</span>
-              <span className="text-[13px] font-bold text-gray-800 group-hover:text-[#377355] transition-colors">Delhi, India</span>
+              <span className="text-[13px] font-bold text-gray-800 group-hover:text-[#2D5A3F] transition-colors">Delhi, India</span>
             </div>
           </div>
 
           {/* Search Bar */}
           <div className="flex-1 max-w-2xl hidden md:flex">
-            <div className="flex items-center w-full border border-gray-300 rounded-lg bg-gray-50 pl-4 pr-1 py-2 focus-within:border-[#377355] focus-within:ring-2 focus-within:ring-[#377355]/15 focus-within:bg-white transition-all">
+            <div className="flex items-center w-full border border-gray-300 rounded-lg bg-gray-50 pl-4 pr-1 py-2 focus-within:border-[#2D5A3F] focus-within:ring-2 focus-within:ring-[#2D5A3F]/15 focus-within:bg-white transition-all">
               <Search className="w-4 h-4 text-gray-400 shrink-0" />
               <input
                 type="text"
@@ -522,7 +800,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                 onChange={(e) => setAllProductsSearch(e.target.value)}
               />
               <div className="h-5 w-px bg-gray-300 mx-1 shrink-0"></div>
-              <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-600 hover:text-[#377355] whitespace-nowrap shrink-0 transition-colors">
+              <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-600 hover:text-[#2D5A3F] whitespace-nowrap shrink-0 transition-colors">
                 All Categories <ChevronDown className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -533,17 +811,17 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
             {/* Login / Profile */}
             {currentUser ? (
               <div className="flex items-center gap-2 cursor-pointer group px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-[#377355] flex items-center justify-center text-white">
+                <div className="w-8 h-8 rounded-full bg-[#2D5A3F] flex items-center justify-center text-white">
                   <User className="w-4 h-4" />
                 </div>
-                <span className="hidden md:block text-sm font-semibold text-gray-700 group-hover:text-[#377355] transition-colors">{currentUser.name || 'Account'}</span>
+                <span className="hidden md:block text-sm font-semibold text-gray-700 group-hover:text-[#2D5A3F] transition-colors">{currentUser.name || 'Account'}</span>
               </div>
             ) : (
               <a href="#auth" className="flex items-center gap-2 cursor-pointer group px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                <div className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-500 group-hover:border-[#377355] group-hover:text-[#377355] transition-colors">
+                <div className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-500 group-hover:border-[#2D5A3F] group-hover:text-[#2D5A3F] transition-colors">
                   <User className="w-4 h-4" />
                 </div>
-                <span className="hidden md:block text-sm font-semibold text-gray-700 group-hover:text-[#377355] transition-colors">Sign In</span>
+                <span className="hidden md:block text-sm font-semibold text-gray-700 group-hover:text-[#2D5A3F] transition-colors">Sign In</span>
               </a>
             )}
 
@@ -559,16 +837,16 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
               className="flex items-center gap-2 cursor-pointer group relative px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
             >
               <div className="relative">
-                <ShoppingCart className="w-5 h-5 text-gray-600 group-hover:text-[#377355] transition-colors" />
+                <ShoppingCart className="w-5 h-5 text-gray-600 group-hover:text-[#2D5A3F] transition-colors" />
                 {getCartCount() > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#377355] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-[#2D5A3F] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">
                     {getCartCount()}
                   </span>
                 )}
               </div>
-              <span className="hidden md:block text-sm font-semibold text-gray-700 group-hover:text-[#377355] transition-colors">Cart</span>
+              <span className="hidden md:block text-sm font-semibold text-gray-700 group-hover:text-[#2D5A3F] transition-colors">Cart</span>
               {getSubtotal() > 0 && (
-                <span className="hidden lg:block text-xs font-bold text-[#377355]">₹{getSubtotal().toLocaleString()}</span>
+                <span className="hidden lg:block text-xs font-bold text-[#2D5A3F]">₹{getSubtotal().toLocaleString()}</span>
               )}
             </a>
           </div>
@@ -576,7 +854,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
 
         {/* Mobile Search Bar */}
         <div className="md:hidden px-4 pb-3">
-          <div className="flex items-center w-full border border-gray-300 rounded-lg bg-gray-50 pl-4 pr-3 py-2 focus-within:border-[#377355] focus-within:bg-white transition-all">
+          <div className="flex items-center w-full border border-gray-300 rounded-lg bg-gray-50 pl-4 pr-3 py-2 focus-within:border-[#2D5A3F] focus-within:bg-white transition-all">
             <Search className="w-4 h-4 text-gray-400 shrink-0" />
             <input
               type="text"
@@ -605,7 +883,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                   onClick={() => setProductFilter(nav.key === 'all' ? 'all' : nav.key)}
                   className={`flex items-center gap-1 px-4 py-3 whitespace-nowrap text-sm font-semibold border-b-2 transition-all ${
                     productFilter === nav.key || (nav.key === 'all' && productFilter === 'all')
-                      ? 'border-[#377355] text-[#377355]'
+                      ? 'border-[#2D5A3F] text-[#2D5A3F]'
                       : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
                   }`}
                 >
@@ -806,7 +1084,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
         {/* Section heading */}
         <div className="text-center mb-8">
           <h2 className="text-xl md:text-2xl font-extrabold text-[#2d5a3d] tracking-tight">Categories</h2>
-          <div className="mx-auto mt-2 w-10 h-[3px] rounded-full bg-[#D2AF6E]" />
+          <div className="mx-auto mt-2 w-10 h-[3px] rounded-full bg-[#D4A373]" />
         </div>
         {/* Scrollable category row */}
         <div className="flex gap-5 md:gap-8 overflow-x-auto no-scrollbar pb-2 justify-start md:justify-center">
@@ -818,14 +1096,14 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
             >
               <div className={`w-16 h-16 md:w-20 md:h-20 rounded-full ${cat.color} flex items-center justify-center text-2xl md:text-3xl border-2 transition-all group-hover:-translate-y-1 group-hover:shadow-lg ${
                 (productFilter === cat.id) || (cat.id === 'all-cat' && productFilter === 'all')
-                  ? 'border-[#377355] shadow-[0_0_0_3px_rgba(55,115,85,0.18)]'
+                  ? 'border-[#2D5A3F] shadow-[0_0_0_3px_rgba(55,115,85,0.18)]'
                   : 'border-transparent'
               }`}>
                 {cat.icon}
               </div>
               <span className={`text-[10px] md:text-[11px] font-bold mt-2 text-center leading-tight transition-colors whitespace-pre-line ${
                 (productFilter === cat.id) || (cat.id === 'all-cat' && productFilter === 'all')
-                  ? 'text-[#377355]' : 'text-slate-600'
+                  ? 'text-[#2D5A3F]' : 'text-slate-600'
               }`}>
                 {cat.label}
               </span>
@@ -864,31 +1142,31 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
 
           {/* Decorative SVG leaves */}
           <svg className="absolute left-0 bottom-0 opacity-[0.10] pointer-events-none" width="260" height="260" viewBox="0 0 200 200" fill="none">
-            <path d="M10 190 C40 80, 160 20, 190 10 C160 120, 40 180, 10 190Z" fill="#377355"/>
-            <path d="M100 190 Q100 100 190 10" stroke="#377355" strokeWidth="2" fill="none"/>
-            <path d="M40 190 Q80 110 160 30" stroke="#377355" strokeWidth="1.5" strokeDasharray="4 4" fill="none" opacity="0.4"/>
+            <path d="M10 190 C40 80, 160 20, 190 10 C160 120, 40 180, 10 190Z" fill="#2D5A3F"/>
+            <path d="M100 190 Q100 100 190 10" stroke="#2D5A3F" strokeWidth="2" fill="none"/>
+            <path d="M40 190 Q80 110 160 30" stroke="#2D5A3F" strokeWidth="1.5" strokeDasharray="4 4" fill="none" opacity="0.4"/>
           </svg>
           <svg className="absolute right-0 top-0 opacity-[0.10] pointer-events-none" width="240" height="240" viewBox="0 0 200 200" fill="none">
-            <path d="M190 10 C160 120, 40 180, 10 190 C40 80, 160 20, 190 10Z" fill="#D2AF6E"/>
-            <path d="M160 10 Q120 90 20 160" stroke="#D2AF6E" strokeWidth="1.5" strokeDasharray="4 4" fill="none" opacity="0.5"/>
+            <path d="M190 10 C160 120, 40 180, 10 190 C40 80, 160 20, 190 10Z" fill="#D4A373"/>
+            <path d="M160 10 Q120 90 20 160" stroke="#D4A373" strokeWidth="1.5" strokeDasharray="4 4" fill="none" opacity="0.5"/>
           </svg>
 
           <div className="relative z-10">
             {/* Section heading row */}
             <div className="flex items-center justify-between mb-8">
               <div>
-                <p className="text-[11px] font-black text-[#D2AF6E] uppercase tracking-[0.25em] mb-1">⭐ Top Picks</p>
+                <p className="text-[11px] font-black text-[#D4A373] uppercase tracking-[0.25em] mb-1">⭐ Top Picks</p>
                 <h2 className="text-2xl md:text-3xl font-black text-[#1e3d2b] leading-tight">Best Selling Products</h2>
                 <div className="mt-2 flex items-center gap-2">
-                  <div className="w-10 h-[3px] rounded-full bg-[#D2AF6E]" />
-                  <div className="w-4 h-[3px] rounded-full bg-[#D2AF6E]/40" />
-                  <div className="w-2 h-[3px] rounded-full bg-[#D2AF6E]/20" />
+                  <div className="w-10 h-[3px] rounded-full bg-[#D4A373]" />
+                  <div className="w-4 h-[3px] rounded-full bg-[#D4A373]/40" />
+                  <div className="w-2 h-[3px] rounded-full bg-[#D4A373]/20" />
                 </div>
               </div>
               <a
                 href="#products"
                 onClick={() => setProductFilter('bestsellers')}
-                className="hidden md:flex items-center gap-2 text-[#377355] font-black text-sm border-2 border-[#377355]/30 bg-white/60 backdrop-blur-sm px-5 py-2.5 rounded-full hover:bg-[#377355] hover:text-white hover:border-[#377355] transition-all duration-300 shadow-sm"
+                className="hidden md:flex items-center gap-2 text-[#2D5A3F] font-black text-sm border-2 border-[#2D5A3F]/30 bg-white/60 backdrop-blur-sm px-5 py-2.5 rounded-full hover:bg-[#2D5A3F] hover:text-white hover:border-[#2D5A3F] transition-all duration-300 shadow-sm"
               >
                 View All <ChevronRight className="w-4 h-4" />
               </a>
@@ -902,14 +1180,14 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                 {/* Left arrow */}
                 <button
                   onClick={() => scrollBestSellers(-1)}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-9 h-9 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-[#377355] hover:bg-[#377355] hover:text-white transition-all opacity-0 group-hover/strip:opacity-100 duration-200"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-9 h-9 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-[#2D5A3F] hover:bg-[#2D5A3F] hover:text-white transition-all opacity-0 group-hover/strip:opacity-100 duration-200"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 {/* Right arrow */}
                 <button
                   onClick={() => scrollBestSellers(1)}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-9 h-9 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-[#377355] hover:bg-[#377355] hover:text-white transition-all opacity-0 group-hover/strip:opacity-100 duration-200"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-9 h-9 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-[#2D5A3F] hover:bg-[#2D5A3F] hover:text-white transition-all opacity-0 group-hover/strip:opacity-100 duration-200"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -921,100 +1199,94 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                     return (
                       <div
                         key={p.id}
-                        className="group bg-white rounded-[22px] overflow-hidden flex-shrink-0 w-[210px] md:w-[230px] flex flex-col border border-white/80 hover:-translate-y-2 transition-all duration-350"
-                        style={{ boxShadow: '0 4px 20px rgba(55,115,85,0.10), 0 1px 4px rgba(0,0,0,0.06)' }}
-                        onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 16px 40px rgba(55,115,85,0.18), 0 4px 12px rgba(0,0,0,0.10)')}
-                        onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 4px 20px rgba(55,115,85,0.10), 0 1px 4px rgba(0,0,0,0.06)')}
+                        className="group bg-white rounded-3xl overflow-hidden flex-shrink-0 w-[210px] md:w-[230px] flex flex-col border border-gray-150 hover:-translate-y-2 transition-all duration-350 hover:shadow-xl"
+                        style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}
                       >
                         {/* ── Image area ── */}
                         <div
                           className="relative h-[170px] md:h-[190px] flex items-center justify-center overflow-hidden cursor-pointer"
-                          style={{ background: 'linear-gradient(145deg, #f4f9f6 0%, #e8f5ee 100%)' }}
+                          style={{ background: '#fbfbfa' }}
                           onClick={() => window.location.hash = `#product?id=${p.id}`}
                         >
                           <img
                             src={p.img}
                             alt={p.name}
-                            className="h-[85%] w-full object-contain group-hover:scale-110 transition-transform duration-500"
+                            className="h-[85%] w-full object-contain group-hover:scale-105 transition-transform duration-500"
                           />
-                          {/* Shine overlay on hover */}
-                          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                          {/* Discount badge */}
-                          <div className="absolute top-3 left-3 bg-[#377355] text-white text-[9px] font-black px-2.5 py-1 rounded-full shadow-sm tracking-wide">
-                            {p.badge || '10% OFF'}
-                          </div>
                           {/* Wishlist */}
-                          <button className="absolute top-3 right-3 w-7 h-7 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-white transition-all shadow-sm border border-gray-100">
+                          <button className="absolute top-3 right-3 w-7 h-7 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-350 hover:text-red-500 hover:bg-white transition-all shadow-sm border border-gray-100">
                             <Heart className="w-3.5 h-3.5" />
                           </button>
-                          {/* Quick view pill */}
-                          <div className="absolute bottom-3 inset-x-0 flex justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                            <span className="bg-white/95 text-slate-800 text-[10px] font-bold px-4 py-1.5 rounded-full shadow-lg border border-gray-100">
-                              Quick View
-                            </span>
-                          </div>
                         </div>
 
                         {/* ── Info area ── */}
                         <div className="p-4 flex flex-col flex-1 gap-2">
-                          <p className="text-[9px] font-black text-[#377355] uppercase tracking-[0.15em]">{p.category.replace(/-/g, ' ')}</p>
+                          <span className="text-[9px] font-black text-[#2D5A3F] uppercase tracking-wider block">
+                            {p.category.replace(/-/g, ' ')}
+                          </span>
+                          
                           <h3
-                            className="font-extrabold text-slate-800 text-[12px] leading-snug line-clamp-2 cursor-pointer hover:text-[#377355] transition-colors"
+                            className="font-extrabold text-[#1F3325] text-xs leading-snug line-clamp-2 cursor-pointer hover:text-[#2D5A3F] transition-colors"
                             onClick={() => window.location.hash = `#product?id=${p.id}`}
                           >
                             {p.name}
                           </h3>
 
-                          {/* Star rating */}
-                          <div className="flex items-center gap-1">
-                            {[1,2,3,4,5].map(s => (
-                              <svg key={s} className={`w-3 h-3 ${s <= Math.round(p.rating || 4.8) ? 'text-amber-400' : 'text-gray-200'}`} fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                              </svg>
-                            ))}
-                            <span className="text-[10px] font-bold text-slate-400 ml-0.5">({p.reviews || 124})</span>
-                          </div>
+                          <p className="text-[10px] text-slate-500 leading-normal line-clamp-2">
+                            {p.desc}
+                          </p>
 
-                          {/* Price */}
-                          <div className="flex items-baseline gap-2">
-                            <span className="text-base font-black text-slate-900">₹{p.price}</span>
-                            {p.originalPrice && (
-                              <span className="text-[11px] text-gray-400 line-through font-semibold">₹{p.originalPrice}</span>
-                            )}
-                            {p.originalPrice && (
-                              <span className="text-[9px] font-black text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
-                                {Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)}% off
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Size selector */}
-                          {p.sizes && p.sizes.length > 0 ? (
-                            <select
-                              value={selectedSize}
-                              onChange={e => setSelectedSizes({...selectedSizes, [p.id]: e.target.value})}
-                              className="bg-[#f5f9f7] border border-gray-200 text-slate-600 text-[10px] font-bold rounded-lg px-2 py-1.5 w-full focus:outline-none focus:border-[#377355] focus:ring-1 focus:ring-[#377355]/20"
-                            >
-                              {p.sizes.map(s => <option key={s} value={s}>{s}</option>)}
-                            </select>
-                          ) : (
-                            <div className="text-[10px] font-bold text-slate-500 bg-[#f5f9f7] border border-gray-100 px-2 py-1.5 rounded-lg w-max">Standard</div>
+                          {/* Size selector dropdown (if sizes exist) */}
+                          {p.sizes && p.sizes.length > 0 && (
+                            <div className="relative mb-1 mt-auto">
+                              <div className="relative flex items-center">
+                                <select
+                                  value={selectedSize}
+                                  onChange={e => setSelectedSizes({...selectedSizes, [p.id]: e.target.value})}
+                                  className="bg-[#F4F7F5] border border-gray-250 text-slate-700 text-[10px] font-bold rounded-lg pl-2.5 pr-6 py-1.5 w-full focus:outline-none focus:border-[#2D5A3F]"
+                                >
+                                  {p.sizes.map(s => <option key={s} value={s}>{s}</option>)}
+                                </select>
+                                <ChevronDown className="w-3.5 h-3.5 text-gray-400 absolute right-2 pointer-events-none" />
+                              </div>
+                            </div>
                           )}
+
+                          {/* Faint Divider line */}
+                          <div className="border-t border-gray-100 my-1" />
+
+                          {/* Price Section */}
+                          {(() => {
+                            const displayOriginalPrice = p.originalPrice || Math.round(p.price / 0.9);
+                            const discountPercent = Math.round(((displayOriginalPrice - p.price) / displayOriginalPrice) * 100);
+                            return (
+                              <div className="flex flex-col gap-0.5 mb-2 mt-auto">
+                                <span className="text-[10px] text-slate-400 line-through font-bold">₹{displayOriginalPrice}</span>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-base font-black text-slate-900">₹{p.price}</span>
+                                  <span className="bg-[#fee2e2] text-[#dc2626] text-[8px] font-black px-1.5 py-0.5 rounded tracking-wide uppercase">
+                                    {discountPercent}% OFF
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })()}
 
                           {/* Add / Stepper */}
                           <div className="mt-auto pt-1">
                             {qty === 0 ? (
                               <button
                                 onClick={() => handleStepper(p, 1)}
-                                className="w-full bg-[#377355] text-white font-black text-[11px] py-2.5 rounded-xl hover:bg-[#2d5a3d] transition-colors uppercase tracking-widest shadow-md hover:shadow-lg"
+                                className="w-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 font-bold text-[11px] py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-98"
                               >
-                                ADD TO CART
+                                <ShoppingCart className="w-3.5 h-3.5 text-slate-650" />
+                                <span>ADD TO CART</span>
                               </button>
                             ) : (
-                              <div className="flex items-center justify-between bg-[#377355] text-white rounded-xl overflow-hidden h-[36px] shadow-md">
-                                <button onClick={() => handleStepper(p, -1)} className="w-10 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors text-white/80 hover:text-white"><Minus className="w-3.5 h-3.5" /></button>
-                                <span className="font-black text-sm">{qty}</span>
-                                <button onClick={() => handleStepper(p, 1)} className="w-10 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors text-white/80 hover:text-white"><Plus className="w-3.5 h-3.5" /></button>
+                              <div className="flex items-center bg-[#2D5A3F] text-white rounded-xl overflow-hidden h-[34px] shadow-sm">
+                                <button onClick={() => handleStepper(p, -1)} className="w-8 h-full flex items-center justify-center hover:bg-[#22442F] transition-colors cursor-pointer text-white"><Minus className="w-3 h-3" /></button>
+                                <span className="flex-1 text-center font-black text-xs text-white">{qty}</span>
+                                <button onClick={() => handleStepper(p, 1)} className="w-8 h-full flex items-center justify-center hover:bg-[#22442F] transition-colors cursor-pointer text-white"><Plus className="w-3 h-3" /></button>
                               </div>
                             )}
                           </div>
@@ -1029,7 +1301,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
 
           {/* Mobile View All */}
           <div className="flex md:hidden justify-center mt-6">
-            <a href="#products" onClick={() => setProductFilter('bestsellers')} className="flex items-center gap-2 text-[#377355] font-black text-sm border-2 border-[#377355]/25 px-6 py-2.5 rounded-full hover:bg-[#377355] hover:text-white transition-all">
+            <a href="#products" onClick={() => setProductFilter('bestsellers')} className="flex items-center gap-2 text-[#2D5A3F] font-black text-sm border-2 border-[#2D5A3F]/25 px-6 py-2.5 rounded-full hover:bg-[#2D5A3F] hover:text-white transition-all">
               View All <ChevronRight className="w-4 h-4" />
             </a>
           </div>
@@ -1042,7 +1314,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
       ═══════════════════════════════════════════════════════ */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-4">
         <div className="mb-8">
-          <p className="text-[10px] font-black text-[#D2AF6E] uppercase tracking-[0.25em] mb-1">🎁 Expert Pairings</p>
+          <p className="text-[10px] font-black text-[#D4A373] uppercase tracking-[0.25em] mb-1">🎁 Expert Pairings</p>
           <h3 className="text-xl md:text-2xl font-black text-slate-800">Curated Bio-Nutrition Combos</h3>
           <p className="text-xs text-slate-500 font-semibold mt-1">Pre-packed complete symptom recovery bundles mixed for maximum botanical growth.</p>
         </div>
@@ -1057,7 +1329,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
               originalPrice: 1297,
               pIds: ['core-npk', 'root-stimulator', 'soil-healer'],
               items: ["Agriic Core NPK (349)", "Root Stimulator Kelp (449)", "Active Soil Healer (499)"],
-              color: "border-[#D2AF6E] shadow-[0_8px_30px_rgb(210,175,110,0.06)]"
+              color: "border-[#D4A373] shadow-[0_8px_30px_rgb(210,175,110,0.06)]"
             },
             {
               title: "Root Defense Shield Pack",
@@ -1093,7 +1365,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
               <div key={idx} className={`bg-white rounded-[24px] p-6 border-2 flex flex-col justify-between hover:scale-[1.01] transition-transform min-w-[85vw] sm:min-w-[320px] md:min-w-0 snap-center md:snap-align-none ${combo.color}`}>
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <span className="bg-[#e8f5ee] text-[#377355] text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">{combo.badge}</span>
+                    <span className="bg-[#e8f5ee] text-[#2D5A3F] text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">{combo.badge}</span>
                     <span className="text-[10px] text-emerald-600 font-bold">Bundle Save</span>
                   </div>
                   <h4 className="font-extrabold text-slate-800 text-base mb-2">{combo.title}</h4>
@@ -1104,7 +1376,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                     <ul className="space-y-2">
                       {combo.items.map((item, i) => (
                         <li key={i} className="text-xs font-bold text-slate-700 flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#377355] shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#2D5A3F] shrink-0" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -1118,7 +1390,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                   </div>
                   <button
                     onClick={addComboToCart}
-                    className="bg-[#377355] hover:bg-[#2d5a3d] text-white font-black text-[11px] px-5 py-2.5 rounded-xl uppercase tracking-wider transition-colors shadow-sm"
+                    className="bg-[#2D5A3F] hover:bg-[#2d5a3d] text-white font-black text-[11px] px-5 py-2.5 rounded-xl uppercase tracking-wider transition-colors shadow-sm"
                   >
                     Add Bundle ⚡
                   </button>
@@ -1136,7 +1408,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
         <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-[0px_4px_20px_rgba(55,115,85,0.04)]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <p className="text-[10px] font-black text-[#D2AF6E] uppercase tracking-[0.2em] mb-0.5">🩺 Plant Diagnosis</p>
+              <p className="text-[10px] font-black text-[#D4A373] uppercase tracking-[0.2em] mb-0.5">🩺 Plant Diagnosis</p>
               <h3 className="text-lg font-black text-slate-800">Shop by Plant Concern</h3>
               <p className="text-xs text-slate-500 font-semibold mt-0.5">Select a common plant symptom to find tailored organic solutions immediately.</p>
             </div>
@@ -1165,13 +1437,13 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                   onClick={() => setSelectedConcern(isSelected ? null : concern.id)}
                   className={`flex items-center gap-3 p-3.5 rounded-2xl border text-left transition-all flex-shrink-0 min-w-[155px] lg:min-w-0 ${
                     isSelected
-                      ? 'bg-[#e8f5ee] border-[#377355] shadow-sm shadow-[#377355]/10'
-                      : 'bg-[#fbfbfa] border-gray-100 hover:border-[#377355]/40 hover:bg-white'
+                      ? 'bg-[#e8f5ee] border-[#2D5A3F] shadow-sm shadow-[#2D5A3F]/10'
+                      : 'bg-[#fbfbfa] border-gray-100 hover:border-[#2D5A3F]/40 hover:bg-white'
                   }`}
                 >
                   <span className="text-2xl shrink-0">{concern.icon}</span>
                   <div>
-                    <h4 className={`text-xs font-black leading-tight whitespace-nowrap ${isSelected ? 'text-[#377355]' : 'text-slate-800'}`}>
+                    <h4 className={`text-xs font-black leading-tight whitespace-nowrap ${isSelected ? 'text-[#2D5A3F]' : 'text-slate-800'}`}>
                       {concern.label}
                     </h4>
                     <p className="text-[9px] text-slate-400 font-semibold mt-0.5 leading-none">
@@ -1195,13 +1467,13 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
             <h2 className="text-xl md:text-2xl font-extrabold text-[#2d5a3d]">
               {productFilter === 'all' ? 'All Products' : blinkitCategories.find(c => c.id === productFilter)?.label || 'Products'}
             </h2>
-            <div className="mt-1 w-10 h-[3px] rounded-full bg-[#D2AF6E]" />
+            <div className="mt-1 w-10 h-[3px] rounded-full bg-[#D4A373]" />
           </div>
           <div className="flex items-center gap-3">
             {/* Filter drawer trigger */}
             <button
               onClick={() => setIsFilterDrawerOpen(true)}
-              className="flex items-center gap-1.5 text-[#377355] text-xs font-black uppercase tracking-wider bg-white border border-[#377355]/30 px-3 py-2 rounded-lg shadow-sm hover:bg-[#377355] hover:text-white transition-all"
+              className="flex items-center gap-1.5 text-[#2D5A3F] text-xs font-black uppercase tracking-wider bg-white border border-[#2D5A3F]/30 px-3 py-2 rounded-lg shadow-sm hover:bg-[#2D5A3F] hover:text-white transition-all"
             >
               <Filter className="w-3.5 h-3.5" /> Filters
             </button>
@@ -1209,7 +1481,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
               <span className="text-xs text-gray-400 font-bold">{filteredProducts.length} Products</span>
               <span className="text-gray-300">|</span>
               Sort:
-              <select className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-[#377355] shadow-sm">
+              <select className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-[#2D5A3F] shadow-sm">
                 <option>Popularity</option>
                 <option>Price: Low to High</option>
                 <option>Price: High to Low</option>
@@ -1225,61 +1497,85 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
             const qty = getProductCartQty(p.id);
             const selectedSize = selectedSizes[p.id] || (p.sizes && p.sizes[0]) || 'Standard';
             return (
-              <div key={p.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col relative overflow-hidden">
+              <div key={p.id} className="bg-white rounded-3xl border border-gray-150 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col relative overflow-hidden">
                 {/* Image */}
-                <div className="relative h-36 md:h-44 bg-[#f7f7f5] flex items-center justify-center p-3 cursor-pointer rounded-t-2xl" onClick={() => window.location.hash = `#product?id=${p.id}`}>
-                  <img src={p.img} alt={p.name} className="max-h-full object-contain group-hover:scale-110 transition-transform duration-500" />
+                <div className="relative h-36 md:h-44 bg-[#f7f7f5] flex items-center justify-center p-3 cursor-pointer rounded-t-2xl overflow-hidden" onClick={() => window.location.hash = `#product?id=${p.id}`}>
+                  <img src={p.img} alt={p.name} className="max-h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                   {/* Badges overlay */}
                   <div className="absolute top-2 left-2 right-2 flex justify-between items-start">
                     <div className="flex flex-col gap-1">
-                      {p.badge && <span className="bg-[#377355] text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-wide">{p.badge}</span>}
-                      <span className="bg-yellow-400/90 text-yellow-900 text-[8px] font-black px-1.5 py-0.5 rounded flex items-center gap-0.5 w-max"><Star className="w-2 h-2 fill-current" />{p.rating || '4.8'}</span>
+                      <span className="bg-yellow-400/90 text-yellow-900 text-[8px] font-black px-1.5 py-0.5 rounded flex items-center gap-0.5 w-max"><Star className="w-2.5 h-2.5 fill-current" />{p.rating || '4.8'}</span>
                     </div>
-                    <button className="w-6 h-6 bg-white/90 rounded-full flex items-center justify-center text-slate-300 hover:text-red-500 transition-colors shadow-sm">
+                    <button className="w-6 h-6 bg-white/90 rounded-full flex items-center justify-center text-slate-350 hover:text-red-500 transition-colors shadow-sm">
                       <Heart className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                  {/* Quick view hover */}
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl flex items-center justify-center">
-                    <span className="bg-white text-slate-800 text-[10px] font-bold px-3 py-1.5 rounded-full shadow">Quick View</span>
-                  </div>
                 </div>
                 {/* Info */}
-                <div className="p-3 flex flex-col flex-1">
-                  <p className="text-[8px] text-gray-400 font-bold uppercase tracking-wider mb-1">{p.category.replace('-', ' ')}</p>
-                  <h3 className="font-extrabold text-slate-800 text-[11px] md:text-xs leading-tight mb-2 line-clamp-2 cursor-pointer hover:text-[#377355]" onClick={() => window.location.hash = `#product?id=${p.id}`}>
+                <div className="p-4 flex flex-col flex-1 gap-2">
+                  <span className="text-[9px] font-black text-[#2D5A3F] uppercase tracking-wider block">
+                    {p.category.replace(/-/g, ' ')}
+                  </span>
+                  
+                  <h3 className="font-extrabold text-[#1F3325] text-xs leading-snug line-clamp-2 cursor-pointer hover:text-[#2D5A3F] transition-colors" onClick={() => window.location.hash = `#product?id=${p.id}`}>
                     {p.name}
                   </h3>
-                  {/* Size */}
-                  {p.sizes && p.sizes.length > 0 ? (
-                    <select
-                      value={selectedSize}
-                      onChange={e => setSelectedSizes({...selectedSizes, [p.id]: e.target.value})}
-                      className="bg-[#f5f5f3] border border-gray-200 text-slate-600 text-[10px] font-bold rounded-md px-2 py-1 w-max mb-2 focus:outline-none"
-                    >
-                      {p.sizes.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                  ) : (
-                    <div className="text-[10px] font-bold text-slate-400 bg-[#f5f5f3] border border-gray-100 px-2 py-1 rounded-md w-max mb-2">Standard</div>
-                  )}
-                  {/* Price + add */}
-                  <div className="mt-auto flex items-center justify-between pt-1">
-                    <div>
-                      <span className="font-black text-slate-900 text-sm">₹{p.price}</span>
-                      {p.originalPrice && <span className="text-[10px] text-gray-400 line-through ml-1">₹{p.originalPrice}</span>}
+
+                  <p className="text-[10px] text-slate-500 leading-normal line-clamp-2">
+                    {p.desc}
+                  </p>
+
+                  {/* Size selector dropdown (if sizes exist) */}
+                  {p.sizes && p.sizes.length > 0 && (
+                    <div className="relative mb-1 mt-auto">
+                      <div className="relative flex items-center">
+                        <select
+                          value={selectedSize}
+                          onChange={e => setSelectedSizes({...selectedSizes, [p.id]: e.target.value})}
+                          className="w-full bg-[#F4F7F5] border border-gray-200 text-slate-750 text-[10px] font-bold rounded-lg pl-2.5 pr-6 py-1.5 appearance-none focus:outline-none focus:border-[#2D5A3F]"
+                        >
+                          {p.sizes.map(s => <option key={s} value={s}>{s}</option>)}
+                        </select>
+                        <ChevronDown className="w-3.5 h-3.5 text-gray-400 absolute right-2 pointer-events-none" />
+                      </div>
                     </div>
+                  )}
+
+                  {/* Faint Divider line */}
+                  <div className="border-t border-gray-100 my-1" />
+
+                  {/* Price Section */}
+                  {(() => {
+                    const displayOriginalPrice = p.originalPrice || Math.round(p.price / 0.9);
+                    const discountPercent = Math.round(((displayOriginalPrice - p.price) / displayOriginalPrice) * 100);
+                    return (
+                      <div className="flex flex-col gap-0.5 mb-2 mt-auto">
+                        <span className="text-[10px] text-slate-400 line-through font-bold">₹{displayOriginalPrice}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-base font-black text-slate-900">₹{p.price}</span>
+                          <span className="bg-[#fee2e2] text-[#dc2626] text-[8px] font-black px-1.5 py-0.5 rounded tracking-wide uppercase">
+                            {discountPercent}% OFF
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Add / Stepper */}
+                  <div className="mt-auto pt-1">
                     {qty === 0 ? (
                       <button
                         onClick={() => handleStepper(p, 1)}
-                        className="bg-[#e8f5e9] text-[#377355] border border-[#377355]/25 font-black text-[10px] px-3 py-1.5 rounded-lg hover:bg-[#377355] hover:text-white transition-colors uppercase tracking-wide"
+                        className="w-full bg-[#2D5A3F] hover:bg-[#22442F] text-white font-bold text-[11px] py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-sm active:scale-98"
                       >
-                        ADD
+                        <ShoppingCart className="w-3.5 h-3.5 text-white" />
+                        <span>Add to Cart</span>
                       </button>
                     ) : (
-                      <div className="flex items-center bg-[#377355] text-white rounded-lg overflow-hidden h-[28px] border border-[#377355]">
-                        <button onClick={() => handleStepper(p, -1)} className="w-7 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors"><Minus className="w-3 h-3" /></button>
-                        <span className="w-5 text-center font-black text-xs">{qty}</span>
-                        <button onClick={() => handleStepper(p, 1)} className="w-7 h-full flex items-center justify-center hover:bg-[#2d5a3d] transition-colors"><Plus className="w-3 h-3" /></button>
+                      <div className="flex items-center bg-[#2D5A3F] text-white rounded-lg overflow-hidden h-[30px] border border-[#2D5A3F] shadow-sm">
+                        <button onClick={() => handleStepper(p, -1)} className="w-8 h-full flex items-center justify-center hover:bg-[#22442F] transition-colors cursor-pointer text-white"><Minus className="w-3 h-3" /></button>
+                        <span className="flex-1 text-center font-black text-xs">{qty}</span>
+                        <button onClick={() => handleStepper(p, 1)} className="w-8 h-full flex items-center justify-center hover:bg-[#22442F] transition-colors cursor-pointer text-white"><Plus className="w-3 h-3" /></button>
                       </div>
                     )}
                   </div>
@@ -1295,7 +1591,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
             <button
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="flex items-center justify-center w-10 h-10 rounded-xl border border-gray-200 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#377355] hover:text-white hover:border-[#377355] transition-all duration-300"
+              className="flex items-center justify-center w-10 h-10 rounded-xl border border-gray-200 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#2D5A3F] hover:text-white hover:border-[#2D5A3F] transition-all duration-300"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -1315,8 +1611,8 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                       onClick={() => setCurrentPage(pageNum)}
                       className={`w-10 h-10 flex items-center justify-center rounded-xl font-extrabold text-sm transition-all duration-300 ${
                         currentPage === pageNum 
-                          ? 'bg-[#377355] text-white shadow-md' 
-                          : 'bg-white border border-gray-200 text-gray-600 hover:border-[#377355] hover:text-[#377355]'
+                          ? 'bg-[#2D5A3F] text-white shadow-md' 
+                          : 'bg-white border border-gray-200 text-gray-600 hover:border-[#2D5A3F] hover:text-[#2D5A3F]'
                       }`}
                     >
                       {pageNum}
@@ -1335,7 +1631,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
             <button
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="flex items-center justify-center w-10 h-10 rounded-xl border border-gray-200 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#377355] hover:text-white hover:border-[#377355] transition-all duration-300"
+              className="flex items-center justify-center w-10 h-10 rounded-xl border border-gray-200 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#2D5A3F] hover:text-white hover:border-[#2D5A3F] transition-all duration-300"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -1353,19 +1649,19 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
           <div className="space-y-6">
             <div>
               <h4 className="font-extrabold text-sm text-slate-800 mb-3 uppercase tracking-wider">Price Range</h4>
-              <input type="range" min="0" max="5000" step="100" value={priceRange} onChange={e => setPriceRange(Number(e.target.value))} className="w-full accent-[#377355]" />
+              <input type="range" min="0" max="5000" step="100" value={priceRange} onChange={e => setPriceRange(Number(e.target.value))} className="w-full accent-[#2D5A3F]" />
               <div className="flex justify-between text-[11px] font-bold text-slate-500 mt-1"><span>₹0</span><span>Up to ₹{priceRange}</span></div>
             </div>
             <div>
               <h4 className="font-extrabold text-sm text-slate-800 mb-3 uppercase tracking-wider">Category</h4>
               <div className="flex flex-wrap gap-2">
                 {blinkitCategories.map(c => (
-                  <button key={c.id} onClick={() => setProductFilter(c.id)} className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all ${productFilter === c.id ? 'bg-[#377355] text-white border-[#377355]' : 'bg-white text-slate-600 border-gray-200 hover:border-[#377355]'}`}>{c.label}</button>
+                  <button key={c.id} onClick={() => setProductFilter(c.id)} className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all ${productFilter === c.id ? 'bg-[#2D5A3F] text-white border-[#2D5A3F]' : 'bg-white text-slate-600 border-gray-200 hover:border-[#2D5A3F]'}`}>{c.label}</button>
                 ))}
               </div>
             </div>
           </div>
-          <button onClick={() => setIsFilterDrawerOpen(false)} className="w-full bg-[#377355] text-white font-black py-3.5 rounded-2xl shadow-lg mt-6">Apply Filters</button>
+          <button onClick={() => setIsFilterDrawerOpen(false)} className="w-full bg-[#2D5A3F] text-white font-black py-3.5 rounded-2xl shadow-lg mt-6">Apply Filters</button>
         </div>
       </aside>
 
@@ -1412,14 +1708,14 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5 gap-0">
             {/* Left branding panel */}
             <div className="lg:col-span-2 p-8 md:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-white/10">
-              <span className="text-[10px] font-black text-[#D2AF6E] uppercase tracking-[0.3em] mb-3">Our Promise</span>
+              <span className="text-[10px] font-black text-[#D4A373] uppercase tracking-[0.3em] mb-3">Our Promise</span>
               <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-4">
                 Why Choose<br/>
                 <span className="text-[#5ecb8e]">Agriic?</span>
               </h2>
               <div className="flex gap-2 mb-6">
-                <div className="w-10 h-[3px] rounded-full bg-[#D2AF6E]"/>
-                <div className="w-4 h-[3px] rounded-full bg-[#D2AF6E]/40"/>
+                <div className="w-10 h-[3px] rounded-full bg-[#D4A373]"/>
+                <div className="w-4 h-[3px] rounded-full bg-[#D4A373]/40"/>
               </div>
               <p className="text-white/60 text-sm font-semibold leading-relaxed mb-8">
                 We believe in honest nutrition. Every product is crafted from nature, tested in labs, and delivered with care — so you never have to guess what goes into your food.
@@ -1508,9 +1804,9 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
       </div>
 
       {/* ── CONSCIOUS GARDENING QUICK FAQ SECTION ── */}
-      <div className="max-w-4xl mx-auto px-4 md:px-8 py-16 bg-[#EEF6F1]">
+      <div className="max-w-4xl mx-auto px-4 md:px-8 py-16 bg-[#F4F7F5]">
         <div className="text-center mb-10">
-          <p className="text-[10px] font-black text-[#D2AF6E] uppercase tracking-[0.25em] mb-1">💬 Common Queries</p>
+          <p className="text-[10px] font-black text-[#D4A373] uppercase tracking-[0.25em] mb-1">💬 Common Queries</p>
           <h3 className="text-xl md:text-2xl font-black text-slate-800">Conscious Gardening FAQs</h3>
           <p className="text-xs text-slate-500 font-semibold mt-1">Key answers to safety, dilution, and packing standards.</p>
         </div>
@@ -1548,11 +1844,11 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
           <div className="bg-white w-full max-w-4xl rounded-[20px] overflow-hidden flex flex-col md:flex-row relative max-h-[90vh]">
             <button onClick={() => setQuickViewProduct(null)} className="absolute top-4 right-4 z-10 w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center hover:bg-slate-200 transition-colors"><X className="w-5 h-5 text-slate-600" /></button>
-            <div className="w-full md:w-1/2 bg-[#F6F9F7] p-8 flex items-center justify-center min-h-[300px]">
+            <div className="w-full md:w-1/2 bg-[#F4F7F5] p-8 flex items-center justify-center min-h-[300px]">
               <img src={quickViewProduct.img} alt={quickViewProduct.name} className="w-full h-full object-contain mix-blend-multiply" />
             </div>
             <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col overflow-y-auto">
-              {quickViewProduct.badge && <span className="bg-[#e8f5e9] text-[#377355] text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-widest w-max mb-4">{quickViewProduct.badge}</span>}
+              {quickViewProduct.badge && <span className="bg-[#e8f5e9] text-[#2D5A3F] text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-widest w-max mb-4">{quickViewProduct.badge}</span>}
               <h2 className="text-2xl font-black text-slate-900 mb-2">{quickViewProduct.name}</h2>
               <div className="flex items-center gap-2 text-sm mb-6">
                 <span className="flex items-center text-yellow-500"><Star className="w-4 h-4 fill-current mr-1" /> {quickViewProduct.rating || '4.8'}</span>
@@ -1560,7 +1856,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                 <span className="text-slate-500 font-semibold">{quickViewProduct.reviews || 124} Reviews</span>
               </div>
               <div className="flex items-end gap-3 mb-6">
-                <span className="text-3xl font-black text-[#377355]">₹{quickViewProduct.price}</span>
+                <span className="text-3xl font-black text-[#2D5A3F]">₹{quickViewProduct.price}</span>
                 {quickViewProduct.originalPrice && <span className="text-lg text-slate-400 line-through font-semibold mb-1">₹{quickViewProduct.originalPrice}</span>}
               </div>
               <div className="bg-emerald-50 border border-emerald-100 rounded-[20px] p-4 mb-6 flex gap-3">
@@ -1574,7 +1870,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                 {getProductCartQty(quickViewProduct.id) === 0 ? (
                   <button 
                     onClick={() => handleStepper(quickViewProduct, 1)}
-                    className="w-full bg-[#377355] hover:bg-[#377355] text-white font-black py-4 rounded-[20px] shadow-lg transition-colors flex justify-center items-center gap-2 uppercase tracking-wide"
+                    className="w-full bg-[#2D5A3F] hover:bg-[#2D5A3F] text-white font-black py-4 rounded-[20px] shadow-lg transition-colors flex justify-center items-center gap-2 uppercase tracking-wide"
                   >
                     <ShoppingCart className="w-5 h-5" /> Add to Cart
                   </button>
@@ -1582,7 +1878,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                   <div className="flex items-center justify-between bg-slate-100 p-2 rounded-[20px]">
                     <button onClick={() => handleStepper(quickViewProduct, -1)} className="w-12 h-12 bg-white rounded-lg flex items-center justify-center hover:bg-slate-50 shadow-[0px_4px_12px_0px_#0000001F]"><Minus className="w-5 h-5" /></button>
                     <span className="font-black text-lg">{getProductCartQty(quickViewProduct.id)} in cart</span>
-                    <button onClick={() => handleStepper(quickViewProduct, 1)} className="w-12 h-12 bg-[#377355] text-white rounded-lg flex items-center justify-center shadow-[0px_4px_12px_0px_#0000001F] hover:bg-[#377355]"><Plus className="w-5 h-5" /></button>
+                    <button onClick={() => handleStepper(quickViewProduct, 1)} className="w-12 h-12 bg-[#2D5A3F] text-white rounded-lg flex items-center justify-center shadow-[0px_4px_12px_0px_#0000001F] hover:bg-[#2D5A3F]"><Plus className="w-5 h-5" /></button>
                   </div>
                 )}
               </div>
@@ -1598,11 +1894,11 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
 
       {/* MOBILE BOTTOM NAV */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center p-3 z-40 pb-5 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
-         <a href="#home" className="flex flex-col items-center text-slate-400 hover:text-[#377355]">
+         <a href="#home" className="flex flex-col items-center text-slate-400 hover:text-[#2D5A3F]">
            <Leaf className="w-5 h-5 mb-1" />
            <span className="text-[9px] font-bold uppercase tracking-wider">Home</span>
          </a>
-         <button onClick={() => setIsFilterDrawerOpen(true)} className="flex flex-col items-center text-slate-400 hover:text-[#377355]">
+         <button onClick={() => setIsFilterDrawerOpen(true)} className="flex flex-col items-center text-slate-400 hover:text-[#2D5A3F]">
            <Filter className="w-5 h-5 mb-1" />
            <span className="text-[9px] font-bold uppercase tracking-wider">Categories</span>
          </button>
@@ -1614,18 +1910,19 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                setIsCartDrawerOpen(true);
              }
            }}
-           className="flex flex-col items-center text-slate-400 hover:text-[#377355] relative"
+           className="flex flex-col items-center text-slate-400 hover:text-[#2D5A3F] relative"
          >
            <ShoppingCart className="w-5 h-5 mb-1" />
            {getCartCount() > 0 && <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center">{getCartCount()}</span>}
            <span className="text-[9px] font-bold uppercase tracking-wider">Cart</span>
          </a>
-         <a href="#profile" className="flex flex-col items-center text-slate-400 hover:text-[#377355]">
+         <a href="#profile" className="flex flex-col items-center text-slate-400 hover:text-[#2D5A3F]">
            <User className="w-5 h-5 mb-1" />
            <span className="text-[9px] font-bold uppercase tracking-wider">Account</span>
          </a>
       </div>
 
     </div>
+    </>
   );
 };

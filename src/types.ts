@@ -60,7 +60,7 @@ export interface NutritionPlan {
 export interface Product {
   id: string;
   name: string;
-  category: 'nutrition' | 'soil-health' | 'pest-control' | 'tools' | 'seeds';
+  category: string;
   price: number;
   stock: number;
   lowStockLimit: number;
