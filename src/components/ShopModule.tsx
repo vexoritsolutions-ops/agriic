@@ -78,6 +78,7 @@ interface ShopModuleProps {
   handleLogout: () => void;
   isCartDrawerOpen?: boolean;
   setIsCartDrawerOpen?: (open: boolean) => void;
+  setIsMobileMenuOpen?: (open: boolean) => void;
 }
 
 export const ShopModule: React.FC<ShopModuleProps> = ({
@@ -92,7 +93,8 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
   currentUser,
   handleLogout,
   isCartDrawerOpen,
-  setIsCartDrawerOpen
+  setIsCartDrawerOpen,
+  setIsMobileMenuOpen
 }) => {
   const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({});
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
@@ -328,7 +330,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
       <div className="block md:hidden h-screen overflow-hidden bg-[#F4F7F5] flex flex-col relative font-sans">
         {/* Mobile Header */}
         <header className="sticky top-0 z-40 bg-white border-b border-gray-150 px-4 py-3 flex items-center justify-between">
-          <button className="text-gray-700 hover:text-[#2D5A3F] focus:outline-none">
+          <button onClick={() => setIsMobileMenuOpen && setIsMobileMenuOpen(true)} className="text-gray-700 hover:text-[#2D5A3F] focus:outline-none">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="w-6 h-6"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
           <a href="#home" className="flex items-center">

@@ -1313,7 +1313,12 @@ export default function App() {
                   className="block w-full pl-9 pr-28 py-2 border border-gray-200 rounded-full text-xs bg-slate-50 placeholder-gray-450 font-semibold focus:outline-none focus:bg-white focus:border-[#2D5A3F] focus:ring-2 focus:ring-[#2D5A3F]/20 transition-all"
                   placeholder="Search Spices, Flour, Grains..."
                   value={allProductsSearch}
-                  onChange={(e) => setAllProductsSearch(e.target.value)}
+                  onChange={(e) => {
+                    setAllProductsSearch(e.target.value);
+                    if (e.target.value && window.location.hash !== "#products") {
+                      window.location.hash = "#products";
+                    }
+                  }}
                 />
                 <div className="absolute right-1 top-1 bottom-1 flex items-center">
                   <select
@@ -1424,12 +1429,19 @@ export default function App() {
                 <input
                   type="text"
                   placeholder="Search..."
+                  value={allProductsSearch}
+                  onChange={(e) => {
+                    setAllProductsSearch(e.target.value);
+                    if (e.target.value && window.location.hash !== "#products") {
+                      window.location.hash = "#products";
+                    }
+                  }}
                   className="bg-white/5 border border-white/10 text-white text-xs rounded-full pl-9 pr-4 py-2 focus:outline-none focus:bg-white/10 focus:border-agri-lime/50 transition-all placeholder:text-white/30 w-32 focus:w-56"
                 />
               </div>
 
               {/* Mobile Search Icon */}
-              <button className="md:hidden p-2 text-white/70 hover:text-white transition-colors">
+              <button onClick={() => { window.location.hash = "#products"; (document.querySelector(".shop-module-mobile-search") as HTMLElement)?.focus(); }} className="md:hidden p-2 text-white/70 hover:text-white transition-colors">
                 <Search className="w-5 h-5" />
               </button>
 
@@ -2709,6 +2721,7 @@ export default function App() {
             handleLogout={handleLogout}
             isCartDrawerOpen={isCartDrawerOpen}
             setIsCartDrawerOpen={setIsCartDrawerOpen}
+            setIsMobileMenuOpen={setIsMobileMenuOpen}
           />
         )}
 
