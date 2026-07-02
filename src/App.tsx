@@ -2135,7 +2135,7 @@ export default function App() {
                     <p className="text-gray-700 text-sm md:text-lg leading-relaxed mb-10 max-w-lg font-medium">
                       We move farmers to organic the right way — with complete support, end-to-end care, and a promise to buy, process, and sell their harvest.
                     </p>
-                    <button className="bg-[#2D5A3F] hover:bg-[#2D5A3F] text-white font-extrabold px-8 py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1">
+                    <button onClick={() => window.location.hash = '#about'} className="bg-[#2D5A3F] hover:bg-[#2D5A3F] text-white font-extrabold px-8 py-4 rounded-xl shadow-lg transition-all hover:-translate-y-1">
                       Our Journey Together
                     </button>
                   </div>
