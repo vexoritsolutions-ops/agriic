@@ -13,7 +13,7 @@ export const TrustSections: React.FC = () => {
   return (
     <>
         {/* 1. WHY CHOOSE AGRIIC — premium dark feature strip */}
-        <div className="px-3 sm:px-4 md:px-8 lg:px-12 py-6">
+        <div className="px-3 sm:px-4 md:px-8 lg:px-12 py-4">
           <div
             className="relative overflow-hidden rounded-3xl"
             style={{
@@ -50,7 +50,7 @@ export const TrustSections: React.FC = () => {
                   <div className="w-10 h-[3px] rounded-full bg-[#D4A373]"/>
                   <div className="w-4 h-[3px] rounded-full bg-[#D4A373]/40"/>
                 </div>
-                <p className="text-white/60 text-xs sm:text-sm font-semibold leading-relaxed mb-5 md:mb-8">
+                <p className="text-white/60 text-xs sm:text-sm font-semibold leading-relaxed mb-5 md:mb-4">
                   We believe in honest nutrition. Every product is crafted from nature, tested in labs, and delivered with care — so you never have to guess what goes into your food.
                 </p>
                 {/* Key stats */}
@@ -137,30 +137,30 @@ export const TrustSections: React.FC = () => {
         </div>
 
         {/* 2. AGRIIC VS THE REST */}
-        <div className="bg-[#F4F7F5] px-4 md:px-8 lg:px-12 py-10 md:py-12 overflow-hidden">
+        <div className="bg-[#F4F7F5] px-4 md:px-8 lg:px-12 py-4 md:py-10 overflow-hidden">
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10">
+            <div className="text-center mb-6">
               <span className="text-xs font-black text-[#D4A373] uppercase tracking-[0.3em] block mb-2">Why Choose Us</span>
               <h2 className="text-3xl font-black text-[#1a2a1e] mb-2">Agriic <span className="text-[#2D5A3F]">vs</span> the Rest</h2>
               <p className="text-sm text-slate-500 font-semibold">See how we compare against local nurseries and other online sellers.</p>
             </div>
             <div className="rounded-3xl overflow-x-auto border border-gray-100 shadow-lg bg-white">
-              <table className="w-full text-sm border-collapse min-w-[600px]">
+              <table className="w-full text-sm border-collapse w-full">
                 <thead>
                   <tr>
-                    <th className="text-left px-4 md:px-6 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs w-32 md:w-48 border-b border-gray-100">Feature</th>
-                    <th className="px-3 md:px-4 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs border-b border-gray-100 text-center">
+                    <th className="text-left px-2 md:px-6 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs w-32 md:w-48 border-b border-gray-100">Feature</th>
+                    <th className="px-1 md:px-4 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs border-b border-gray-100 text-center">
                       <div className="text-slate-400">Local Nurseries</div>
                       <div className="text-[9px] text-slate-300 font-semibold mt-0.5">No quality checks</div>
                     </th>
-                    <th className="px-3 md:px-4 py-4 bg-[#0f2d1e] text-center border-b border-[#1a4a2e]">
+                    <th className="px-1 md:px-4 py-4 bg-[#0f2d1e] text-center border-b border-[#1a4a2e]">
                       <div className="flex items-center justify-center gap-2">
                         <img src="/logo2.jpeg" alt="Agriic" className="h-5 w-5 md:h-6 md:w-6 rounded-md object-cover" />
                         <span className="font-black text-white text-xs md:text-sm">Agriic</span>
                       </div>
                       <div className="text-[9px] text-[#5ecb8e] font-bold mt-1 uppercase tracking-wider">Our Standard</div>
                     </th>
-                    <th className="px-3 md:px-4 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs border-b border-gray-100 text-center">
+                    <th className="px-1 md:px-4 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs border-b border-gray-100 text-center">
                       <div className="text-slate-400">Others</div>
                       <div className="text-[9px] text-slate-300 font-semibold mt-0.5">Online sellers</div>
                     </th>
@@ -177,21 +177,21 @@ export const TrustSections: React.FC = () => {
                     { feature: 'Satisfaction Guarantee', sub: 'Buyer protection', local: { val: '✕', note: 'No guarantee' }, agriic: { note: 'Assured quality, 14-day return' }, others: { val: '~', note: 'Conditional' } },
                   ].map((row, i) => (
                     <tr key={i} className={`border-b border-gray-50 transition-colors hover:bg-gray-50/60 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
-                      <td className="px-4 md:px-6 py-4">
+                      <td className="px-2 md:px-6 py-4">
                         <div className="font-extrabold text-[#1a2a1e] text-[11px] md:text-xs">{row.feature}</div>
                         <div className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-0.5">{row.sub}</div>
                       </td>
-                      <td className="px-3 md:px-4 py-4 text-center">
+                      <td className="px-1 md:px-4 py-4 text-center">
                         <div className="text-base md:text-lg font-black text-red-400">{row.local.val}</div>
                         <div className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-0.5">{row.local.note}</div>
                       </td>
-                      <td className="px-3 md:px-4 py-4 text-center bg-[#f0faf4] border-x border-emerald-100">
+                      <td className="px-1 md:px-4 py-4 text-center bg-[#f0faf4] border-x border-emerald-100">
                         <div className="w-5 h-5 md:w-6 md:h-6 bg-[#2D5A3F] rounded-full flex items-center justify-center mx-auto mb-1">
                           <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
                         </div>
                         <div className="text-[9px] md:text-[10px] font-black text-[#2D5A3F]">{row.agriic.note}</div>
                       </td>
-                      <td className="px-3 md:px-4 py-4 text-center">
+                      <td className="px-1 md:px-4 py-4 text-center">
                         <div className="text-base md:text-lg font-black text-slate-400">{row.others.val}</div>
                         <div className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-0.5">{row.others.note}</div>
                       </td>
@@ -235,8 +235,8 @@ export const TrustSections: React.FC = () => {
         </div>
 
         {/* 4. CONSCIOUS GARDENING FAQs */}
-        <div className="max-w-4xl mx-auto px-4 md:px-8 py-10 md:py-16 bg-[#F4F7F5]">
-          <div className="text-center mb-8 md:mb-10">
+        <div className="max-w-4xl mx-auto px-4 md:px-8 py-4 md:py-10 bg-[#F4F7F5]">
+          <div className="text-center mb-4 md:mb-6">
             <p className="text-[10px] font-black text-[#D4A373] uppercase tracking-[0.25em] mb-1">💬 Common Queries</p>
             <h3 className="text-lg md:text-2xl font-black text-slate-800">Conscious Gardening FAQs</h3>
             <p className="text-xs text-slate-500 font-semibold mt-1">Key answers to safety, dilution, and packing standards.</p>

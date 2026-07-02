@@ -1670,7 +1670,10 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
         </div>
       </div>
 
-
+      {/* Added Trust Sections at bottom of desktop product page */}
+      <div className="mt-8">
+        <TrustSections />
+      </div>
     </div>
 
       {/* QUICK VIEW MODAL */}

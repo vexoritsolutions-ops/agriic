@@ -135,6 +135,7 @@ export default function App() {
   const [allProductsPage, setAllProductsPage] = useState(1);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [activePlanIndex, setActivePlanIndex] = useState(1);
+  const [farmingTab, setFarmingTab] = useState<'organic' | 'chemical'>('organic');
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -1830,24 +1831,27 @@ export default function App() {
             <section className="py-12 md:py-20 px-4 md:px-12 bg-white border-b border-gray-100">
               <div className="max-w-7xl mx-auto">
                 <div className="flex justify-center md:justify-start gap-3 md:gap-4 mb-8 md:mb-10">
-                  <button className="flex items-center gap-1.5 md:gap-2 bg-[#2D5A3F] text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-extrabold shadow-md">
+                  <button onClick={() => setFarmingTab('organic')} className={`flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-extrabold transition-colors ${farmingTab === 'organic' ? 'bg-[#2D5A3F] text-white shadow-md' : 'bg-[#f7f6ee] border border-gray-200 text-gray-600 hover:bg-gray-100'}`}>
                     <Leaf className="w-3.5 h-3.5 md:w-4 md:h-4" /> Organic Benefits
                   </button>
-                  <button className="flex items-center gap-1.5 md:gap-2 bg-[#f7f6ee] border border-gray-200 text-gray-600 px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-extrabold hover:bg-gray-100 transition-colors">
+                  <button onClick={() => setFarmingTab('chemical')} className={`flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-extrabold transition-colors ${farmingTab === 'chemical' ? 'bg-red-700 text-white shadow-md' : 'bg-[#f7f6ee] border border-gray-200 text-gray-600 hover:bg-gray-100'}`}>
                     <FlaskConical className="w-3.5 h-3.5 md:w-4 md:h-4" /> Chemical Farming
                   </button>
                 </div>
 
                 <div className="max-w-3xl mb-8 md:mb-12">
-                  <h2 className="text-3xl md:text-5xl font-extrabold text-[#2D5A3F] tracking-tight mb-3 md:mb-4">Why Choose Organic Farming?</h2>
+                  <h2 className={`text-3xl md:text-5xl font-extrabold tracking-tight mb-3 md:mb-4 ${farmingTab === 'organic' ? 'text-[#2D5A3F]' : 'text-red-800'}`}>
+                    {farmingTab === 'organic' ? 'Why Choose Organic Farming?' : 'The Hidden Costs of Chemicals'}
+                  </h2>
                   <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                    See how organic farming nourishes your soil, strengthens your crops, and builds a sustainable future.
+                    {farmingTab === 'organic' 
+                      ? 'See how organic farming nourishes your soil, strengthens your crops, and builds a sustainable future.' 
+                      : 'Chemical farming degrades soil health, requires constant inputs, and harms the local ecosystem.'}
                   </p>
                 </div>
-
                 {/* 4 icons row */}
                 <div className="flex flex-row overflow-x-auto md:grid md:grid-cols-4 gap-4 md:gap-6 mb-10 md:mb-14 pb-3 no-scrollbar snap-x">
-                  {[
+                  {farmingTab === 'organic' ? [
                     { icon: <Leaf className="w-5 h-5 md:w-6 md:h-6 text-[#2D5A3F]" />, title: 'Chemical-Free', desc: 'Safe for soil, crops and your family' },
                     { icon: <Sprout className="w-5 h-5 md:w-6 md:h-6 text-[#2D5A3F]" />, title: 'Better Soil Health', desc: 'Improves fertility and soil structure' },
                     { icon: <Recycle className="w-5 h-5 md:w-6 md:h-6 text-[#2D5A3F]" />, title: 'Sustainable Farming', desc: 'Protects environment for future generations' },
@@ -1858,8 +1862,23 @@ export default function App() {
                         {feature.icon}
                       </div>
                       <div>
-                        <h4 className="text-[11px] md:text-sm font-extrabold text-[#2D5A3F] mb-0.5 md:mb-1">{feature.title}</h4>
-                        <p className="text-[9px] md:text-xs text-gray-500 leading-snug pr-2">{feature.desc}</p>
+                        <h4 className="font-extrabold text-gray-900 text-sm md:text-base mb-1">{feature.title}</h4>
+                        <p className="text-gray-500 text-[10px] md:text-xs font-medium leading-relaxed">{feature.desc}</p>
+                      </div>
+                    </div>
+                  )) : [
+                    { icon: <FlaskConical className="w-5 h-5 md:w-6 md:h-6 text-red-700" />, title: 'Soil Degradation', desc: 'Destroys natural microbes and depletes nutrients' },
+                    { icon: <Droplet className="w-5 h-5 md:w-6 md:h-6 text-red-700" />, title: 'Water Pollution', desc: 'Chemical runoff contaminates local water sources' },
+                    { icon: <Recycle className="w-5 h-5 md:w-6 md:h-6 text-red-700" />, title: 'Input Dependency', desc: 'Requires increasing amounts of synthetic fertilizers' },
+                    { icon: <Leaf className="w-5 h-5 md:w-6 md:h-6 text-red-700" />, title: 'Harmful Residues', desc: 'Leaves toxic traces on your crops and food' }
+                  ].map((feature, i) => (
+                    <div key={i} className="flex items-start gap-3 md:gap-4 min-w-[190px] md:min-w-0 snap-start">
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#fce8e8] border border-red-100 flex items-center justify-center shrink-0">
+                        {feature.icon}
+                      </div>
+                      <div>
+                        <h4 className="font-extrabold text-gray-900 text-sm md:text-base mb-1">{feature.title}</h4>
+                        <p className="text-gray-500 text-[10px] md:text-xs font-medium leading-relaxed">{feature.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -4682,12 +4701,7 @@ export default function App() {
 
       </main>
 
-      {/* -------------------------------------------------------
-          WHY CHOOSE US & TRUST SECTION (GLOBAL)
-      ------------------------------------------------------- */}
-      <div className={`bg-white ${routePath === "#products" ? "hidden md:block" : ""}`}>
-        <TrustSections />
-      </div>
+
 
       {/* Persistent Footer */}
       <footer className={`bg-agri-dark text-white pt-10 pb-6 px-6 md:px-12 border-t border-[#bad15a]/10 relative z-30 ${routePath === '#products' ? 'hidden md:block' : ''}`}>
