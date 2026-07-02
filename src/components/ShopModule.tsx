@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TrustSections } from './TrustSections';
 import { Product } from '../types';
 import { 
   Search, 
@@ -517,6 +518,11 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
                 })}
               </div>
             )}
+            
+            {/* Added Trust Sections at bottom of mobile product grid */}
+            <div className="mt-8">
+              <TrustSections />
+            </div>
           </main>
         </div>
 
@@ -1721,7 +1727,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
       </a>
 
       {/* MOBILE BOTTOM NAV */}
-      <div className="md:hidden fixed bottom-6 left-4 right-4 bg-white/90 backdrop-blur-xl border border-gray-100 rounded-[28px] flex justify-around items-center py-3 px-2 z-40 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.15)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center p-3 z-[9999] pb-5 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
          <a href="#home" className="flex flex-col items-center text-slate-400 hover:text-[#2D5A3F]">
            <Leaf className="w-5 h-5 mb-1" />
            <span className="text-[9px] font-bold uppercase tracking-wider">Home</span>

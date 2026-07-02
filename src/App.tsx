@@ -98,6 +98,7 @@ import { ContentModule } from "./components/ContentModule";
 import { SupportModule } from "./components/SupportModule";
 import { SettingsModule } from "./components/SettingsModule";
 import { ShopModule } from "./components/ShopModule";
+import { TrustSections } from "./components/TrustSections";
 import {
   Farmer,
   SoilReport,
@@ -1431,7 +1432,7 @@ export default function App() {
                 <Search className="w-5 h-5" />
               </button>
 
-               <a
+              <a
                 href="#cart"
                 onClick={(e) => { e.preventDefault(); setIsCartDrawerOpen(true); }}
                 className="relative p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-all flex items-center justify-center"
@@ -1547,7 +1548,7 @@ export default function App() {
                     <div className="absolute inset-0 bg-gradient-to-r from-[#2b3a30]/90 via-[#2b3a30]/55 to-transparent z-10" />
                     <div className="relative z-20 w-full px-6 md:px-12 flex items-center min-h-[420px] md:min-h-[600px] h-full">
                       <div className="max-w-xl text-left py-12">
-                        <span 
+                        <span
                           className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-white mb-4 rounded-full"
                           style={{ backgroundColor: '#6DBE8C' }}
                         >
@@ -1563,7 +1564,7 @@ export default function App() {
                           <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Free Expedited Shipping</li>
                           <li className="flex items-center"><CheckCircle className="w-4 h-4 mr-2 text-agri-lime" /> Dedicated 24/7 Crop Coach</li>
                         </ul>
-                        <a 
+                        <a
                           href="#profile"
                           className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-transform hover:scale-105 rounded-full"
                           style={{ backgroundColor: '#6DBE8C' }}
@@ -1584,7 +1585,7 @@ export default function App() {
                     <div className="absolute inset-0 bg-gradient-to-r from-[#1c3a2a]/90 via-[#1c3a2a]/55 to-transparent z-10" />
                     <div className="relative z-20 w-full px-6 md:px-12 flex items-center min-h-[420px] md:min-h-[600px] h-full">
                       <div className="max-w-xl text-left py-12">
-                        <span 
+                        <span
                           className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-white mb-4 rounded-full"
                           style={{ backgroundColor: '#D4A373' }}
                         >
@@ -1596,7 +1597,7 @@ export default function App() {
                         <p className="text-lg md:text-xl text-white/90 mb-8 max-w-lg">
                           Browse our premium range of highly concentrated organic formulas designed to unlock your farm's maximum genetic yield: Bloom Boosters, Root Expanders, and Defense Enhancers.
                         </p>
-                        <a 
+                        <a
                           href="#products"
                           className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-transform hover:scale-105 rounded-full"
                           style={{ backgroundColor: '#D4A373' }}
@@ -1617,7 +1618,7 @@ export default function App() {
                     <div className="absolute inset-0 bg-gradient-to-r from-[#314227]/90 via-[#314227]/55 to-transparent z-10" />
                     <div className="relative z-20 w-full px-6 md:px-12 flex items-center min-h-[420px] md:min-h-[600px] h-full">
                       <div className="max-w-xl text-left py-12">
-                        <span 
+                        <span
                           className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-white mb-4 rounded-full"
                           style={{ backgroundColor: '#6DBE8C' }}
                         >
@@ -1629,7 +1630,7 @@ export default function App() {
                         <p className="text-lg md:text-xl text-white/90 mb-8 max-w-lg">
                           Witness the dramatic transformation. We focus on the root ecosystem, not just the foliage, creating lasting health, defense mechanisms, and incredible vigor.
                         </p>
-                        <a 
+                        <a
                           href="#science"
                           className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-transform hover:scale-105 rounded-full"
                           style={{ backgroundColor: '#6DBE8C' }}
@@ -1814,8 +1815,8 @@ export default function App() {
 
             {/* Partition Button: View Our Shop */}
             <div className="relative w-full flex justify-center z-30" style={{ marginTop: '-28px', marginBottom: '-28px' }}>
-              <a 
-                href="#products" 
+              <a
+                href="#products"
                 className="group flex items-center gap-3 bg-white border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] px-8 py-3.5 md:px-10 md:py-4 rounded-full text-[#2D5A3F] font-extrabold uppercase tracking-[0.15em] text-xs md:text-sm transition-all duration-300 hover:scale-105 hover:bg-[#2D5A3F] hover:text-white"
               >
                 <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-[#f4f7f5] flex items-center justify-center group-hover:bg-white/20 transition-colors">
@@ -2739,7 +2740,7 @@ export default function App() {
                       <div className="relative bg-gradient-to-br from-[#fbfbf9] to-[#e8f5ee]/40 rounded-[28px] p-8 flex items-center justify-center min-h-[300px] md:min-h-[380px] border border-emerald-100/50 shadow-inner group overflow-hidden">
                         {/* Radial light behind image */}
                         <div className="absolute w-48 h-48 rounded-full bg-[#2D5A3F]/8 blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
-                        
+
                         <img
                           src={product.img}
                           className="max-h-72 object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.08)] group-hover:scale-105 transition-transform duration-500 z-10"
@@ -2780,7 +2781,7 @@ export default function App() {
                         <span className="bg-[#e8f5ee] text-[#2D5A3F] text-[10px] font-black px-3 py-1 rounded-full w-max block uppercase mb-4 tracking-wider">
                           🌿 {product.category.replace('-', ' & ')}
                         </span>
-                        
+
                         <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-800 leading-tight mb-3 tracking-tight">
                           {product.name}
                         </h1>
@@ -2828,11 +2829,10 @@ export default function App() {
                                   <button
                                     key={size}
                                     onClick={() => setSelectedSizes({ ...selectedSizes, [product.id]: size })}
-                                    className={`px-5 py-2.5 text-xs font-extrabold rounded-xl border transition-all ${
-                                      isSelected
+                                    className={`px-5 py-2.5 text-xs font-extrabold rounded-xl border transition-all ${isSelected
                                         ? 'bg-[#2D5A3F] text-white border-[#2D5A3F] shadow-md shadow-[#2D5A3F]/15'
                                         : 'bg-white text-slate-700 border-slate-200 hover:border-[#2D5A3F] hover:text-[#2D5A3F]'
-                                    }`}
+                                      }`}
                                   >
                                     {size}
                                   </button>
@@ -2913,7 +2913,7 @@ export default function App() {
                   {/* ── LUXURY ADDITION 1: ACTIVE BOTANICAL INGREDIENTS SHOWCASE ── */}
                   <div className="bg-white border border-gray-100 rounded-[32px] p-6 md:p-10 mb-16 shadow-[0px_8px_30px_0px_rgba(55,115,85,0.04)] relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-64 h-64 rounded-full bg-[#D4A373]/5 blur-3xl pointer-events-none" />
-                    
+
                     <div className="mb-8">
                       <p className="text-[10px] font-black text-[#D4A373] uppercase tracking-[0.25em] mb-1">🔬 Science-Led Nutrition</p>
                       <h3 className="text-xl md:text-2xl font-black text-slate-800">Active Bio-Ingredients</h3>
@@ -4682,259 +4682,15 @@ export default function App() {
 
       </main>
 
-      {/* ═══════════════════════════════════════════════════════
+      {/* -------------------------------------------------------
           WHY CHOOSE US & TRUST SECTION (GLOBAL)
-      ═══════════════════════════════════════════════════════ */}
-      <div className="bg-white">
-        {/* 1. WHY CHOOSE AGRIIC — premium dark feature strip */}
-        <div className="px-3 sm:px-4 md:px-8 lg:px-12 py-6">
-          <div
-            className="relative overflow-hidden rounded-3xl"
-            style={{
-              background: 'linear-gradient(135deg, #0f2d1e 0%, #1a4a2e 40%, #0d2818 100%)',
-              boxShadow: '0 12px 50px rgba(15,45,30,0.35), 0 4px 16px rgba(0,0,0,0.15)',
-            }}
-          >
-            {/* Decorative dot pattern */}
-            <div className="absolute inset-0 pointer-events-none" style={{
-              backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)`,
-              backgroundSize: '24px 24px',
-            }}/>
-            {/* Gold shimmer top-right */}
-            <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full pointer-events-none"
-              style={{ background: 'radial-gradient(circle, rgba(210,175,110,0.12) 0%, transparent 65%)' }}/>
-            {/* Green glow bottom-left */}
-            <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full pointer-events-none"
-              style={{ background: 'radial-gradient(circle, rgba(55,115,85,0.25) 0%, transparent 65%)' }}/>
-            {/* Leaf SVG accent */}
-            <svg className="absolute right-8 bottom-0 opacity-[0.06] pointer-events-none" width="300" height="300" viewBox="0 0 200 200" fill="none">
-              <path d="M190 10 C160 120, 40 180, 10 190 C40 80, 160 20, 190 10Z" fill="white"/>
-              <path d="M160 10 Q120 90 20 160" stroke="white" strokeWidth="2" strokeDasharray="5 5" fill="none"/>
-            </svg>
-
-            <div className="relative z-10 flex flex-col lg:grid lg:grid-cols-5 gap-0">
-              {/* Left branding panel */}
-              <div className="lg:col-span-2 p-5 sm:p-8 md:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-white/10">
-                <span className="text-[10px] font-black text-[#D4A373] uppercase tracking-[0.3em] mb-3">Our Promise</span>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight mb-3 md:mb-4">
-                  Why Choose<br/>
-                  <span className="text-[#5ecb8e]">Agriic?</span>
-                </h2>
-                <div className="flex gap-2 mb-6">
-                  <div className="w-10 h-[3px] rounded-full bg-[#D4A373]"/>
-                  <div className="w-4 h-[3px] rounded-full bg-[#D4A373]/40"/>
-                </div>
-                <p className="text-white/60 text-xs sm:text-sm font-semibold leading-relaxed mb-5 md:mb-8">
-                  We believe in honest nutrition. Every product is crafted from nature, tested in labs, and delivered with care — so you never have to guess what goes into your food.
-                </p>
-                {/* Key stats */}
-                <div className="grid grid-cols-3 gap-4">
-                  {[
-                    { num: '5K+', label: 'Customers' },
-                    { num: '200+', label: 'Products' },
-                    { num: '4.8★', label: 'Rating' },
-                  ].map(s => (
-                    <div key={s.label} className="text-center">
-                      <div className="text-2xl font-black text-[#5ecb8e]">{s.num}</div>
-                      <div className="text-[10px] font-bold text-white/50 uppercase tracking-wider mt-0.5">{s.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right feature cards grid */}
-              <div className="lg:col-span-3 p-4 sm:p-6 md:p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
-                {[
-                  {
-                    icon: <Leaf className="w-6 h-6"/>,
-                    color: '#5ecb8e',
-                    bg: 'rgba(94,203,142,0.12)',
-                    title: '100% Organic',
-                    desc: 'Certified ingredients from verified farms with no hidden additives.',
-                  },
-                  {
-                    icon: <ShieldCheck className="w-6 h-6"/>,
-                    color: '#60a5fa',
-                    bg: 'rgba(96,165,250,0.12)',
-                    title: 'Lab Tested',
-                    desc: 'Every batch tested for purity, potency and safety before dispatch.',
-                  },
-                  {
-                    icon: <Truck className="w-6 h-6"/>,
-                    color: '#f59e0b',
-                    bg: 'rgba(245,158,11,0.12)',
-                    title: 'Fast Delivery',
-                    desc: '2-day pan-India shipping with live tracking on every order.',
-                  },
-                  {
-                    icon: <Package className="w-6 h-6"/>,
-                    color: '#34d399',
-                    bg: 'rgba(52,211,153,0.12)',
-                    title: 'Eco Packaging',
-                    desc: 'Biodegradable, plastic-free packaging that is kind to the planet.',
-                  },
-                  {
-                    icon: <CheckCircle className="w-6 h-6"/>,
-                    color: '#a78bfa',
-                    bg: 'rgba(167,139,250,0.12)',
-                    title: 'Quality Assured',
-                    desc: 'FSSAI certified with global organic standards compliance.',
-                  },
-                  {
-                    icon: <MessageCircle className="w-6 h-6"/>,
-                    color: '#fb923c',
-                    bg: 'rgba(251,146,60,0.12)',
-                    title: '24/7 Support',
-                    desc: 'Expert agri-nutritionists available to guide your every purchase.',
-                  },
-                ].map((feat, i) => (
-                  <div
-                    key={i}
-                    className="group rounded-2xl p-3 sm:p-4 cursor-default transition-all duration-300 hover:-translate-y-1 flex sm:block items-center sm:items-start gap-3 sm:gap-0"
-                    style={{ background: feat.bg, border: `1px solid ${feat.color}22` }}
-                    onMouseEnter={e => (e.currentTarget.style.background = feat.bg.replace('0.12', '0.20'))}
-                    onMouseLeave={e => (e.currentTarget.style.background = feat.bg)}
-                  >
-                    <div
-                      className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center mb-0 sm:mb-3 shrink-0 transition-transform duration-300 group-hover:scale-110"
-                      style={{ background: feat.bg, color: feat.color, border: `1.5px solid ${feat.color}40` }}
-                    >
-                      {feat.icon}
-                    </div>
-                    <h4 className="font-extrabold text-white text-[13px] mb-1">{feat.title}</h4>
-                    <p className="text-white/50 text-[10px] font-semibold leading-relaxed">{feat.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 2. AGRIIC VS THE REST */}
-        <div className="bg-[#F4F7F5] px-4 md:px-8 lg:px-12 py-10 md:py-12 overflow-hidden">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10">
-              <span className="text-xs font-black text-[#D4A373] uppercase tracking-[0.3em] block mb-2">Why Choose Us</span>
-              <h2 className="text-3xl font-black text-[#1a2a1e] mb-2">Agriic <span className="text-[#2D5A3F]">vs</span> the Rest</h2>
-              <p className="text-sm text-slate-500 font-semibold">See how we compare against local nurseries and other online sellers.</p>
-            </div>
-            <div className="rounded-3xl overflow-x-auto border border-gray-100 shadow-lg bg-white">
-              <table className="w-full text-sm border-collapse min-w-[600px]">
-                <thead>
-                  <tr>
-                    <th className="text-left px-4 md:px-6 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs w-32 md:w-48 border-b border-gray-100">Feature</th>
-                    <th className="px-3 md:px-4 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs border-b border-gray-100 text-center">
-                      <div className="text-slate-400">Local Nurseries</div>
-                      <div className="text-[9px] text-slate-300 font-semibold mt-0.5">No quality checks</div>
-                    </th>
-                    <th className="px-3 md:px-4 py-4 bg-[#0f2d1e] text-center border-b border-[#1a4a2e]">
-                      <div className="flex items-center justify-center gap-2">
-                        <img src="/logo2.jpeg" alt="Agriic" className="h-5 w-5 md:h-6 md:w-6 rounded-md object-cover" />
-                        <span className="font-black text-white text-xs md:text-sm">Agriic</span>
-                      </div>
-                      <div className="text-[9px] text-[#5ecb8e] font-bold mt-1 uppercase tracking-wider">Our Standard</div>
-                    </th>
-                    <th className="px-3 md:px-4 py-4 bg-[#f8f8f6] font-black text-slate-500 uppercase tracking-wider text-[10px] md:text-xs border-b border-gray-100 text-center">
-                      <div className="text-slate-400">Others</div>
-                      <div className="text-[9px] text-slate-300 font-semibold mt-0.5">Online sellers</div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white">
-                  {[
-                    { feature: 'Plant / Product Quality', sub: 'What you receive', local: { val: '✕', note: 'Poor health' }, agriic: { note: 'Green, healthy & lab-tested' }, others: { val: '~', note: 'Inconsistent' } },
-                    { feature: 'Pest / Contaminant Control', sub: 'Before dispatch', local: { val: '✕', note: 'Common issue' }, agriic: { note: 'Fully pest-controlled' }, others: { val: '✕', note: 'Possible risk' } },
-                    { feature: 'Organic Certified', sub: 'Global standards', local: { val: '✕', note: 'Not certified' }, agriic: { note: 'Certified organic' }, others: { val: '✕', note: 'Usually not' } },
-                    { feature: 'Soil Quality', sub: 'Potting & substrate', local: { val: '~', note: 'Standard soil' }, agriic: { note: 'Pre-mixed, 60-day fertiliser' }, others: { val: '~', note: 'Standard soil' } },
-                    { feature: 'Growing Conditions', sub: 'How it was grown', local: { val: '✕', note: 'Outsourced' }, agriic: { note: 'Grown on expert Agriic farms' }, others: { val: '✕', note: 'Outsourced' } },
-                    { feature: 'After-sale Support', sub: 'Help after purchase', local: { val: '✕', note: 'None' }, agriic: { note: '24/7 expert support' }, others: { val: '✕', note: 'None' } },
-                    { feature: 'Satisfaction Guarantee', sub: 'Buyer protection', local: { val: '✕', note: 'No guarantee' }, agriic: { note: 'Assured quality, 14-day return' }, others: { val: '~', note: 'Conditional' } },
-                  ].map((row, i) => (
-                    <tr key={i} className={`border-b border-gray-50 transition-colors hover:bg-gray-50/60 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}`}>
-                      <td className="px-4 md:px-6 py-4">
-                        <div className="font-extrabold text-[#1a2a1e] text-[11px] md:text-xs">{row.feature}</div>
-                        <div className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-0.5">{row.sub}</div>
-                      </td>
-                      <td className="px-3 md:px-4 py-4 text-center">
-                        <div className="text-base md:text-lg font-black text-red-400">{row.local.val}</div>
-                        <div className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-0.5">{row.local.note}</div>
-                      </td>
-                      <td className="px-3 md:px-4 py-4 text-center bg-[#f0faf4] border-x border-emerald-100">
-                        <div className="w-5 h-5 md:w-6 md:h-6 bg-[#2D5A3F] rounded-full flex items-center justify-center mx-auto mb-1">
-                          <svg className="w-3 h-3 md:w-3.5 md:h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-                        </div>
-                        <div className="text-[9px] md:text-[10px] font-black text-[#2D5A3F]">{row.agriic.note}</div>
-                      </td>
-                      <td className="px-3 md:px-4 py-4 text-center">
-                        <div className="text-base md:text-lg font-black text-slate-400">{row.others.val}</div>
-                        <div className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-0.5">{row.others.note}</div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        {/* 3. STUCK WITH PLANT CARE */}
-        <div className="px-4 md:px-8 lg:px-12 pb-8 bg-[#F4F7F5]">
-          <div
-            className="relative rounded-3xl overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 px-6 md:px-14 py-8 md:py-12"
-            style={{ background: 'linear-gradient(135deg, #1a4a2e 0%, #2D5A3F 55%, #3a7050 100%)' }}
-          >
-            <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
-            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(212,163,115,0.15) 0%, transparent 65%)' }} />
-            <div className="relative z-10 text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-3 mb-3 md:mb-4">
-                <img src="/logo2.jpeg" alt="Agriic" className="h-9 w-9 md:h-10 md:w-10 rounded-xl object-cover shadow-lg" />
-                <span className="text-xl md:text-2xl font-black text-white tracking-tight">Agriic.</span>
-              </div>
-              <h2 className="text-xl md:text-3xl font-black text-white leading-snug mb-2">Stuck with plant care?</h2>
-              <p className="text-white/70 text-xs md:text-sm font-semibold">We're here to help — reach our expert agri-nutritionists anytime.</p>
-            </div>
-            <div className="relative z-10 flex flex-col items-center gap-2 md:gap-3">
-              <a
-                href="https://wa.me/918047863601"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2.5 bg-[#1a2a1e] hover:bg-black text-white font-black text-xs md:text-sm px-6 md:px-8 py-3 md:py-3.5 rounded-2xl transition-all shadow-xl"
-              >
-                <svg className="w-4 h-4 md:w-5 md:h-5 fill-[#25D366] shrink-0" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Chat With Us
-              </a>
-              <p className="text-white/50 text-[9px] md:text-[10px] font-semibold">Available 9AM – 9PM, 7 days a week</p>
-            </div>
-          </div>
-        </div>
-
-        {/* 4. CONSCIOUS GARDENING FAQs */}
-        <div className="max-w-4xl mx-auto px-4 md:px-8 py-10 md:py-16 bg-[#F4F7F5]">
-          <div className="text-center mb-8 md:mb-10">
-            <p className="text-[10px] font-black text-[#D4A373] uppercase tracking-[0.25em] mb-1">💬 Common Queries</p>
-            <h3 className="text-lg md:text-2xl font-black text-slate-800">Conscious Gardening FAQs</h3>
-            <p className="text-xs text-slate-500 font-semibold mt-1">Key answers to safety, dilution, and packing standards.</p>
-          </div>
-          <div className="bg-white border border-gray-100 rounded-[24px] md:rounded-[28px] p-4 md:p-8 shadow-sm space-y-2">
-            {[
-              { q: "Are these fertilizers safe for pets and children?", a: "Yes! Because all Agriic ingredients are 100% plant-based organic concentrates (seaweed kelp, neem oils, and humic soil nutrients) with zero toxic pesticide or chemical residue, they are completely safe for pets, children, and beneficial garden insects." },
-              { q: "How frequently should I apply these organic solutions?", a: "For general houseplant care, once every 10–14 days is ideal. For active crop cycles or high-yield vegetables, weekly application during vegetative growth periods delivers the best results." },
-              { q: "Is the packaging really biodegradable?", a: "Yes, our zip-lock packages are crafted using certified zero-plastic bio-composites. They degrade naturally inside organic compost piles within 180 days, leaving absolutely zero microplastic or chemical footprint." }
-            ].map((faq, i) => (
-              <details key={i} className="group border-b border-gray-100 last:border-none py-4 cursor-pointer">
-                <summary className="flex items-center justify-between text-[11px] md:text-sm font-extrabold text-slate-800 uppercase tracking-wide list-none focus:outline-none select-none">
-                  <span>{faq.q}</span>
-                  <ChevronDown className="w-4 h-4 text-slate-400 transition-transform group-open:rotate-180 shrink-0 ml-3" />
-                </summary>
-                <p className="text-xs text-slate-500 font-medium leading-relaxed mt-3 pr-4 pl-1">{faq.a}</p>
-              </details>
-            ))}
-          </div>
-        </div>
+      ------------------------------------------------------- */}
+      <div className={`bg-white ${routePath === "#products" ? "hidden md:block" : ""}`}>
+        <TrustSections />
       </div>
 
       {/* Persistent Footer */}
-      <footer className="bg-agri-dark text-white pt-10 pb-6 px-6 md:px-12 border-t border-[#bad15a]/10 relative z-30">
+      <footer className={`bg-agri-dark text-white pt-10 pb-6 px-6 md:px-12 border-t border-[#bad15a]/10 relative z-30 ${routePath === '#products' ? 'hidden md:block' : ''}`}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-8">
 
           {/* Logo column */}
@@ -5223,7 +4979,7 @@ export default function App() {
                           <div className="w-20 h-20 bg-slate-50 border border-gray-100 rounded-xl p-1.5 flex items-center justify-center shrink-0">
                             <img src={item.product.img} className="max-h-full object-contain mix-blend-multiply" alt={item.product.name} />
                           </div>
-                          
+
                           {/* Details */}
                           <div className="flex-1 flex flex-col justify-between">
                             <div>
