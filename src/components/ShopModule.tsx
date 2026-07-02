@@ -520,20 +520,7 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
           </main>
         </div>
 
-        {/* Floating Cart Button */}
-        <button
-          onClick={() => setIsCartDrawerOpen && setIsCartDrawerOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#2D5A3F] text-white rounded-full flex items-center justify-center shadow-xl border-[2px] border-[#D4A373] hover:scale-105 active:scale-95 transition-transform cursor-pointer"
-        >
-          <div className="relative">
-            <ShoppingCart className="w-6 h-6 text-white" />
-            {getCartCount() > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
-                {getCartCount()}
-              </span>
-            )}
-          </div>
-        </button>
+
       </div>
 
       {/* DESKTOP SCREEN LAYOUT */}
@@ -1763,7 +1750,6 @@ export const ShopModule: React.FC<ShopModuleProps> = ({
          </a>
       </div>
 
-    </div>
     </>
   );
 };
