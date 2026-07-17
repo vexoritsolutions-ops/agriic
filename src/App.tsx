@@ -2797,96 +2797,96 @@ export default function App() {
               </section>
 
               {/* 8. Final CTA */}
-              <section className="py-16 px-4 md:px-12 bg-[#f7f6ee]/40 text-center relative z-20">
+              <section className="py-10 px-4 md:px-12 bg-[#f7f6ee]/40 text-center relative z-20">
                 <div className="max-w-[760px] mx-auto">
-                  <div className="bg-[#0f2819] rounded-[32px] p-6 md:p-8 shadow-2xl flex flex-col items-center relative overflow-hidden border border-[#1d422a]">
+                  <div className="bg-[#0f2819] rounded-[32px] p-5 md:p-6 shadow-2xl flex flex-col items-center relative overflow-hidden border border-[#1d422a]">
                     <div className="absolute inset-0 pointer-events-none opacity-5" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
 
                     {/* Logo Header */}
                     <div className="flex items-center justify-center gap-1.5 mb-1.5 z-10">
-                      <Leaf className="w-6 h-6 text-white fill-white" />
-                      <span className="text-white font-extrabold text-2xl tracking-tight">Agriic</span>
+                      <Leaf className="w-5 h-5 text-white fill-white" />
+                      <span className="text-white font-extrabold text-xl tracking-tight">Agriic</span>
                     </div>
 
                     {/* Leaf Divider */}
-                    <div className="flex items-center justify-center gap-2.5 w-full mb-4 opacity-70 z-10">
-                      <div className="h-[1px] bg-white/20 w-12"></div>
-                      <Leaf className="w-3 h-3 text-[#bce895] fill-[#bce895] rotate-[30deg]" />
-                      <div className="h-[1px] bg-white/20 w-12"></div>
+                    <div className="flex items-center justify-center gap-2.5 w-full mb-3 opacity-70 z-10">
+                      <div className="h-[1px] bg-white/20 w-10"></div>
+                      <Leaf className="w-2.5 h-2.5 text-[#bce895] fill-[#bce895] rotate-[30deg]" />
+                      <div className="h-[1px] bg-white/20 w-10"></div>
                     </div>
 
                     {/* Title & Subtitle */}
-                    <h2 className="text-2xl md:text-3.5xl font-black text-white text-center mb-1 tracking-tight z-10">
+                    <h2 className="text-xl md:text-2.5xl font-black text-white text-center mb-0.5 tracking-tight z-10">
                       From Farmer to Family
                     </h2>
-                    <p className="text-[#bce895] font-semibold text-center text-xs md:text-sm mb-3 z-10">
+                    <p className="text-[#bce895] font-semibold text-center text-[10px] md:text-xs mb-2 z-10">
                       Connecting trusted farmers directly to healthy homes.
                     </p>
 
                     {/* Description Paragraph */}
-                    <p className="text-white/70 text-[11px] md:text-xs text-center max-w-xl mx-auto leading-relaxed mb-6 z-10">
+                    <p className="text-white/70 text-[10px] md:text-[11px] text-center max-w-xl mx-auto leading-relaxed mb-4 z-10">
                       At Agriic, every product begins with responsible farming practices and reaches families with complete transparency, purity, and care.
                     </p>
 
                     {/* Four-Column Matrix */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full mb-8 text-center z-10">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full mb-5 text-center z-10">
                       
                       {/* Column 1 */}
                       <div className="flex flex-col items-center px-2 md:border-r border-white/10 last:border-r-0">
-                        <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-2.5 border border-white/5">
-                          <Sprout className="w-5 h-5 text-[#bce895]" />
+                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mb-2 border border-white/5">
+                          <Sprout className="w-4 h-4 text-[#bce895]" />
                         </div>
-                        <h3 className="text-[#bce895] font-extrabold text-xs md:text-[13px] mb-1">
+                        <h3 className="text-[#bce895] font-extrabold text-[11px] md:text-xs mb-0.5">
                           Naturally Grown
                         </h3>
-                        <p className="text-white/60 text-[10px] md:text-[11px] leading-snug max-w-[140px]">
+                        <p className="text-white/50 text-[9px] md:text-[10px] leading-snug max-w-[140px]">
                           Healthy crops nurtured with sustainable farming methods.
                         </p>
                       </div>
 
                       {/* Column 2 */}
                       <div className="flex flex-col items-center px-2 md:border-r border-white/10 last:border-r-0">
-                        <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-2.5 border border-white/5">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-[#bce895] stroke-linecap-round stroke-linejoin-round">
+                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mb-2 border border-white/5">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 text-[#bce895] stroke-linecap-round stroke-linejoin-round">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                             <circle cx="9" cy="7" r="4" />
                             <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                             <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                           </svg>
                         </div>
-                        <h3 className="text-[#bce895] font-extrabold text-xs md:text-[13px] mb-1">
+                        <h3 className="text-[#bce895] font-extrabold text-[11px] md:text-xs mb-0.5">
                           Farmer Empowerment
                         </h3>
-                        <p className="text-white/60 text-[10px] md:text-[11px] leading-snug max-w-[140px]">
+                        <p className="text-white/50 text-[9px] md:text-[10px] leading-snug max-w-[140px]">
                           Supporting farmers with fair opportunities and better returns.
                         </p>
                       </div>
 
                       {/* Column 3 */}
                       <div className="flex flex-col items-center px-2 md:border-r border-white/10 last:border-r-0">
-                        <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-2.5 border border-white/5">
-                          <ShieldCheck className="w-5 h-5 text-[#bce895]" />
+                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mb-2 border border-white/5">
+                          <ShieldCheck className="w-4 h-4 text-[#bce895]" />
                         </div>
-                        <h3 className="text-[#bce895] font-extrabold text-xs md:text-[13px] mb-1">
+                        <h3 className="text-[#bce895] font-extrabold text-[11px] md:text-xs mb-0.5">
                           Trusted Quality
                         </h3>
-                        <p className="text-white/60 text-[10px] md:text-[11px] leading-snug max-w-[140px]">
+                        <p className="text-white/50 text-[9px] md:text-[10px] leading-snug max-w-[140px]">
                           Carefully sourced products with a focus on purity and safety.
                         </p>
                       </div>
 
                       {/* Column 4 */}
                       <div className="flex flex-col items-center px-2">
-                        <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-2.5 border border-white/5">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-[#bce895] stroke-linecap-round stroke-linejoin-round">
+                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mb-2 border border-white/5">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 text-[#bce895] stroke-linecap-round stroke-linejoin-round">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                             <path d="M12 13a2.5 2.5 0 0 0-4.5-1.5c.2.8.8 1.5 1.5 2l3 3.25 3-3.25a2 2 0 0 0-3-3" fill="currentColor" className="text-[#bce895]" />
                           </svg>
                         </div>
-                        <h3 className="text-[#bce895] font-extrabold text-xs md:text-[13px] mb-1">
+                        <h3 className="text-[#bce895] font-extrabold text-[11px] md:text-xs mb-0.5">
                           Healthy Families
                         </h3>
-                        <p className="text-white/60 text-[10px] md:text-[11px] leading-snug max-w-[140px]">
+                        <p className="text-white/50 text-[9px] md:text-[10px] leading-snug max-w-[140px]">
                           Delivering natural goodness from farms to dining tables.
                         </p>
                       </div>
@@ -2896,22 +2896,22 @@ export default function App() {
                     {/* Tan CTA Button */}
                     <button
                       onClick={() => pricingRef.current?.scrollIntoView({ behavior: 'smooth' })}
-                      className="w-full max-w-[280px] py-3 bg-[#D4A373] text-[#0f2819] rounded-2xl font-black text-xs md:text-sm hover:bg-[#cba076] transition-all duration-300 shadow-xl flex items-center justify-center gap-2 group cursor-pointer mb-6 z-10"
+                      className="w-full max-w-[260px] py-2.5 bg-[#D4A373] text-[#0f2819] rounded-xl font-black text-xs hover:bg-[#cba076] transition-all duration-300 shadow-xl flex items-center justify-center gap-1.5 group cursor-pointer mb-4 z-10"
                     >
                       Join Agriic Today
-                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" strokeWidth={3} />
+                      <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" strokeWidth={3} />
                     </button>
 
                     {/* Illustration Overlay */}
-                    <div className="w-full max-w-2xl opacity-50 hover:opacity-75 transition-opacity duration-300 mb-4 z-10 rounded-2xl overflow-hidden">
-                      <img src="/farm_silhouette.png" alt="Farm Landscape" className="w-full h-auto object-contain max-h-[110px] mx-auto" />
+                    <div className="w-full max-w-xl opacity-50 hover:opacity-75 transition-opacity duration-300 mb-3 z-10 rounded-xl overflow-hidden">
+                      <img src="/farm_silhouette.png" alt="Farm Landscape" className="w-full h-auto object-contain max-h-[75px] mx-auto" />
                     </div>
 
                     {/* Footer Row */}
-                    <div className="flex items-center justify-center gap-2 opacity-85 text-[10px] md:text-xs text-white/90 font-medium z-10 border-t border-white/5 pt-3 w-full max-w-xl">
-                      <Leaf className="w-3 h-3 text-[#bce895]" />
+                    <div className="flex items-center justify-center gap-2 opacity-85 text-[9px] md:text-[10px] text-white/90 font-medium z-10 border-t border-white/5 pt-2.5 w-full max-w-xl">
+                      <Leaf className="w-2.5 h-2.5 text-[#bce895]" />
                       <span>Growing trust from <span className="text-[#bce895] font-bold">Farmer to Family</span>.</span>
-                      <Leaf className="w-3 h-3 text-[#bce895]" />
+                      <Leaf className="w-2.5 h-2.5 text-[#bce895]" />
                     </div>
                   </div>
                 </div>
