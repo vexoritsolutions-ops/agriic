@@ -2039,28 +2039,28 @@ export default function App() {
                 </div>
 
                 {/* Redesigned Premium Organic Banner */}
-                <div className="bg-gradient-to-br from-[#fbfcf6] via-[#f7f9f1] to-[#eef4df]/40 border border-[#bad15a]/25 shadow-xl rounded-[32px] md:rounded-[48px] p-6 md:p-10 transition-all duration-500 hover:shadow-2xl relative overflow-hidden">
+                <div className="bg-gradient-to-br from-[#fbfcf6] via-[#f7f9f1] to-[#eef4df]/40 border border-[#bad15a]/25 shadow-xl rounded-[24px] md:rounded-[48px] p-4 md:p-10 transition-all duration-500 hover:shadow-2xl relative overflow-hidden">
                   {/* Subtle leaf watermark top right */}
                   <div className="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none transform translate-x-8 -translate-y-8 rotate-45">
                     <Leaf className="w-full h-full text-[#2D5A3F]" />
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                  <div className="grid grid-cols-12 gap-4 lg:gap-12 items-center">
                     
                     {/* Left Column: Landscape Graphic & Logo Badge */}
-                    <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
+                    <div className="col-span-4 lg:col-span-5 flex flex-col items-center justify-center relative">
                       {/* Sunburst Farm Circle Graphic */}
-                      <div className="relative w-64 h-64 md:w-80 md:h-80 shrink-0">
+                      <div className="relative w-20 h-20 sm:w-36 sm:h-36 md:w-80 md:h-80 shrink-0">
                         {/* Outer orbit circle */}
-                        <div className="absolute -inset-4 border-2 border-dashed border-[#6c8c3e]/30 rounded-full animate-[spin_60s_linear_infinite]" />
+                        <div className="hidden sm:block absolute -inset-4 border-2 border-dashed border-[#6c8c3e]/30 rounded-full animate-[spin_60s_linear_infinite]" />
                         
                         {/* Green dots on orbit */}
-                        <div className="absolute top-1/2 left-0 w-3.5 h-3.5 bg-[#6c8c3e] rounded-full border-2 border-white -translate-x-2 -translate-y-2" />
-                        <div className="absolute top-0 left-1/2 w-3.5 h-3.5 bg-[#6c8c3e] rounded-full border-2 border-white -translate-x-2 -translate-y-2" />
-                        <div className="absolute bottom-12 right-6 w-3.5 h-3.5 bg-[#6c8c3e] rounded-full border-2 border-white" />
+                        <div className="hidden sm:block absolute top-1/2 left-0 w-3.5 h-3.5 bg-[#6c8c3e] rounded-full border-2 border-white -translate-x-2 -translate-y-2" />
+                        <div className="hidden sm:block absolute top-0 left-1/2 w-3.5 h-3.5 bg-[#6c8c3e] rounded-full border-2 border-white -translate-x-2 -translate-y-2" />
+                        <div className="hidden sm:block absolute bottom-12 right-6 w-3.5 h-3.5 bg-[#6c8c3e] rounded-full border-2 border-white" />
 
                         {/* Sunset image circle */}
-                        <div className="w-full h-full rounded-full overflow-hidden border-[12px] border-white shadow-xl relative z-10">
+                        <div className="w-full h-full rounded-full overflow-hidden border-4 md:border-[12px] border-white shadow-md md:shadow-xl relative z-10">
                           <img
                             src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80"
                             alt="Farm Sunset"
@@ -2069,15 +2069,15 @@ export default function App() {
                         </div>
 
                         {/* Overlapping circular logo badge */}
-                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-4 md:translate-y-6 bg-white rounded-full w-36 h-36 md:w-48 md:h-48 border-[6px] border-white shadow-2xl flex flex-col items-center justify-center p-4 z-20 hover:scale-105 transition-transform duration-300 select-none">
+                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-2 md:translate-y-6 bg-white rounded-full w-12 h-12 sm:w-20 sm:h-20 md:w-48 md:h-48 border-2 md:border-[6px] border-white shadow-lg md:shadow-2xl flex flex-col items-center justify-center p-0.5 md:p-4 z-20 hover:scale-105 transition-transform duration-300 select-none">
                           {/* Inner leaf icon badge */}
-                          <div className="flex items-center justify-center gap-0.5 mb-1.5">
-                            <Leaf className="w-6 h-6 text-[#2D5A3F] fill-[#2D5A3F] rotate-12" />
-                            <Leaf className="w-4 h-4 text-[#6c8c3e] fill-[#6c8c3e] -rotate-12 -ml-1.5" />
+                          <div className="flex items-center justify-center gap-0.5 mb-0.5 md:mb-1.5">
+                            <Leaf className="w-2.5 h-2.5 md:w-6 md:h-6 text-[#2D5A3F] fill-[#2D5A3F] rotate-12" />
+                            <Leaf className="w-1.5 h-1.5 md:w-4 md:h-4 text-[#6c8c3e] fill-[#6c8c3e] -rotate-12 -ml-0.5 md:-ml-1.5" />
                           </div>
                           {/* Logo Text */}
-                          <span className="text-xl md:text-2xl font-black text-[#2D5A3F] tracking-tight leading-none mb-0.5 font-sans">agriic</span>
-                          <span className="text-[7px] md:text-[9px] font-black text-[#6c8c3e] tracking-widest uppercase text-center leading-none">Naturally Better</span>
+                          <span className="text-[7px] md:text-2xl font-black text-[#2D5A3F] tracking-tight leading-none mb-0.5 font-sans">agriic</span>
+                          <span className="hidden sm:block text-[4px] md:text-[9px] font-black text-[#6c8c3e] tracking-widest uppercase text-center leading-none">Naturally Better</span>
                         </div>
                       </div>
 
@@ -2087,90 +2087,90 @@ export default function App() {
                     </div>
 
                     {/* Right Column: Copy & CTAs */}
-                    <div className="lg:col-span-7 text-center lg:text-left flex flex-col">
+                    <div className="col-span-8 lg:col-span-7 text-left flex flex-col">
                       
                       {/* Nature Pill Badge */}
-                      <div className="inline-flex self-center lg:self-start items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#2D5A3F]/20 bg-[#eaf1d4]/30 text-[10px] md:text-xs font-black text-[#2D5A3F] tracking-widest uppercase mb-4">
-                        <Leaf className="w-3.5 h-3.5" />
+                      <div className="inline-flex self-start items-center gap-1 px-2.5 py-0.5 md:px-4 md:py-1.5 rounded-full border border-[#2D5A3F]/20 bg-[#eaf1d4]/30 text-[8px] md:text-xs font-black text-[#2D5A3F] tracking-widest uppercase mb-1.5 md:mb-4">
+                        <Leaf className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" />
                         <span>Rooted in Nature</span>
                       </div>
 
                       {/* Header */}
-                      <h2 className="text-3xl md:text-5xl font-black text-[#1b3322] tracking-tight leading-tight mb-2">
+                      <h2 className="text-sm sm:text-lg md:text-5xl font-black text-[#1b3322] tracking-tight leading-tight mb-1 md:mb-2">
                         Grow Naturally <br className="hidden md:block" />with <span className="text-[#6c8c3e]">Agriic</span>
                       </h2>
 
                       {/* Custom Leaf Divider */}
-                      <div className="w-full h-px bg-gray-200 my-4 relative flex items-center justify-center lg:justify-end">
+                      <div className="hidden md:flex w-full h-px bg-gray-200 my-4 relative items-center justify-end">
                         <Leaf className="w-3.5 h-3.5 text-[#6c8c3e] bg-[#f7f9f1] px-0.5 absolute -top-1.5 lg:right-10" />
                       </div>
 
                       {/* Tagline / Subtitle */}
-                      <p className="text-gray-600 text-xs md:text-sm font-medium leading-relaxed mb-6 max-w-lg mx-auto lg:mx-0">
+                      <p className="text-gray-650 text-[9px] md:text-sm font-medium leading-relaxed mb-2 md:mb-6 max-w-lg">
                         Sustainable solutions for a healthier soil, better crops and a greener future.
                       </p>
 
                       {/* Trust pill bar */}
-                      <div className="bg-white/80 border border-gray-100 rounded-3xl md:rounded-full p-4 flex flex-col md:flex-row justify-between gap-4 md:gap-2 mb-8 shadow-sm">
+                      <div className="bg-white/80 border border-gray-150/50 rounded-2xl md:rounded-full p-2 md:p-4 grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-2 mb-3 md:mb-8 shadow-xs">
                         
                         {/* 1. Healthy Soil */}
-                        <div className="flex items-center gap-3 px-3 flex-1 border-b md:border-b-0 md:border-r border-gray-100 pb-3 md:pb-0">
-                          <div className="w-9 h-9 rounded-full bg-[#eaf1d4] flex items-center justify-center text-[#2D5A3F] shrink-0">
-                            <Sprout className="w-4 h-4" />
+                        <div className="flex items-center gap-2 px-1 border-b md:border-b-0 md:border-r border-gray-100 pb-1.5 md:pb-0">
+                          <div className="w-6 h-6 md:w-9 md:h-9 rounded-full bg-[#eaf1d4] flex items-center justify-center text-[#2D5A3F] shrink-0">
+                            <Sprout className="w-3.5 h-3.5 md:w-4 md:h-4" />
                           </div>
                           <div className="text-left">
-                            <div className="text-xs font-black text-gray-800 leading-tight">Healthy Soil</div>
-                            <div className="text-[10px] font-bold text-gray-400">Nourish Naturally</div>
+                            <div className="text-[10px] md:text-xs font-black text-gray-800 leading-tight">Healthy Soil</div>
+                            <div className="hidden md:block text-[9px] md:text-[10px] font-bold text-gray-400">Nourish Naturally</div>
                           </div>
                         </div>
 
                         {/* 2. Healthy Crops */}
-                        <div className="flex items-center gap-3 px-3 flex-1 border-b md:border-b-0 md:border-r border-gray-100 pb-3 md:pb-0">
-                          <div className="w-9 h-9 rounded-full bg-[#eaf1d4] flex items-center justify-center text-[#2D5A3F] shrink-0">
-                            <Leaf className="w-4 h-4" />
+                        <div className="flex items-center gap-2 px-1 border-b md:border-b-0 md:border-r border-gray-100 pb-1.5 md:pb-0">
+                          <div className="w-6 h-6 md:w-9 md:h-9 rounded-full bg-[#eaf1d4] flex items-center justify-center text-[#2D5A3F] shrink-0">
+                            <Leaf className="w-3.5 h-3.5 md:w-4 md:h-4" />
                           </div>
                           <div className="text-left">
-                            <div className="text-xs font-black text-gray-800 leading-tight">Healthy Crops</div>
-                            <div className="text-[10px] font-bold text-gray-400">Grow Organically</div>
+                            <div className="text-[10px] md:text-xs font-black text-gray-800 leading-tight">Healthy Crops</div>
+                            <div className="hidden md:block text-[9px] md:text-[10px] font-bold text-gray-400">Grow Organically</div>
                           </div>
                         </div>
 
                         {/* 3. Healthy Future */}
-                        <div className="flex items-center gap-3 px-3 flex-1">
-                          <div className="w-9 h-9 rounded-full bg-[#eaf1d4] flex items-center justify-center text-[#2D5A3F] shrink-0">
-                            <Globe className="w-4 h-4" />
+                        <div className="flex items-center gap-2 px-1">
+                          <div className="w-6 h-6 md:w-9 md:h-9 rounded-full bg-[#eaf1d4] flex items-center justify-center text-[#2D5A3F] shrink-0">
+                            <Globe className="w-3.5 h-3.5 md:w-4 md:h-4" />
                           </div>
                           <div className="text-left">
-                            <div className="text-xs font-black text-gray-800 leading-tight">Healthy Future</div>
-                            <div className="text-[10px] font-bold text-gray-400">Sustain Responsibly</div>
+                            <div className="text-[10px] md:text-xs font-black text-gray-800 leading-tight">Healthy Future</div>
+                            <div className="hidden md:block text-[9px] md:text-[10px] font-bold text-gray-400">Sustain Responsibly</div>
                           </div>
                         </div>
 
                       </div>
 
                       {/* Action buttons row */}
-                      <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                      <div className="flex flex-row gap-2 mb-3 md:mb-8">
                         <a
                           href="#products"
-                          className="flex-1 bg-[#1b3322] hover:bg-[#2b3a30] text-white text-xs md:text-sm font-black tracking-widest uppercase px-6 py-4 rounded-2xl transition duration-300 shadow-md flex items-center justify-between gap-4 group cursor-pointer text-center"
+                          className="flex-1 bg-[#1b3322] hover:bg-[#2b3a30] text-white text-[8px] md:text-xs font-black tracking-wider uppercase px-2.5 py-1.5 md:px-6 md:py-4 rounded-xl md:rounded-2xl transition duration-300 shadow-md flex items-center justify-between gap-2 group cursor-pointer text-center"
                         >
-                          <span>Explore Organic Solutions</span>
-                          <div className="w-7 h-7 rounded-full bg-white text-[#1b3322] flex items-center justify-center transition-transform group-hover:translate-x-1 shrink-0">
-                            <ArrowRight className="w-4 h-4" strokeWidth={3} />
+                          <span>Explore Solutions</span>
+                          <div className="w-5 h-5 md:w-7 md:h-7 rounded-full bg-white text-[#1b3322] flex items-center justify-center transition-transform group-hover:translate-x-1 shrink-0">
+                            <ArrowRight className="w-3 h-3 md:w-4 md:h-4" strokeWidth={3} />
                           </div>
                         </a>
                         
-                        <div className="border border-gray-300 bg-white/40 px-6 py-4 rounded-2xl text-[10px] md:text-xs font-black text-[#1b3322] flex items-center justify-center gap-2 hover:bg-white transition cursor-pointer select-none uppercase tracking-wider shrink-0">
-                          <Leaf className="w-4 h-4 text-[#6c8c3e]" />
+                        <div className="border border-gray-300 bg-white/40 px-2.5 py-1.5 md:px-6 md:py-4 rounded-xl md:rounded-2xl text-[8px] md:text-xs font-black text-[#1b3322] flex items-center justify-center gap-1.5 hover:bg-white transition cursor-pointer select-none uppercase tracking-wider shrink-0">
+                          <Leaf className="w-3.5 h-3.5 text-[#6c8c3e]" />
                           <span>Choose Natural</span>
                         </div>
                       </div>
 
                       {/* Bottom quality checklist badges */}
-                      <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3 text-[10px] md:text-xs font-bold text-[#2D5A3F]/80">
-                        <span className="flex items-center gap-1.5"><Leaf className="w-3.5 h-3.5" /> 100% ORGANIC</span>
-                        <span className="flex items-center gap-1.5"><FlaskConical className="w-3.5 h-3.5" /> CHEMICAL FREE</span>
-                        <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> TRUSTED QUALITY</span>
+                      <div className="flex flex-wrap items-center justify-start gap-x-4 gap-y-2 text-[7px] md:text-xs font-bold text-[#2D5A3F]/85">
+                        <span className="flex items-center gap-1"><Leaf className="w-3 h-3" /> 100% ORGANIC</span>
+                        <span className="flex items-center gap-1"><FlaskConical className="w-3 h-3" /> CHEMICAL FREE</span>
+                        <span className="flex items-center gap-1"><Shield className="w-3 h-3" /> TRUSTED QUALITY</span>
                       </div>
 
                     </div>
